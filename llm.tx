@@ -1,0 +1,47 @@
+giuseppe.dev — Project Log
+
+Purpose
+- Early-internet/W3C-late-90s aesthetic for intentional “wtf” minimalism.
+- Plain, fast, accessible. No JS, no build, minimal CSS.
+
+Stack & Rules
+- HTML5 + one tiny CSS file. Times/serif text, blue links (#0000EE), visited purple (#551A8B), black on white.
+- Max text width ~70ch. Semantic HTML with <main>, headings, lists. No images/icons/scripts.
+
+Files
+- index.html — Homepage with intro, links, latest talk.
+- work-story.html — Work outline + back link.
+- assets/styles.css — Minimal styles per spec.
+- CNAME — giuseppe.dev for GitHub Pages custom domain.
+- .nojekyll — Disable Jekyll processing on Pages.
+
+Content (exact copy embedded in HTML)
+- Title: “Giuseppe Minnella”
+- Tagline: “Builder. Front-end first. Berlin.”
+- Intro: “I ship web things for banks and humans. 20+ years of shipping. Currently AVP / Senior Engineer at Deutsche Bank. Calm authority, mild irony.”
+- Links: Work story, Public talk (anchor), Email, LinkedIn.
+- Talk: “Department-as-a-Service” (notes coming soon).
+- Footer: “© Giuseppe Minnella. Early-web on purpose.”
+
+Design Decisions
+- Absolute CSS path “/assets/styles.css” to target the custom domain as primary endpoint.
+- Intentional defaults: thin hr, no rounded corners/gradients/shadows. Responsive by simplicity.
+
+Hosting
+- GitHub Pages. Branch: main. Folder: root (/).
+- Custom domain via CNAME: giuseppe.dev. Enforce HTTPS once cert is issued.
+
+DNS (apex giuseppe.dev)
+- A records: 185.199.108.153 (present), 185.199.109.153, 185.199.110.153 (present), 185.199.111.153.
+- AAAA records (optional, recommended): 2606:50c0:8000::153 (present), 2606:50c0:8001::153, 2606:50c0:8002::153, 2606:50c0:8003::153.
+- www CNAME → @ (present). Mail records left intact (GoDaddy/Microsoft 365).
+
+Status (UTC)
+- DNS propagated (A/AAAA observed). Site serves 200 OK over HTTP/HTTPS.
+- Live: https://giuseppe.dev
+
+Maintenance
+- Edit HTML/CSS and push to main; Pages auto-deploys.
+- Local preview: python3 -m http.server (from project root), open http://localhost:8000/.
+- Optional: add remaining A/AAAA for redundancy; enable “Enforce HTTPS” in Pages if not already.
+
