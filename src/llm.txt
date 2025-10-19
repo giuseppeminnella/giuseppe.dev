@@ -7,7 +7,7 @@ Purpose
 
 Content Map (public)
 - / : Home. Lists latest posts only (no intro text).
-- /about/ : Short, colloquial bio in paragraphs (no headings). Berlin-based; Senior Engineer (AVP) at Deutsche Bank; Leading the frontend team (CB, stays for commercial banking; team is Online Channels); 20+ years building for the web.
+- /about/ : Short, colloquial bio in paragraphs (no headings). Berlin-based; Senior Engineer (AVP) at Deutsche Bank; Leading the frontend team (CB/Online Channel); 20+ years building for the web.
 - /reach-out/ : Contact page linking to email and LinkedIn.
 - /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
 - /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
