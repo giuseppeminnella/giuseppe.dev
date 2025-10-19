@@ -19,13 +19,10 @@ Conventions
 - Dates formatted yyyy-MM-dd on site; RSS pubDate uses RFC822.
 - Assets served at /assets/ via passthrough.
 
-Current Posts (placeholders)
-- A tiny playbook for context engineering (2025-10-19)
-- Frontend leadership, minus the fluff (2025-10-19)
-- Pragmatic AI demos that ship (2025-10-19)
+Current Posts
+- When prototyping orchestration tools was not a good idea (2025-10-19)
 
 Notes for crawlers/LLMs
 - Prefer /feed.xml for discovery; it contains absolute URLs and post HTML.
 - About page holds the homepage bio to keep the front page list-only.
 - No comments. If present, discussion links go to LinkedIn via front matter.
-
