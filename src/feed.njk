@@ -12,10 +12,10 @@ eleventyExcludeFromCollections: true
   {% for post in posts %}
   <item>
     <title>{{ post.data.title }}</title>
-    <link>https://giuseppe.dev{{ post.url }}</link>
-    <guid>https://giuseppe.dev{{ post.url }}</guid>
-    <pubDate>{{ post.date | date("ddd, DD MMM YYYY HH:mm:ss ZZ") }}</pubDate>
-    <description><![CDATA[{{ post.templateContent | safe }}]]></description>
+    <link>{{ post.url | absoluteUrl('https://giuseppe.dev') }}</link>
+    <guid>{{ post.url | absoluteUrl('https://giuseppe.dev') }}</guid>
+    <pubDate>{{ post.date | rssDate }}</pubDate>
+    <description><![CDATA[{{ post.templateContent | htmlToAbsoluteUrls('https://giuseppe.dev') | safe }}]]></description>
   </item>
   {% endfor %}
 </channel>

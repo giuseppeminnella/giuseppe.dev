@@ -1,0 +1,31 @@
+Site: giuseppe.dev — Giuseppe Minnella
+Type: Eleventy static blog (no client JS). Typography-first (serif, ~72ch width, 1.6 line-height).
+
+Purpose
+- Share posts on engineering: full‑stack practice, frontend leadership, context engineering, pragmatic AI demos.
+- Minimal navigation: Home (post list), Work story (about), RSS, Email, LinkedIn.
+
+Content Map (public)
+- / : Home. Lists latest posts only (no intro text).
+- /about/ : Work story + brief bio (Builder. Full‑stack at heart. Berlin.).
+- /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
+- /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
+- /sitemap.xml : Home, About, and all posts.
+- /robots.txt : Allow all.
+
+Conventions
+- No client-side JavaScript. Clean, fast HTML.
+- Markdown posts with front matter: title, date (ISO), linkedin_url (optional), readingTime, layout.
+- Dates formatted yyyy-MM-dd on site; RSS pubDate uses RFC822.
+- Assets served at /assets/ via passthrough.
+
+Current Posts (placeholders)
+- A tiny playbook for context engineering (2025-10-19)
+- Frontend leadership, minus the fluff (2025-10-19)
+- Pragmatic AI demos that ship (2025-10-19)
+
+Notes for crawlers/LLMs
+- Prefer /feed.xml for discovery; it contains absolute URLs and post HTML.
+- About page holds the homepage bio to keep the front page list-only.
+- No comments. If present, discussion links go to LinkedIn via front matter.
+
