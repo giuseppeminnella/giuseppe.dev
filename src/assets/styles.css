@@ -8,6 +8,7 @@ body{margin:0;padding:var(--pad);color:var(--fg);background:var(--bg);font-famil
 main{max-width:var(--max);margin:0 auto}
 a{color:var(--link);text-decoration:underline}
 a:visited{color:var(--visited)}
+h1 img, h2 img, p img, .lb img{max-width:100%;height:auto}
 h1,h2,h3{line-height:1.25;margin:1.2rem 0 .4rem}
 h1{font-size:1.8rem;margin-top:.2rem}
 h2{font-size:1.25rem}
@@ -23,3 +24,12 @@ footer{margin-top:2rem}
 .post-meta{font-size:.9rem;color:var(--muted)}
 .btn{display:inline-block;border:1px solid #e0e0e0;padding:.4rem .6rem;text-decoration:none}
 
+/* CSS-only lightbox */
+.lb{display:inline-block}
+.lb-thumb{position:relative;display:inline-block}
+.lb-icon{position:absolute;right:.35rem;bottom:.35rem;background:rgba(255,255,255,.9);border:1px solid #e0e0e0;border-radius:2px;padding:.1rem .25rem;font-size:.8rem;color:var(--muted);text-decoration:none;line-height:1}
+.lb-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:999;padding:1rem}
+.lb-overlay:target{display:flex}
+.lb-overlay img{max-width:95vw;max-height:90vh;box-shadow:0 2px 12px rgba(0,0,0,.4);background:#fff}
+.lb-close{position:absolute;top:1rem;right:1rem;font-size:2rem;color:#fff;text-decoration:none}
+.lb-bg{position:absolute;inset:0;display:block}

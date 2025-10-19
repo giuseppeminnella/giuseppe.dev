@@ -20,6 +20,7 @@ Conventions
 - Dates formatted yyyy-MM-dd on site; RSS pubDate uses RFC822.
 - Assets served at /assets/ via passthrough.
 - Footer policy: content under CC0 1.0 (public domain); consent-free website; no data collection or tracking.
+- Images: standardized CSS-only lightbox via `{% lightboxImage src, alt, id %}`; images responsive within content column; overlay opens with 🔍 icon; close with ×; no client JS.
 
 Current Posts
 - When prototyping orchestration tools was not a good idea (2025-10-19)
