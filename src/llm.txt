@@ -7,7 +7,7 @@ Purpose
 
 Content Map (public)
 - / : Home. Lists latest posts only (no intro text).
-- /about/ : About + brief bio (Builder. Full‑stack at heart. Berlin.).
+- /about/ : Short, colloquial bio in paragraphs (no headings). Berlin-based; Senior Engineer (AVP) at Deutsche Bank; 20+ years building for the web.
 - /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
 - /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
 - /sitemap.xml : Home, About, and all posts.
