@@ -3,11 +3,11 @@ Type: Eleventy static blog (no client JS). Typography-first (serif, ~72ch width,
 
 Purpose
 - Share posts on engineering: full‑stack practice, frontend leadership, context engineering, pragmatic AI demos.
-- Minimal navigation: Home (post list), Work story (about), RSS, Email, LinkedIn.
+- Minimal navigation: Home (post list), About, RSS, Email, LinkedIn.
 
 Content Map (public)
 - / : Home. Lists latest posts only (no intro text).
-- /about/ : Work story + brief bio (Builder. Full‑stack at heart. Berlin.).
+- /about/ : About + brief bio (Builder. Full‑stack at heart. Berlin.).
 - /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
 - /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
 - /sitemap.xml : Home, About, and all posts.
