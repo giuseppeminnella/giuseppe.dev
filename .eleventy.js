@@ -32,23 +32,7 @@ module.exports = function(eleventyConfig) {
   // Utility: take first N items of an array
   eleventyConfig.addFilter("take", (arr, n = 10) => Array.isArray(arr) ? arr.slice(0, n) : arr);
 
-  // Shortcode: CSS-only lightbox image (no client JS)
-  // Usage in Markdown/Nunjucks: {% lightboxImage "/assets/img.png", "Alt text", "unique-id" %}
-  eleventyConfig.addShortcode("lightboxImage", function(src, alt = "", id = "img") {
-    const targetId = `lb-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
-    return `
-<span class="lb">
-  <a href="#${targetId}" class="lb-thumb">
-    <img src="${src}" alt="${alt}">
-    <span class="lb-icon" aria-hidden="true">🔍</span>
-  </a>
-</span>
-<div id="${targetId}" class="lb-overlay" aria-hidden="true">
-  <a href="#" class="lb-bg" aria-hidden="true"></a>
-  <a href="#" class="lb-close" aria-label="Close">×</a>
-  <img src="${src}" alt="${alt}">
-</div>`;
-  });
+  // (Removed) lightbox shortcode — images are plain and responsive
 
   // Collections: posts sorted by date desc
   eleventyConfig.addCollection("posts", (collection) => {

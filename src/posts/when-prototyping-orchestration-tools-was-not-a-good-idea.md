@@ -8,6 +8,6 @@ To be continued
 
 It's December 2023, my presentations already looked like that.
 
-{% lightboxImage "/assets/images/dec-2023-presentation.png", "December 2023 presentation", "dec-2023-presentation" %}
+![December 2023 presentation](/assets/images/dec-2023-presentation.png)
 
 It was that euthoric period where gpt introduced the first rudimental code capabilities.
