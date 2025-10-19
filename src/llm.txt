@@ -19,6 +19,7 @@ Conventions
 - Markdown posts with front matter: title, date (ISO), linkedin_url (optional), readingTime, layout.
 - Dates formatted yyyy-MM-dd on site; RSS pubDate uses RFC822.
 - Assets served at /assets/ via passthrough.
+- Footer policy: content under a free license; no consent banners; no data collection or tracking.
 
 Current Posts
 - When prototyping orchestration tools was not a good idea (2025-10-19)
