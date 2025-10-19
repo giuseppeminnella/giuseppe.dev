@@ -2,7 +2,7 @@
 permalink: /feed.xml
 eleventyExcludeFromCollections: true
 ---
-{% set posts = collections.posts | slice(0,20) %}
+{% set posts = collections.posts | take(20) %}
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
 <channel>
@@ -20,4 +20,3 @@ eleventyExcludeFromCollections: true
   {% endfor %}
 </channel>
 </rss>
-

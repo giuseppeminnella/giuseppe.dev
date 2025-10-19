@@ -27,10 +27,16 @@ module.exports = function(eleventyConfig) {
     return dt.isValid ? dt.toFormat(format) : "";
   });
 
+  // Utility: take first N items of an array
+  eleventyConfig.addFilter("take", (arr, n = 10) => Array.isArray(arr) ? arr.slice(0, n) : arr);
+
   // Collections: posts sorted by date desc
-  eleventyConfig.addCollection("posts", (collection) =>
-    collection.getFilteredByGlob("src/posts/*.md").sort((a, b) => b.date - a.date)
-  );
+  eleventyConfig.addCollection("posts", (collection) => {
+    const items = collection.getAll().filter((item) =>
+      item.inputPath && item.inputPath.includes("/src/posts/")
+    );
+    return items.sort((a, b) => (b.date || 0) - (a.date || 0));
+  });
 
   return {
     dir: { input: "src", includes: "_includes", output: "_site" },
