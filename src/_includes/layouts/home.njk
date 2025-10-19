@@ -1,0 +1,19 @@
+---
+layout: layouts/base.njk
+title: Giuseppe Minnella
+description: "Builder. Full-stack at heart. Berlin."
+---
+<h1>Giuseppe Minnella</h1>
+<p><em>Builder. Full-stack at heart. Berlin.</em></p>
+<p>I ship web things. Senior Engineer (AVP) at Deutsche Bank — line & hiring manager, leading the frontend team. Nights & weekends: context engineering. Increasingly public. Deep into AI.</p>
+
+<h2>Latest</h2>
+<ul>
+{% for post of collections.posts | slice(0,10) %}
+  <li>
+    <a href="{{ post.url }}">{{ post.data.title }}</a>
+    <span class="post-meta"> — {{ post.date | date("yyyy-MM-dd") }}</span>
+  </li>
+{% endfor %}
+</ul>
+

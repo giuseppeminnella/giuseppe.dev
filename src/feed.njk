@@ -1,0 +1,23 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+{% set posts = collections.posts | slice(0,20) %}
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+  <title>Giuseppe Minnella</title>
+  <link>https://giuseppe.dev/</link>
+  <description>Builder. Full-stack at heart. Context engineering, AI, and talks.</description>
+  {% for post in posts %}
+  <item>
+    <title>{{ post.data.title }}</title>
+    <link>https://giuseppe.dev{{ post.url }}</link>
+    <guid>https://giuseppe.dev{{ post.url }}</guid>
+    <pubDate>{{ post.date | date("ddd, DD MMM YYYY HH:mm:ss ZZ") }}</pubDate>
+    <description><![CDATA[{{ post.templateContent | safe }}]]></description>
+  </item>
+  {% endfor %}
+</channel>
+</rss>
+
