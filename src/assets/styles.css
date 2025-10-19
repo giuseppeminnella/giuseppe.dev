@@ -28,8 +28,8 @@ footer{margin-top:2rem}
 .lb{display:inline-block}
 .lb-thumb{position:relative;display:inline-block}
 .lb-icon{position:absolute;right:.35rem;bottom:.35rem;background:rgba(255,255,255,.9);border:1px solid #e0e0e0;border-radius:2px;padding:.1rem .25rem;font-size:.8rem;color:var(--muted);text-decoration:none;line-height:1}
-.lb-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:999;padding:1rem}
+.lb-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:999;padding:1rem}
 .lb-overlay:target{display:flex}
-.lb-overlay img{max-width:95vw;max-height:90vh;box-shadow:0 2px 12px rgba(0,0,0,.4);background:#fff}
-.lb-close{position:absolute;top:1rem;right:1rem;font-size:2rem;color:#fff;text-decoration:none}
-.lb-bg{position:absolute;inset:0;display:block}
+.lb-overlay img{position:relative;z-index:1;max-width:95vw;max-height:90vh;box-shadow:0 2px 12px rgba(0,0,0,.4);background:#fff}
+.lb-close{position:absolute;z-index:2;top:1rem;right:1rem;font-size:2rem;color:#fff;text-decoration:none}
+.lb-bg{position:absolute;inset:0;display:block;background:rgba(0,0,0,.6);z-index:0}

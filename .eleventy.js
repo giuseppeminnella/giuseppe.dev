@@ -44,9 +44,9 @@ module.exports = function(eleventyConfig) {
   </a>
 </span>
 <div id="${targetId}" class="lb-overlay" aria-hidden="true">
+  <a href="#" class="lb-bg" aria-hidden="true"></a>
   <a href="#" class="lb-close" aria-label="Close">×</a>
   <img src="${src}" alt="${alt}">
-  <a href="#" class="lb-bg" aria-hidden="true"></a>
 </div>`;
   });
 
