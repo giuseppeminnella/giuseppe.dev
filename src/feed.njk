@@ -14,7 +14,7 @@ eleventyExcludeFromCollections: true
     <title>{{ post.data.title }}</title>
     <link>{{ post.url | absoluteUrl('https://giuseppe.dev') }}</link>
     <guid>{{ post.url | absoluteUrl('https://giuseppe.dev') }}</guid>
-    <pubDate>{{ post.date | rssDate }}</pubDate>
+    <pubDate>{{ post.date | dateToRfc822 }}</pubDate>
     <description><![CDATA[{{ post.templateContent | htmlToAbsoluteUrls('https://giuseppe.dev') | safe }}]]></description>
   </item>
   {% endfor %}
