@@ -5,11 +5,9 @@ layout: layouts/base.njk
   <h1>{{ title }}</h1>
   <p class="post-meta">{{ date | date("yyyy-MM-dd") }}{% if readingTime %} • {{ readingTime }} min{% endif %}</p>
   {{ content | safe }}
-  <hr>
   {% if linkedin_url %}
+  <hr>
   <p><a class="btn" href="{{ linkedin_url }}">Discuss on LinkedIn</a></p>
-  {% else %}
-  <p><em>Discussion link coming soon.</em></p>
   {% endif %}
 </article>
 

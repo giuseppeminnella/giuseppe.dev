@@ -56,3 +56,5 @@ Now, years later, I can see the main mistake. I was so convinced of the Papercli
 Throwing a couple of presentations here and there wasn't enough—it was merely a timid attempt. Those ideas needed to be sold as if they were a matter of life and death. Presented, pushed, until the message broke through.
 
 So the lesson here, if there is one: **good ideas in corporate environments need to be pushed relentlessly**. The everyday noise dampens even the brightest voices.
+
+This, or you go solo.
