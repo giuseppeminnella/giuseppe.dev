@@ -25,4 +25,4 @@ footer{margin-top:2rem}
 .btn{display:inline-block;border:1px solid #e0e0e0;padding:.4rem .6rem;text-decoration:none}
 
 /* Images fill content width */
-main img{display:block;width:100%;max-width:100%;height:auto}
+main img{display:block;width:100%;max-width:100%;height:auto;border:0.4rem solid #f5f5f5;margin:1rem 0}
