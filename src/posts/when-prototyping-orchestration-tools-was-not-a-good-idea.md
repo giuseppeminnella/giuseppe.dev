@@ -37,6 +37,14 @@ As you can see, we were already deeply exploring how to harness "agents." We had
 
 **We had it all figured out.**
 
+And when I say we figured it all out, I mean it! Look at this—the "Harry & Meghan" agent. This thing would have told you everything you needed to know about them: the historical data of all that was published, by whom, when, everything.
+
+![Harry & Meghan agent details](/assets/images/harry-megan-agent.png)
+
+It even had the virtual personality up and running, for a quick chat.
+
+![Agent chat interface](/assets/images/agent-chat-interface.png)
+
 And yet, none of this saw the light of day.
 
 ---
