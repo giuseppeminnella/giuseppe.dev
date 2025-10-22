@@ -53,7 +53,7 @@ And so it goes, the lost opportunity.
 
 Now, years later, I can see the main mistake. I was so convinced of the Paperclip Maximizer's value that I didn't bother to truly convince the decision-makers.
 
-Throwing a couple of presentations here and there wasn't enough—it was merely a timid attempt. Those ideas needed to be sold as if they were a matter of life and death. Presented, pushed, until the message broke through.
+Throwing a couple of presentations here and there wasn't enough—[even public talks about "agentic design systems"](https://www.linkedin.com/posts/giuseppeminnella_mediaandtechcon-ai-design-activity-7083819276637229056-OQtl) were merely timid attempts. Those ideas needed to be sold as if they were a matter of life and death. Presented, pushed, until the message broke through.
 
 So the lesson here, if there is one: **good ideas in corporate environments need to be pushed relentlessly**. The everyday noise dampens even the brightest voices.
 
