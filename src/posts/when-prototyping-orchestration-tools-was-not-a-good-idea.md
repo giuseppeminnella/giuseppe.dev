@@ -41,7 +41,7 @@ And when I say we figured it all out, I mean it! Look at this—the "Harry & Meg
 
 ![Harry & Meghan agent details](/assets/images/harry-megan-agent.png)
 
-It even had the virtual personality up and running, for a quick chat.
+It even had the digital twin up and running, for a quick chat.
 
 ![Agent chat interface](/assets/images/agent-chat-interface.png)
 
