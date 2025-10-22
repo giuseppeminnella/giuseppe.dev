@@ -12,6 +12,25 @@ module.exports = function(eleventyConfig) {
     linkify: true,
     typographer: true
   }).use(require("markdown-it-footnote")).use(require("markdown-it-anchor"));
+
+  // Open external links in new tabs
+  const defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+  };
+  md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+    const token = tokens[idx];
+    const hrefIndex = token.attrIndex('href');
+    if (hrefIndex >= 0) {
+      const href = token.attrs[hrefIndex][1];
+      // Open external links (http/https) in new tab
+      if (href.startsWith('http://') || href.startsWith('https://')) {
+        token.attrSet('target', '_blank');
+        token.attrSet('rel', 'noopener noreferrer');
+      }
+    }
+    return defaultRender(tokens, idx, options, env, self);
+  };
+
   eleventyConfig.setLibrary("md", md);
 
   // Nunjucks date filter (Luxon) to support templates using | date("...")
