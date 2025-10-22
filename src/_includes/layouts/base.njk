@@ -8,6 +8,29 @@
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
   <meta name="description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
   <link rel="canonical" href="https://giuseppe.dev{{ page.url }}">
+
+  {# Open Graph / Facebook #}
+  <meta property="og:type" content="{{ 'article' if layout == 'layouts/post.njk' else 'website' }}">
+  <meta property="og:url" content="https://giuseppe.dev{{ page.url }}">
+  <meta property="og:title" content="{{ title or 'Giuseppe Minnella' }}">
+  <meta property="og:description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
+  {% if image %}
+  <meta property="og:image" content="https://giuseppe.dev{{ image }}">
+  <meta property="og:image:alt" content="{{ title }}">
+  {% endif %}
+  {% if layout == 'layouts/post.njk' %}
+  <meta property="article:published_time" content="{{ date | date('yyyy-MM-dd') }}">
+  <meta property="article:author" content="Giuseppe Minnella">
+  {% endif %}
+
+  {# Twitter Card #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://giuseppe.dev{{ page.url }}">
+  <meta name="twitter:title" content="{{ title or 'Giuseppe Minnella' }}">
+  <meta name="twitter:description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
+  {% if image %}
+  <meta name="twitter:image" content="https://giuseppe.dev{{ image }}">
+  {% endif %}
 </head>
 <body>
   <main>

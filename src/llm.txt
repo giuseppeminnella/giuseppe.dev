@@ -16,11 +16,30 @@ Content Map (public)
 
 Conventions
 - No client-side JavaScript. Clean, fast HTML.
-- Markdown posts with front matter: title, date (ISO), linkedin_url (optional), readingTime, layout.
+- Markdown posts with front matter: title, date (ISO), description (for SEO/social), image (for social sharing), linkedin_url (optional), readingTime, layout.
 - Dates formatted yyyy-MM-dd on site; RSS pubDate uses RFC822.
 - Assets served at /assets/ via passthrough.
 - Footer policy: content under CC0 1.0 (public domain); consent-free website; no data collection or tracking.
 - Images: plain responsive images only; 100% width of content column; no lightbox or links.
+
+Social Sharing Meta Tags
+Posts should include these frontmatter fields for optimal social sharing:
+- description: 1-2 sentence summary for SEO meta description, Open Graph, and Twitter Card
+- image: Path to representative image (e.g., /assets/images/foo.png) for Open Graph og:image and Twitter Card
+
+The base.njk layout automatically generates:
+- Open Graph tags (og:type, og:url, og:title, og:description, og:image, og:image:alt)
+- Twitter Card tags (twitter:card set to summary_large_image, twitter:url, twitter:title, twitter:description, twitter:image)
+- Article-specific tags for posts (article:published_time, article:author)
+
+Example post frontmatter:
+---
+title: My Post Title
+date: 2025-10-19
+layout: layouts/post.njk
+description: A compelling one-liner that summarizes the post for social sharing and search engines.
+image: /assets/images/representative-screenshot.png
+---
 
 Current Posts
 - When prototyping orchestration tools was not a good idea (2025-10-19)
