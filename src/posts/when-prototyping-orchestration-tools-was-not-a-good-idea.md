@@ -39,11 +39,11 @@ As you can see, we were already deeply exploring how to harness "agents." We had
 
 And when I say we figured it all out, I mean it! Look at this—the "Harry & Meghan" agent. This thing would have told you everything you needed to know about them: the historical data of all that was published, by whom, when, everything.
 
-![Harry & Meghan agent details](/assets/images/harry-megan-agent.png)
+![Agent chat interface](/assets/images/agent-chat-interface.png)
 
 It even had the digital twin up and running, for a quick chat.
 
-![Agent chat interface](/assets/images/agent-chat-interface.png)
+<img src="/assets/images/harry-megan-agent.png" alt="Harry & Meghan agent details" class="portrait-img">
 
 And yet, none of this saw the light of day.
 
