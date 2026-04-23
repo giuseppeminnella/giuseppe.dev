@@ -10,6 +10,14 @@ Yesterday I had the pleasure of speaking at the [BolognaJS](https://www.bolognaj
 
 (By the way, the talk was in Italian, and they'll eventually post the recording on the [BolognaJS YouTube channel](https://www.youtube.com/@bolognajs/featured). But the core message is universal enough.)
 
+Last year, my talks looked completely different. I was advocating for agent orchestration all the way down, pushing provocative concepts like "Department as a service".
+
+![Building context](/assets/images/bologna-context.jpg)
+
+The idea was simple: you don't tell the machine what to do anymore, you just build the context and let it operate autonomously. The orchestrator delegates to agents, the product owner watches, and so on. It sounded great.
+
+But today, my view has changed. 
+
 Here’s the thing. What really scares me about the way we use AI in engineering right now isn't the obvious stuff. I don't care about hallucinated functions or code that doesn't compile. Those are "loud" failures. They break things immediately, someone notices, and they get fixed before lunch.
 
 What scares me is the quiet failure.
@@ -21,10 +29,6 @@ LLMs are absolute masters of this.
 If you don't keep them on a short leash, they suffer from what I call "drift". You ask for a simple change—maybe just displaying a date field—and the model decides it should also normalize everything to the server's timezone, regardless of the user's locale. It sounds like a helpful improvement, right? But suddenly, you've just inherited a brand new business rule that nobody actually asked for.
 
 A simple CRUD screen silently grows into a massive operational dashboard. A local frontend change suddenly requires coordinating three different tools. And before you know it, an implementation detail has warped your entire architecture.
-
-![Building context](/assets/images/bologna-context.jpg)
-
-You see, we've shifted from telling the machine exactly what to do, to just giving it context and letting it operate autonomously. Which is great, until it decides to be overly helpful.
 
 And this creates a vicious feedback loop.
 
