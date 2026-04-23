@@ -59,7 +59,17 @@ The other half of the equation is tooling governance. In our team, we use curate
 
 Right now, there's immense social pressure to be "AI-enhanced" at all costs. It shifts the entire conversation from "Is this the right solution?" to "Why is this taking so long when we have AI?"
 
-That second question is toxic. It kills quality.
+But the actual data tells a more nuanced story. In an older version of this presentation, I included several recent studies that highlight a growing disconnect between perceived velocity and actual output. 
+
+For instance, the 2026 enterprise study [Beyond the Commit (arXiv:2602.03593)](https://arxiv.org/abs/2602.03593) surveyed teams using coding assistants in their daily work. The result? Very high satisfaction, but the actual time savings were often limited. There is a deep misalignment between "this tool helps me" and "this tool actually accelerates me".
+
+![Beyond the Commit study](/assets/images/study-2026-beyond-commit-original.png)
+
+Another longitudinal study from this year, [Agile Teams Longitudinal Study (arXiv:2602.13766)](https://arxiv.org/abs/2602.13766), observed agile teams over 13 months. While one team reported a 59.1% increase in completed story points, the actual variation in lines of code produced was statistically insignificant. 
+
+![Agile Teams Longitudinal Study](/assets/images/study-2026-agile-original.png)
+
+The pressure to move fast based on the *perception* of AI velocity is toxic. It kills quality and encourages the exact kind of drift we just talked about.
 
 Containment might feel slower in the short term, but it's the only thing that actually protects your delivery in the long run.
 
@@ -67,4 +77,4 @@ AI has made it incredibly cheap to expand a system. That means the real job of e
 
 ---
 
-Thanks again to everyone at BolognaJS. It was a great crowd, and exactly the kind of conversation we need to be having right now.
+Thanks again to everyone at BolognaJS. It felt incredibly welcoming and nice to touch base with Bologna again!
