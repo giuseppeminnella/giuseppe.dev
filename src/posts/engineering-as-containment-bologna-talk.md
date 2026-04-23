@@ -4,108 +4,50 @@ date: 2026-04-23
 layout: layouts/post.njk
 description: Notes from a talk I gave in Bologna on AI-induced drift, quiet failures, and why engineering should make it expensive to add things.
 ---
-Yesterday I gave a talk in Bologna at [BolognaJS](https://www.bolognajs.com/) ([event page](https://www.meetup.com/bologna-js-meetup/events/314310959/)).
+Yesterday I had the pleasure of speaking at the [BolognaJS](https://www.bolognajs.com/) meetup ([event details here](https://www.meetup.com/bologna-js-meetup/events/314310959/)). The topic is something that’s been bothering me a lot lately: what happens when we let our LLMs do a bit *too* much thinking for us.
 
-The talk was in Italian, but the core idea is simple enough in any language:
+![Engineering as Containment](/assets/images/bologna-drift.jpg)
 
-**AI makes expansion cheap. Engineering has to make admission expensive.**
+(By the way, the talk was in Italian, and they'll eventually post the recording on the [BolognaJS YouTube channel](https://www.youtube.com/@bolognajs/featured). But the core message is universal enough.)
 
-The recording should show up on the [BolognaJS YouTube channel](https://www.youtube.com/@bolognajs/featured) at some point.
+Here’s the thing. What really scares me about the way we use AI in engineering right now isn't the obvious stuff. I don't care about hallucinated functions or code that doesn't compile. Those are "loud" failures. They break things immediately, someone notices, and they get fixed before lunch.
 
----
+What scares me is the quiet failure.
 
-[IMAGE_PLACEHOLDER_1]
+Quiet failures are insidious. They look totally plausible. They sail right through code review. They get merged, they deploy to production, and then they blow up three sprints later when everyone has completely forgotten why that code was even written in the first place.
 
----
+LLMs are absolute masters of this.
 
-What worries me most is not obvious AI failure.
+If you don't keep them on a short leash, they suffer from what I call "drift". You ask for a simple change—maybe just displaying a date field—and the model decides it should also normalize everything to the server's timezone, regardless of the user's locale. It sounds like a helpful improvement, right? But suddenly, you've just inherited a brand new business rule that nobody actually asked for.
 
-Obvious failure is loud. It breaks quickly. It gets fixed.
+A simple CRUD screen silently grows into a massive operational dashboard. A local frontend change suddenly requires coordinating three different tools. And before you know it, an implementation detail has warped your entire architecture.
 
-The dangerous one is quiet failure: output that looks plausible, passes review, gets merged, and creates damage later when the original context is gone.
+![Building context](/assets/images/bologna-context.jpg)
 
-LLMs are very good at producing that kind of failure.
+You see, we've shifted from telling the machine exactly what to do, to just giving it context and letting it operate autonomously. Which is great, until it decides to be overly helpful.
 
----
+And this creates a vicious feedback loop.
 
-The mechanism is drift.
+![The AI doom loop](/assets/images/bologna-doom-loop.jpg)
 
-And drift starts before code.
+The AI adds moving parts. That increases the cognitive load on the team. To deal with the extra cognitive load, the team leans even harder on the AI to understand what's going on. The system grows even larger, and suddenly, overengineering doesn't just feel like an accident—it feels necessary.
 
-You ask for one thing; the model "improves" the ask and sneaks in extra semantics.
+On paper, it looks like you're moving incredibly fast. You're shipping so much code! But your actual throughput plummets, because you're spending all your time reviewing, coordinating, and trying to keep this sprawling mess coherent.
 
-A small display requirement becomes a hidden business rule.
-A simple screen becomes a mini platform.
-A local change turns into multi-tool orchestration for no reason.
-An implementation detail turns into architecture.
-Then operations inherit all of it.
+The fix isn't some shiny new AI tool. It's boring, old-school engineering discipline.
 
-Step by step, reasonable-looking additions accumulate.
+Before you let the AI add anything, you have to ask: Is this actually required? Is it in the right bounded context? Does it add state, or new semantics, or new authority? Are we willing to maintain this forever?
 
----
+We're talking about Domain-Driven Design. YAGNI. Clear interfaces. Explicit boundaries.
 
-[IMAGE_PLACEHOLDER_2]
+The other half of the equation is tooling governance. In our team, we use curated whitelists for AI skills, shared versioning, and explicit conventions that tie directly into our workflows. We even run automated evaluations to make sure the models are actually respecting those boundaries over time. Because if you aren't measuring it, you're just hoping for the best.
 
----
+Right now, there's immense social pressure to be "AI-enhanced" at all costs. It shifts the entire conversation from "Is this the right solution?" to "Why is this taking so long when we have AI?"
 
-There is also a feedback loop that teams underestimate:
+That second question is toxic. It kills quality.
 
-AI adds moving parts -> cognitive load goes up -> the team uses more AI to keep up -> the system grows further -> overengineering starts to feel necessary.
+Containment might feel slower in the short term, but it's the only thing that actually protects your delivery in the long run.
 
-At that point, speed looks high, but real throughput drops.
-You spend more time coordinating, reviewing and preserving coherence than solving the original problem.
+AI has made it incredibly cheap to expand a system. That means the real job of engineering today is to make it expensive to add things.
 
----
-
-The response is not magical.
-It is mostly discipline.
-
-Before introducing anything, ask:
-
-- Is it actually required now?
-- Is it in the right bounded context?
-- Does it introduce state?
-- Does it introduce new semantics or authority?
-- Does it introduce a maintenance burden we are willing to own?
-
-This is old material: DDD, YAGNI, clear interfaces, explicit schemas, ownership of vocabulary, anti-corruption boundaries.
-
-Still boring. Still effective.
-
----
-
-[IMAGE_PLACEHOLDER_3]
-
----
-
-On tooling, I shared a practical setup that works well in corporate environments:
-
-- curated skill discoverability through whitelists
-- shared lock/versioning of skills
-- explicit conventions tied to team workflows
-- eval/scoring to verify that models still respect those conventions over time
-
-Because once you add patterns and constraints, you need a way to measure whether the system is still following them.
-Otherwise you are just trusting vibes.
-
----
-
-There is also social pressure now to be "AI-enhanced" at all costs.
-
-That pressure changes the team's internal question from:
-
-"Is this the right solution?"
-
-to:
-
-"Why is this taking so long if AI is so fast?"
-
-That second question is where quality starts to die.
-
-Containment can feel slower in the short term.
-In the medium term, it is what protects delivery.
-
----
-
-Thanks again to everyone who joined in Bologna.
-Good questions, good conversations, and exactly the kind of crowd that makes these topics worth discussing in public.
+Thanks again to everyone at BolognaJS. It was a great crowd, and exactly the kind of conversation we need to be having right now.
