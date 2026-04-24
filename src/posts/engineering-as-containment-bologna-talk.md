@@ -9,7 +9,7 @@ Yesterday I had the pleasure of speaking at the [BolognaJS](https://www.bolognaj
 
 ---
 
-(By the way, the talk was in Italian, and they'll eventually post the recording on the [BolognaJS YouTube channel](https://www.youtube.com/@bolognajs/featured). But the core message is universal enough.)
+(By the way, the talk was in Italian, but you can [watch the recording here](https://www.youtube.com/live/93l1SUQ2kB4?si=4CSynGDHrOAGA8jA&t=226). The core message is universal enough.)
 
 ![Engineering as Containment](/assets/images/bologna-drift.jpg)
 
