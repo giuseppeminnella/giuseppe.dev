@@ -1,5 +1,5 @@
 Site: giuseppe.dev — Giuseppe Minnella
-Type: Eleventy static blog (no client JS). Typography-first (serif, ~72ch width, 1.6 line-height).
+Type: Eleventy static blog (no client JS). Typography-first with locally served Inter, ~68ch width, 1.62 line-height, and JetBrains Mono for code.
 
 Purpose
 - Share posts on engineering: full‑stack practice, frontend leadership, context engineering, pragmatic AI demos.
