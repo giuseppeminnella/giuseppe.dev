@@ -35,6 +35,10 @@ module.exports = function(eleventyConfig) {
 
   // Nunjucks date filter (Luxon) to support templates using | date("...")
   const { DateTime } = require("luxon");
+  const toDateTime = (value) => value === "now"
+    ? DateTime.local()
+    : (value instanceof Date ? DateTime.fromJSDate(value) : DateTime.fromISO(String(value)));
+
   eleventyConfig.addFilter("date", (value, fmt = "yyyy-MM-dd") => {
     // Map common Moment-style tokens to Luxon equivalents used in templates
     const mapTokens = (s) => s
@@ -42,10 +46,12 @@ module.exports = function(eleventyConfig) {
       .replace(/YYYY/g, "yyyy")
       .replace(/DD/g, "dd");
     const format = mapTokens(fmt);
-    const dt = value === "now"
-      ? DateTime.local()
-      : (value instanceof Date ? DateTime.fromJSDate(value) : DateTime.fromISO(String(value)));
+    const dt = toDateTime(value);
     return dt.isValid ? dt.toFormat(format) : "";
+  });
+  eleventyConfig.addFilter("readableDate", (value) => {
+    const dt = toDateTime(value);
+    return dt.isValid ? dt.setLocale("en").toFormat("LLLL d, yyyy") : "";
   });
 
   // Utility: take first N items of an array

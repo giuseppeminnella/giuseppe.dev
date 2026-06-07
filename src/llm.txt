@@ -17,7 +17,7 @@ Content Map (public)
 Conventions
 - No client-side JavaScript. Clean, fast HTML.
 - Markdown posts with front matter: title, date (ISO), description (for SEO/social), image (for social sharing), linkedin_url (optional), readingTime, layout.
-- Dates formatted yyyy-MM-dd on site; RSS pubDate uses RFC822.
+- Visible dates use English month names, e.g. June 3, 2026; RSS pubDate and article metadata use machine-readable formats.
 - Assets served at /assets/ via passthrough.
 - Footer policy: content under CC0 1.0 (public domain); consent-free website; no data collection or tracking.
 - Images: plain responsive images only; 100% width of content column; no lightbox or links.
