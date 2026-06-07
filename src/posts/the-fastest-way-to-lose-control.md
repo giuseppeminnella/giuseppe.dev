@@ -2,8 +2,11 @@
 title: The fastest way to lose control
 date: 2026-06-03
 layout: layouts/post.njk
-description: "A shorter follow-up to Engineering as Containment, from the Berlin talk: speed is fun in prototypes, but production AI needs posture, boundaries, and tooling controls."
-image: /assets/images/cheese-rolling-chris-anderson.jpg
+description: "Outside work, AI is where I happily code with no safety net. At work, especially in regulated environments, that same speed needs containment."
+image: /assets/images/cheese-rolling-chris-anderson-share.jpg
+image_alt: Chris Anderson leading a downhill cheese rolling race at Cooper's Hill.
+image_width: 1200
+image_height: 630
 ---
 <p>Outside work, I am probably the last person who should lecture anyone about engineering discipline.</p>
 
