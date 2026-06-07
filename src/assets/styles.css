@@ -12,11 +12,12 @@ h1 img, h2 img, p img{max-width:100%;height:auto}
 h1,h2,h3{line-height:1.25;margin:1.2rem 0 .4rem}
 h1{font-size:1.8rem;margin-top:.2rem}
 h2{font-size:1.25rem}
-p,ul,ol,blockquote,pre{margin:.8rem 0}
+p,ul,ol,blockquote,pre,figure{margin:.8rem 0}
 ul{padding-left:1.2rem}
 code,kbd,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 pre{overflow:auto;padding:.75rem;border:1px solid #e0e0e0;background:#fafafa}
 blockquote{border-left:3px solid #e0e0e0;padding-left:.75rem;color:var(--muted)}
+figcaption{font-size:.9rem;color:var(--muted);margin-top:-.5rem}
 hr{border:none;border-top:1px solid #e0e0e0;margin:1.5rem 0}
 header,footer{font-size:.9rem;color:var(--muted)}
 footer{margin-top:2rem}
