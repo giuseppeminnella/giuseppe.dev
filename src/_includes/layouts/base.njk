@@ -8,6 +8,7 @@
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
   <meta name="description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
   <link rel="canonical" href="https://giuseppe.dev{{ page.url }}">
+  {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 
   {# Open Graph / Facebook #}
   <meta property="og:type" content="{{ 'article' if layout == 'layouts/post.njk' else 'website' }}">
@@ -58,7 +59,8 @@
 
     <footer>
       <hr>
-      All writing here is CC0 1.0 (public domain). Consent-free website — I collect no data.
+      All writing here is CC0 1.0 (public domain). Consent-free website — no cookies, no tracking, no analytics.
+      <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Privacy</a>
     </footer>
   </main>
 </body>
