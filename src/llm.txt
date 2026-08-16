@@ -11,6 +11,7 @@ Content Map (public)
 - /reach-out/ : Contact page linking to email and LinkedIn.
 - /impressum/ : Legal notice required by German law (§ 5 DDG, § 18 Abs. 2 MStV). Linked from the footer on every page. Deliberately excluded from sitemap.xml and marked noindex to limit indexing of the postal address.
 - /datenschutz/ : Privacy notice under Art. 13 GDPR. Covers GitHub Pages server logs (the only visitor data processed), absence of cookies/tracking/third-party assets, and data subject rights. Same noindex + sitemap exclusion as /impressum/, since it repeats the postal address.
+- Both legal pages are bilingual, German first and English below, each half wrapped in a div with the matching lang attribute (the page itself is lang="en"). The German version is declared authoritative; keep the two halves in sync when editing, and edit the German side first.
 - /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
 - /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
 - /sitemap.xml : Home, About, and all posts.
