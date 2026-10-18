@@ -1,0 +1,101 @@
+{
+  "reading": [
+    {
+      "title": "Focus and attention",
+      "items": [
+        {
+          "title": "Why is it so hard to do my work? The challenge of attention residue when switching between work tasks",
+          "url": "https://doi.org/10.1016/j.obhdp.2009.04.002",
+          "meta": "Sophie Leroy · 2009 · Organizational Behavior and Human Decision Processes",
+          "what": "When you switch tasks, part of your attention stays on the one you left, and the next task suffers for it."
+        },
+        {
+          "title": "Executive control of cognitive processes in task switching",
+          "url": "https://doi.org/10.1037/0096-1523.27.4.763",
+          "meta": "Joshua Rubinstein, David Meyer, Jeffrey Evans · 2001 · Journal of Experimental Psychology: Human Perception and Performance",
+          "what": "Every switch between tasks costs time, and the cost grows with the complexity of the tasks.",
+          "also": { "label": "Plain-language summary:", "text": "APA Monitor", "url": "https://www.apa.org/monitor/oct01/multitask" }
+        },
+        {
+          "title": "The cost of interrupted work: more speed and stress",
+          "url": "https://www.ics.uci.edu/~gmark/chi08-mark.pdf",
+          "meta": "Gloria Mark, Daniela Gudith, Ulrich Klocke · 2008 · CHI",
+          "what": "Interrupted people kept their pace by working faster, and paid for it in stress, frustration and effort."
+        },
+        {
+          "title": "Measuring the impact of early-2025 AI on experienced open-source developer productivity",
+          "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+          "meta": "METR · 2025 · randomised controlled trial",
+          "what": "Experienced developers working with AI tools took 19% longer on real tasks in their own repositories, while believing they had been about 20% faster.",
+          "note": "16 developers, 246 tasks, early-2025 tools. Read the authors' caveats before generalising."
+        },
+        {
+          "title": "How AI assistance impacts the formation of coding skills",
+          "url": "https://www.anthropic.com/research/AI-assistance-coding-skills",
+          "meta": "Anthropic · January 2026 · randomised controlled trial",
+          "what": "Developers who handed the code to the AI learned the least; those who kept asking conceptual questions learned the most."
+        },
+        {
+          "title": "ParallelPilot: supporting coordination and monitoring in parallel AI coding",
+          "url": "https://arxiv.org/abs/2609.33113",
+          "meta": "Tao Long, Weili Shi, Hussein Mozannar, Maya Murad, Rafah Hosn · 2026 · preprint",
+          "what": "For balance: with a tool built for it, people supervising several agents at once closed more short tickets, but did not feel more in control of them.",
+          "note": "16 participants, short tasks, not yet peer reviewed."
+        }
+      ]
+    },
+    {
+      "title": "The software factory",
+      "items": [
+        {
+          "title": "Redesigning source control at Anthropic",
+          "url": "https://www.anthropic.com/engineering/redesigning-source-control",
+          "meta": "Anthropic Engineering · 13 October 2026",
+          "what": "What happens when coding stops being the bottleneck: source control, review and CI have to be rebuilt, and the engineers' job becomes saying no."
+        },
+        {
+          "title": "Build your own AI software factory with Claude Code",
+          "url": "https://www.youtube.com/watch?v=ctoaIC4LHmI",
+          "meta": "ZazenCodes · 7 October 2026 · video, sponsored by Anthropic",
+          "what": "A small factory you can run today: a spec writer, a builder, four reviewers and an approver that calls a human when it matters.",
+          "also": { "label": "Source code:", "text": "github.com/zazencodes/zazencodes-season-3", "url": "https://github.com/zazencodes/zazencodes-season-3/tree/main/src/software-factory-claude-code" }
+        }
+      ]
+    },
+    {
+      "title": "Where the time goes",
+      "items": [
+        {
+          "title": "If you thought the speed of writing code was your problem, you have bigger problems",
+          "url": "https://www.youtube.com/watch?v=kSzbuPFjdQo",
+          "meta": "Andrew Murphy · talk",
+          "what": "The pipeline behind the bottleneck section: widen one stage and the queue moves to the next."
+        },
+        {
+          "title": "How do software developers spend their time?",
+          "url": "https://www.infoworld.com/article/3831759/developers-spend-most-of-their-time-not-coding-idc-report.html",
+          "meta": "IDC · February 2025 · 2024 data",
+          "what": "Writing code is about 16% of a developer's time; the rest goes to requirements, security, CI/CD, monitoring, deploying and UX.",
+          "also": { "label": "The report itself is paywalled:", "text": "IDC US53204725", "url": "https://my.idc.com/getdoc.jsp?containerId=US53204725" }
+        }
+      ]
+    },
+    {
+      "title": "Evals as quality gates",
+      "items": [
+        {
+          "title": "Retort",
+          "url": "https://github.com/adrianco/retort",
+          "meta": "Adrian Cockcroft · open source",
+          "what": "Compares tooling stacks across models and environments, baseline against candidate, to decide what to promote or retire."
+        },
+        {
+          "title": "promptfoo",
+          "url": "https://github.com/promptfoo/promptfoo",
+          "meta": "open source",
+          "what": "Tests prompts, models and agents against your own cases, so a release can be checked before it ships."
+        }
+      ]
+    }
+  ]
+}
