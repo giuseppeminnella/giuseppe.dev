@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style frames</title>
+<style>
+/* Tokens. These become tokens.ts in the Remotion scaffold. */
+:root {
+  --paper: #FFFFFF;
+  --ink: #111111;            /* type only */
+  --g-100: #F0F0F0;
+  --g-200: #E1E1E1;
+  --g-300: #D2D2D2;
+  --rest: #DEDEDE;           /* a line before it travels */
+  --went: #9A9A9A;           /* a line after it travels */
+  --g-400: #B8B8B8;
+  --g-500: #999999;
+  --g-600: #7C7C7C;
+  --g-700: #5C5C5C;
+  --g-800: #3E3E3E;
+  --hl: #F2E74B;             /* the marker */
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --t-display: 104px;
+  --t-title: 64px;
+  --t-head: 72px;
+  --t-lead: 34px;
+  --t-label: 30px;
+  --t-note: 28px;
+
+  --sightline: 540px;        /* below this: accessory only */
+}
+
+/* Page around the frames (not part of the deck) */
+* { box-sizing: border-box; }
+body { margin: 0; background: #E9E9E7; color: #222; font: 15px/1.5 var(--font); }
+header { position: sticky; top: 0; z-index: 5; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; padding: 12px 24px; background: #E9E9E7; border-bottom: 1px solid #D6D6D3; }
+header b { font-weight: 600; margin-right: auto; }
+header label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+header button { font: inherit; padding: 4px 12px; border: 1px solid #BDBDB8; border-radius: 6px; background: #fff; cursor: pointer; }
+main { max-width: 1280px; margin: 0 auto; padding: 24px; display: grid; gap: 40px; }
+figure { margin: 0; display: grid; gap: 10px; }
+figcaption { color: #555; max-width: 1000px; }
+figcaption b { color: #111; }
+
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--paper); box-shadow: 0 1px 0 #D6D6D3; }
+.wall { display: none; position: relative; width: 100%; aspect-ratio: 32 / 9; overflow: hidden; background: var(--paper); }
+body.walls .stage { display: none; }
+body.walls .wall { display: block; }
+.wall::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: #333; opacity: .5; }
+
+/* Solo mode for exports: ?frame=B (one frame at 1920 x 1080); &wall for 3840 x 1080; &sight for the overlay */
+body.solo { background: #fff; }
+body.solo header, body.solo figcaption, body.solo figure:not(.on) { display: none; }
+body.solo main { max-width: none; padding: 0; }
+body.solo .stage { width: 1920px; box-shadow: none; }
+body.solo .wall { width: 3840px; }
+
+/* The frame: always authored at 1920 x 1080, scaled to fit */
+.frame { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale(var(--k, .5));
+  background: var(--paper); color: var(--ink); font-family: var(--font); overflow: hidden; isolation: isolate; }
+.frame svg { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+.frame .t { position: absolute; margin: 0; }
+
+.lead { font-size: var(--t-lead); font-weight: 500; color: var(--g-500); }
+.head { font-size: var(--t-head); line-height: 1.06; font-weight: 700; letter-spacing: -.028em; }
+.title { font-size: var(--t-title); line-height: 1.08; font-weight: 700; letter-spacing: -.025em; }
+.display { font-size: var(--t-display); line-height: 1.02; font-weight: 700; letter-spacing: -.032em; }
+.label { font-size: var(--t-label); font-weight: 600; letter-spacing: -.01em; color: var(--g-800); }
+
+/* Accessory notes: lower half, thin line, for the side monitors and the recording */
+.note { position: absolute; margin: 0; padding: 22px 30px; border: 2px solid var(--g-300); font-size: var(--t-note); line-height: 1.38; font-weight: 500; color: var(--g-700); max-width: 860px; }
+
+/* Marker on words: chisel tip, a bit off, laid over the type */
+.hl { position: relative; white-space: nowrap; }
+.hl::after { content: ""; position: absolute; left: -.16em; right: -.1em; top: .17em; bottom: -.05em; background: var(--hl);
+  mix-blend-mode: multiply; opacity: .92; pointer-events: none; transform-origin: 0 50%;
+  transform: rotate(var(--rot, -1.1deg)) skewX(-10deg); clip-path: polygon(1.5% 10%, 100% 0, 98.5% 88%, 0 100%); }
+body.play .hl::after { animation: hl-in .42s cubic-bezier(.25, .7, .3, 1) var(--d, .3s) both; }
+@keyframes hl-in {
+  from { transform: rotate(var(--rot, -1.1deg)) skewX(-10deg) scaleX(0); }
+  to   { transform: rotate(var(--rot, -1.1deg)) skewX(-10deg) scaleX(1); }
+}
+
+/* Lines */
+.rest { stroke: var(--rest); fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 14; }
+.went { stroke: var(--went); fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 14; }
+.plan { stroke: var(--g-300); fill: none; stroke-linecap: round; stroke-width: 10; stroke-dasharray: 0 26; }
+.mk { mix-blend-mode: multiply; }
+.mk polygon { fill: var(--hl); opacity: .92; }
+svg text { font-family: var(--font); }
+
+/* Sightline overlay (toggle) */
+.sight { display: none; position: absolute; left: 0; right: 0; top: var(--sightline); bottom: 0; background: rgba(30, 30, 30, .16); }
+.sight::before { content: "accessory only: first row, side monitors, the recording"; position: absolute; right: 24px; bottom: 18px; color: #fff; font: 600 26px var(--font); text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.sight::after { content: ""; position: absolute; left: 0; right: 0; top: 0; border-top: 4px dashed rgba(0,0,0,.35); }
+body.sightline .sight { display: block; }
+</style>
+</head>
+<body class="sightline">
+<header>
+  <b>Style frames · 22 Oct · third pass</b>
+  <button id="replay">Replay motion</button>
+  <label><input type="checkbox" id="sightline" checked> Show the sightline</label>
+  <label><input type="checkbox" id="walls"> Front wall (two mirrored screens)</label>
+</header>
+<main>
+
+<!-- A · Statement -->
+<figure data-id="A">
+  <div class="stage"><div class="frame">
+    <p class="t lead" style="left:150px; top:96px">if</p>
+    <p class="t head" style="left:150px; top:150px; width:720px">AI makes expansion cheap.</p>
+    <p class="t lead" style="left:1000px; top:96px">then</p>
+    <p class="t head" style="left:1000px; top:150px; width:780px">Engineering must make acceptance <span class="hl" style="--d:.5s">expensive</span>.</p>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>A · Statement.</b> Type stays black. The marker is laid over the word with a chisel tip: a bit tilted, a bit wide on the left, never pixel-perfect. It swipes in once.</figcaption>
+</figure>
+
+<!-- B · Drift -->
+<figure data-id="B">
+  <div class="stage"><div class="frame">
+    <svg viewBox="0 0 1920 1080">
+      <line class="plan" x1="800" y1="400" x2="1650" y2="400"/>
+      <path class="rest" data-flow data-delay="0" data-dur="1400" d="M250 400 L760 400 C 1000 400, 1150 330, 1300 250 S 1560 150, 1650 140"/>
+      <path data-marker="7" data-delay="1450" data-width="50" d="M760 400 C 1000 400, 1150 330, 1300 250 S 1560 150, 1650 140"/>
+      <circle cx="230" cy="400" r="22" fill="var(--g-600)"/>
+      <circle cx="1656" cy="139" r="16" fill="var(--g-600)"/>
+      <circle cx="1700" cy="400" r="30" fill="var(--paper)" stroke="var(--g-700)" stroke-width="12"/>
+      <line x1="1700" y1="186" x2="1700" y2="352" stroke="var(--g-500)" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 18"/>
+      <text x="1700" y="480" text-anchor="middle" font-size="30" font-weight="600" fill="var(--g-800)">what you meant</text>
+      <text x="1610" y="98" text-anchor="end" font-size="30" font-weight="600" fill="var(--g-800)">what you got</text>
+    </svg>
+    <p class="note" style="left:150px; top:640px">Drift is the gap between what you meant and what you got. Without a stated purpose, you can&rsquo;t even measure it.</p>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>B · Drift.</b> The line rests in light grey and darkens from the start, so you see which way it travels. The marker comes in where the line leaves the plan, slightly off the line, like a hand did it. Lower half: an accessory note, thin line, for the recording.</figcaption>
+</figure>
+
+<!-- C · Drift happens everywhere -->
+<figure data-id="C">
+  <div class="stage"><div class="frame">
+    <svg viewBox="0 0 1920 1080">
+      <defs><clipPath id="in-you"><rect x="784" y="254" width="352" height="92"/></clipPath></defs>
+      <g clip-path="url(#in-you)">
+        <path class="rest" data-flow data-delay="0" data-dur="900" stroke-width="10" d="M800 312 C 846 288, 886 336, 932 312 S 1012 288, 1052 312 S 1100 328, 1126 306"/>
+        <path data-marker="3" data-delay="800" data-width="36" data-jitter="4" d="M800 312 C 846 288, 886 336, 932 312 S 1012 288, 1052 312 S 1100 328, 1126 306"/>
+      </g>
+      <g fill="none" stroke-width="8">
+        <rect x="210" y="80"  width="1500" height="440" stroke="#E3E3E3"/>
+        <rect x="324" y="114" width="1272" height="372" stroke="#D0D0D0"/>
+        <rect x="438" y="148" width="1044" height="304" stroke="#B9B9B9"/>
+        <rect x="552" y="182" width="816"  height="236" stroke="#9E9E9E"/>
+        <rect x="666" y="216" width="588"  height="168" stroke="#808080"/>
+        <rect x="780" y="250" width="360"  height="100" stroke="#5E5E5E"/>
+      </g>
+      <g font-size="24" font-weight="600">
+        <rect x="226" y="66"  width="104" height="28" fill="var(--paper)"/><text x="236" y="89"  fill="#B4B4B4">industry</text>
+        <rect x="340" y="100" width="118" height="28" fill="var(--paper)"/><text x="350" y="123" fill="#A2A2A2">company</text>
+        <rect x="454" y="134" width="146" height="28" fill="var(--paper)"/><text x="464" y="157" fill="#8E8E8E">department</text>
+        <rect x="568" y="168" width="80"  height="28" fill="var(--paper)"/><text x="578" y="191" fill="#787878">squad</text>
+        <rect x="682" y="202" width="70"  height="28" fill="var(--paper)"/><text x="692" y="225" fill="#606060">team</text>
+        <rect x="796" y="236" width="58"  height="28" fill="var(--paper)"/><text x="806" y="259" fill="#3E3E3E">you</text>
+      </g>
+    </svg>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>C · Drift happens everywhere.</b> Each box is lighter the further out it goes. The drift is clipped by its box. In motion the camera starts on "you" and pulls back one box per click.</figcaption>
+</figure>
+
+<!-- H · The tangle (after your reference) -->
+<figure data-id="H">
+  <div class="stage"><div class="frame">
+    <svg viewBox="0 0 1920 1080" class="tangle">
+      <g class="loops"></g>
+      <g class="threads"></g>
+      <g font-size="66" font-weight="700" letter-spacing="-1.6" class="names">
+        <text x="150" y="160" fill="var(--ink)">Requirement <tspan fill="var(--g-400)">drift</tspan></text>
+        <text x="150" y="248" fill="var(--g-300)">Design <tspan fill="var(--g-200)">drift</tspan></text>
+        <text x="150" y="336" fill="var(--g-300)">Orchestration <tspan fill="var(--g-200)">drift</tspan></text>
+        <text x="150" y="424" fill="var(--ink)">Architecture <tspan fill="var(--g-400)">drift</tspan></text>
+        <text x="150" y="512" fill="var(--g-300)">Operational <tspan fill="var(--g-200)">drift</tspan></text>
+      </g>
+    </svg>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>H · The tangle.</b> Your reference, inverted for white: many thin pale loops behind, a few heavier darker threads in front, one dashed. Each label throws its thread into the knot. Dim the rest, darken the focus: here the two drifts we keep for section 2.</figcaption>
+</figure>
+
+<!-- D · Gates -->
+<figure data-id="D">
+  <div class="stage"><div class="frame">
+    <p class="t title" style="left:150px; top:96px">If a script can say no, don&rsquo;t ask a model.</p>
+    <svg viewBox="0 0 1920 1080">
+      <line class="plan" x1="1424" y1="370" x2="1620" y2="370" style="stroke: var(--g-200)"/>
+      <path class="rest" data-flow data-delay="0" data-dur="1500" d="M230 370 L1336 370"/>
+      <circle cx="210" cy="370" r="22" fill="var(--g-600)"/>
+      <g fill="var(--g-400)">
+        <rect x="512" y="300" width="16" height="140"/>
+        <rect x="792" y="300" width="16" height="140"/>
+        <rect x="1072" y="300" width="16" height="140"/>
+      </g>
+      <rect x="1348" y="276" width="28" height="188" fill="var(--g-800)"/>
+      <circle cx="1660" cy="370" r="28" fill="var(--paper)" stroke="var(--g-200)" stroke-width="12"/>
+      <g font-size="30" font-weight="600" text-anchor="middle" fill="var(--g-700)">
+        <text x="210" y="446" font-weight="500" fill="var(--g-500)">change</text>
+        <text x="520" y="280">types</text>
+        <text x="800" y="280">lint</text>
+        <text x="1080" y="280">tests</text>
+        <text x="1362" y="256" fill="var(--g-800)">schema change</text>
+        <text x="1660" y="446" font-weight="500" fill="var(--g-400)">LLM, last</text>
+      </g>
+    </svg>
+    <p class="t label" style="left:1362px; top:478px; transform:translateX(-50%); white-space:nowrap; color:var(--ink)"><span class="hl" style="--d:1.5s; --rot:.8deg">A human decides.</span></p>
+    <p class="note" style="left:150px; top:640px">Static analysis and custom gates run first. A schema change stops the line and calls a human. The model only sees what the scripts let through.</p>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>D · Gates.</b> Ordinary gates in light grey, the schema gate dark: the one that matters is the heavy one. The line darkens up to the gate and stops. The model stays pale because it never sees the change.</figcaption>
+</figure>
+
+<!-- E · Containment -->
+<figure data-id="E">
+  <div class="stage"><div class="frame">
+    <p class="t title" style="left:150px; top:96px">Drift is good, if it&rsquo;s contained.</p>
+    <svg viewBox="0 0 1920 1080">
+      <defs><clipPath id="in-box"><rect x="705" y="275" width="510" height="230"/></clipPath></defs>
+      <path class="rest" data-flow data-delay="0" data-dur="1700" d="M250 390 L700 390 C 790 270, 860 510, 960 390 S 1130 270, 1220 390 L1666 390"/>
+      <path data-marker="11" data-delay="1750" data-width="50" data-clip="in-box" d="M700 390 C 790 270, 860 510, 960 390 S 1130 270, 1220 390"/>
+      <rect x="700" y="270" width="520" height="240" fill="none" stroke="var(--g-500)" stroke-width="10"/>
+      <circle cx="230" cy="390" r="22" fill="var(--g-600)"/>
+      <circle cx="1700" cy="390" r="30" fill="var(--paper)" stroke="var(--g-700)" stroke-width="12"/>
+    </svg>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>E · Containment.</b> One line, start to target. Inside the box it wanders and the marker stays on it, but the box keeps it there and the line still arrives. The close folds back to this.</figcaption>
+</figure>
+
+<!-- F · Chapter card -->
+<figure data-id="F">
+  <div class="stage"><div class="frame">
+    <p class="t lead" style="left:150px; top:150px">2 of 6</p>
+    <p class="t display" style="left:150px; top:204px">Drift happens everywhere.</p>
+    <svg viewBox="0 0 1920 1080">
+      <path class="rest" data-flow data-delay="200" data-dur="1100" d="M150 430 L700 430"/>
+    </svg>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>F · Chapter card.</b> Six of these. A short line under the title fills in as you arrive: how far into the talk you are, nothing more.</figcaption>
+</figure>
+
+<!-- G · Title -->
+<figure data-id="G">
+  <div class="stage"><div class="frame">
+    <p class="t display" style="left:150px; top:96px; width:1500px">How to ship code fast with AI without paying for it later.</p>
+    <svg viewBox="0 0 1920 1080">
+      <path class="rest" data-flow data-delay="300" data-dur="2200" d="M172 430 L1734 430"/>
+      <circle cx="152" cy="430" r="22" fill="var(--g-600)"/>
+      <circle cx="1770" cy="430" r="30" fill="var(--paper)" stroke="var(--g-700)" stroke-width="12"/>
+    </svg>
+    <p class="t lead" style="left:150px; top:620px">Giuseppe Minnella &middot; buildersklub &middot; 22 October 2026</p>
+    <div class="sight"></div>
+  </div></div>
+  <figcaption><b>G · Title.</b> No seam trick here: that stays in the hook. The intent line, start to target, is the first thing the clean half of the talk draws.</figcaption>
+</figure>
+
+</main>
+<script>
+// Deterministic random, so hand-made things look the same every time.
+function rng(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Smooth path through points (Catmull-Rom as cubic Beziers). closed = a loop.
+function spline(pts, closed = false) {
+  const n = pts.length, P = i => closed ? pts[(i + n) % n] : pts[Math.min(Math.max(i, 0), n - 1)];
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < (closed ? n : n - 1); i++) {
+    const p0 = P(i - 1), p1 = P(i), p2 = P(i + 1), p3 = P(i + 2);
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1.map(v => v.toFixed(1))} ${c2.map(v => v.toFixed(1))} ${p2.map(v => v.toFixed(1))}`;
+  }
+  return d + (closed ? 'Z' : '');
+}
+
+// Point and unit tangent at distance s along a path, extrapolated past both ends.
+function at(path, s, L) {
+  const c = Math.min(Math.max(s, 0), L);
+  const p = path.getPointAtLength(c);
+  const q = path.getPointAtLength(Math.min(c + 1, L));
+  const o = path.getPointAtLength(Math.max(c - 1, 0));
+  let tx = q.x - o.x, ty = q.y - o.y;
+  const n = Math.hypot(tx, ty) || 1; tx /= n; ty /= n;
+  const e = s - c;
+  return { x: p.x + tx * e, y: p.y + ty * e, tx, ty };
+}
+
+// A chisel-tip marker stroke that follows a path, a bit off and a bit wobbly.
+// Long paths get two strokes that overlap, like a hand lifting and going again.
+function markerPolygons(path, { width = 48, jitter = 6, seed = 1 } = {}) {
+  const L = path.getTotalLength();
+  const r = rng(seed);
+  const parts = L > 900 ? [[0, L * .55 + 26], [L * .55 - 26, L]] : [[0, L]];
+  return parts.map(([a, b], i) => {
+    const p1 = r() * 6.28, p2 = r() * 6.28, p3 = r() * 6.28;
+    const bias = (r() - .5) * 9;
+    const s0 = a - (i === 0 ? 4 + r() * 16 : 0);
+    const s1 = b + (i === parts.length - 1 ? -6 + r() * 18 : 0);
+    const n = Math.max(8, Math.ceil((s1 - s0) / 10));
+    const left = [], right = [];
+    for (let k = 0; k <= n; k++) {
+      const s = s0 + (s1 - s0) * k / n;
+      const { x, y, tx, ty } = at(path, s, L);
+      const nx = -ty, ny = tx;
+      const off = bias + jitter * (.65 * Math.sin(s / 110 + p1) + .35 * Math.sin(s / 37 + p2));
+      const hw = width / 2 * (1 + .07 * Math.sin(s / 60 + p3));
+      const cx = x + nx * off, cy = y + ny * off;
+      const slant = (k === 0 || k === n) ? width * .32 : 0;   // chisel cut, same angle at both ends
+      left.push([cx + nx * hw + tx * slant, cy + ny * hw + ty * slant]);
+      right.push([cx - nx * hw - tx * slant, cy - ny * hw - ty * slant]);
+    }
+    return left.concat(right.reverse()).map(p => p.map(v => v.toFixed(1)).join(',')).join(' ');
+  });
+}
+
+const NS = 'http://www.w3.org/2000/svg';
+const mk = (tag, attrs) => { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; };
+
+// Frame H: a knot of hand-drawn loops, and one thread per label running into it.
+function tangle(svg) {
+  const r = rng(42);
+  const C = [1480, 300];
+  const loops = svg.querySelector('.loops'), threads = svg.querySelector('.threads');
+  const tones = ['#ECECEC', '#E3E3E3', '#DADADA', '#CFCFCF', '#C4C4C4'];
+  for (let i = 0; i < 16; i++) {
+    const cx = C[0] + (r() - .5) * 360, cy = C[1] + (r() - .5) * 150;
+    const ryMax = Math.min((525 - cy) / 1.25, (cy - 75) / 1.25);
+    const rx = 90 + r() * 230, ry = Math.min(ryMax, 60 + r() * 150), rot = r() * Math.PI;
+    const n = 7 + Math.floor(r() * 4), pts = [];
+    for (let k = 0; k < n; k++) {
+      const a = k / n * Math.PI * 2, m = .78 + r() * .44;
+      const x = Math.cos(a) * rx * m, y = Math.sin(a) * ry * m;
+      pts.push([cx + x * Math.cos(rot) - y * Math.sin(rot) * .35, cy + y + x * Math.sin(rot) * .2]);
+    }
+    const dashed = i % 7 === 3;
+    loops.appendChild(mk('path', { d: spline(pts, true), fill: 'none', stroke: tones[i % tones.length],
+      'stroke-width': dashed ? 3 : 2 + r() * 3, 'stroke-linecap': 'round', ...(dashed ? { 'stroke-dasharray': '2 16' } : {}) }));
+  }
+  const names = [...svg.querySelectorAll('.names text')];
+  const style = [
+    { w: 9, c: 'var(--g-300)', focus: true },
+    { w: 4, c: '#DCDCDC' },
+    { w: 3, c: '#E2E2E2', dash: '18 14' },
+    { w: 9, c: 'var(--g-300)', focus: true },
+    { w: 4, c: '#D8D8D8' },
+  ];
+  names.forEach((t, i) => {
+    const b = t.getBBox(), y = b.y + b.height * .58, x0 = b.x + b.width + 36;
+    const pts = [[x0, y], [x0 + 240, y + (r() - .5) * 20], [1180, y + (C[1] - y) * .35 + (r() - .5) * 40]];
+    const a0 = r() * Math.PI * 2, rx = 140 + r() * 140, ry = 70 + r() * 90;
+    for (let k = 0; k < 4; k++) {
+      const a = a0 + k * 1.7;
+      pts.push([C[0] + Math.cos(a) * rx, Math.min(515, Math.max(85, C[1] + Math.sin(a) * ry))]);
+    }
+    pts.push([1980, 120 + r() * 360]);
+    const s = style[i];
+    const p = mk('path', { d: spline(pts), fill: 'none', stroke: s.c, 'stroke-width': s.w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round',
+      ...(s.dash ? { 'stroke-dasharray': s.dash } : {}) });
+    if (s.focus) { p.setAttribute('class', 'rest'); p.dataset.flow = ''; p.dataset.delay = 200 + i * 120; p.dataset.dur = 1800; }
+    threads.appendChild(p);
+  });
+}
+
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;   // in-out, no overshoot
+const swipe = t => 1 - Math.pow(1 - t, 2.4);                                      // fast start, soft landing
+const clamp = v => Math.min(1, Math.max(0, v));
+const tracks = [];
+let uid = 0;
+
+function build(root) {
+  root.querySelectorAll('svg.tangle').forEach(tangle);
+  root.querySelectorAll('path[data-flow]').forEach(p => {
+    const went = p.cloneNode();
+    went.removeAttribute('data-flow');
+    went.setAttribute('class', 'went');
+    if (p.getAttribute('stroke-width')) went.setAttribute('stroke-width', p.getAttribute('stroke-width'));
+    went.setAttribute('pathLength', '1');
+    went.setAttribute('stroke-dasharray', '1 1');
+    p.after(went);
+    tracks.push({ el: went, kind: 'flow', delay: +p.dataset.delay || 0, dur: +p.dataset.dur || 1200 });
+  });
+  root.querySelectorAll('path[data-marker]').forEach(p => {
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke', 'none');
+    const id = 'mk' + (++uid);
+    const g = mk('g', { class: 'mk', mask: `url(#${id})` });
+    // A clip must sit inside the blended group, or multiply only sees the clip's own empty group.
+    const inner = p.dataset.clip ? g.appendChild(mk('g', { 'clip-path': `url(#${p.dataset.clip})` })) : g;
+    markerPolygons(p, { width: +p.dataset.width || 48, jitter: +(p.dataset.jitter || 6), seed: +p.dataset.marker })
+      .forEach(pts => inner.appendChild(mk('polygon', { points: pts })));
+    const box = p.getBBox();
+    const mask = mk('mask', { id, maskUnits: 'userSpaceOnUse' });
+    const mr = mk('rect', { x: box.x - 60, y: box.y - 80, height: box.height + 160, fill: '#fff' });
+    mask.appendChild(mr);
+    p.after(g);
+    p.after(mask);
+    tracks.push({ el: mr, kind: 'mark', w: box.width + 120, delay: +p.dataset.delay || 0, dur: 520 });
+  });
+}
+
+function draw(ms) {
+  for (const t of tracks) {
+    const k = clamp((ms - t.delay) / t.dur);
+    if (t.kind === 'flow') t.el.setAttribute('stroke-dashoffset', 1 - ease(k));
+    else t.el.setAttribute('width', t.w * swipe(k));
+  }
+}
+
+let start = 0, raf = 0;
+function play() {
+  document.body.classList.remove('play'); void document.body.offsetWidth; document.body.classList.add('play');
+  cancelAnimationFrame(raf);
+  start = performance.now();
+  const tick = now => { draw(now - start); if (now - start < 4000) raf = requestAnimationFrame(tick); };
+  raf = requestAnimationFrame(tick);
+}
+
+// Wall view: two copies of each frame side by side, as the front wall shows them.
+function buildWalls() { document.querySelectorAll('figure').forEach(fig => {
+  const stage = fig.querySelector('.stage');
+  const wall = document.createElement('div');
+  wall.className = 'wall';
+  for (let i = 0; i < 2; i++) {
+    const f = stage.querySelector('.frame').cloneNode(true);
+    f.dataset.slot = i;
+    f.querySelectorAll('[id]').forEach(el => {
+      const old = el.id; el.id = old + '-w' + i;
+      for (const attr of ['clip-path', 'mask'])
+        f.querySelectorAll(`[${attr}="url(#${old})"]`).forEach(u => u.setAttribute(attr, `url(#${el.id})`));
+    });
+    wall.appendChild(f);
+  }
+  stage.after(wall);
+}); }
+
+function fit() {
+  document.querySelectorAll('.stage').forEach(s => s.querySelector('.frame').style.setProperty('--k', s.clientWidth / 1920));
+  document.querySelectorAll('.wall').forEach(w => {
+    const k = w.clientWidth / 3840;
+    w.querySelectorAll('.frame').forEach(f => { f.style.setProperty('--k', k); f.style.left = (f.dataset.slot * 1920 * k) + 'px'; });
+  });
+}
+
+const q = new URLSearchParams(location.search);
+if (q.get('frame')) {
+  document.body.classList.add('solo');
+  document.querySelector(`figure[data-id="${q.get('frame')}"]`)?.classList.add('on');
+  document.getElementById('walls').checked = q.has('wall');
+  document.getElementById('sightline').checked = q.has('sight');
+}
+const sync = () => {
+  document.body.classList.toggle('sightline', document.getElementById('sightline').checked);
+  document.body.classList.toggle('walls', document.getElementById('walls').checked);
+  fit();
+};
+document.getElementById('sightline').addEventListener('change', sync);
+document.getElementById('walls').addEventListener('change', sync);
+document.getElementById('replay').addEventListener('click', play);
+new ResizeObserver(fit).observe(document.querySelector('main'));
+sync();
+document.querySelectorAll('.stage .frame').forEach(build);   // after layout, so text can be measured
+draw(1e9);                                                   // end state, then copy it onto the wall view
+buildWalls();
+fit();
+
+if (q.has('at')) draw(+q.get('at'));      // ?at=600 freezes the motion at 600 ms
+else if (q.has('frame')) draw(1e9);       // exports show the end state
+else play();
+</script>
+</body>
+</html>

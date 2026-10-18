@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus workbench</title>
+<link rel="stylesheet" href="scene.css">
+</head>
+<body>
+<header>
+  <b>Focus · the cone of attention</b>
+  <button id="prev">&larr;</button>
+  <span id="stepname"></span>
+  <button id="next">&rarr;</button>
+  <button id="replay">Replay step</button>
+  <label><input type="checkbox" id="sight"> sightline</label>
+</header>
+<div id="wrap"><div id="stage"><div class="frame">
+  <svg id="art" viewBox="0 0 1920 1080"></svg>
+  <p class="note" data-step="1">People. Six agents at once feels fast, but the attention spreads and <b>fades before it reaches</b> what is needed.</p>
+  <p class="note" data-step="2">One thread at a time. Less output, but <b>it goes further</b>: it closes the gap with what is needed.</p>
+  <p class="note" data-step="3">While the agent works, don&rsquo;t fill the wait. <b>Go deeper</b> into the problem, and around it.</p>
+  <p class="src" data-steps="1">Read: Leroy 2009, attention residue &middot; Rubinstein, Meyer and Evans 2001, the cost of switching tasks</p>
+  <p class="src" data-steps="2">Read: METR 2025, experienced developers with AI felt about 20% faster and were 19% slower</p>
+  <p class="src" data-steps="3">Read: Anthropic 2026, developers who asked conceptual questions learned more than those who fully delegated</p>
+  <div class="sight"></div>
+</div></div></div>
+
+<script src="lib.js"></script>
+<script>
+// The same light, spread or focused. Attention is a budget: spread over a wide cone it fades within a short reach;
+// narrowed, the same budget carries much further. Reach is inversely proportional to the cone's angle (R = K / a).
+const STEPS = 3;
+const T = { rest: 229, went: 199, label: 104, feat: 150 };
+const lin = t => t;
+const lerp = (a, b, t) => a + (b - a) * t;
+const q = new URLSearchParams(location.search);
+let step = Math.min(STEPS, Math.max(1, +(q.get('step') || 1)));
+const prog = (ms, delay, dur) => clamp((ms - delay) / dur);
+const at_ = (on, ms, delay, dur, fn = ease) => step < on ? 0 : step > on ? 1 : fn(prog(ms, delay, dur));
+
+const SRC = [300, 300], GOAL = [1380, 300], RING = 30;
+const QR = { href: '../assets/qr/reading-list.svg', x: 1580, y: 205, size: 190 };   // the reading list, for the research behind it
+const WIDE = 35 * Math.PI / 180, NARROW = 1.2 * Math.PI / 180, K = 380 * WIDE;   // the wide cone reaches 380px
+const RAYS = 7, THREAD_R = 320;
+const rayAngle = (i, a) => lerp(-a, a, i / (RAYS - 1));
+
+const svg = document.getElementById('art');
+let parts = {};
+
+function build() {
+  svg.innerHTML = '';
+  const defs = el('defs', {}, svg);
+  const label = { 'font-weight': 600, 'stroke-width': 10 };
+  const text = (x, y, s, tone) => { const t = el('text', { x, y, 'text-anchor': 'middle', 'font-size': 24, fill: grey(tone), ...label }, svg); t.textContent = s; return t; };
+
+  // the wash: a soft wedge, brightest at the source, gone at the reach
+  const wash = el('radialGradient', { id: 'wash', gradientUnits: 'userSpaceOnUse', cx: SRC[0], cy: SRC[1], r: 100 }, defs);
+  [[0, .9], [.6, .35], [1, 0]].forEach(([o, a]) => el('stop', { offset: o, 'stop-color': grey(222), 'stop-opacity': a }, wash));
+  parts.wash = wash;
+  parts.wedge = el('polygon', { fill: 'url(#wash)' }, svg);
+
+  // depth around the goal (step 3): a halo and a few ramifications
+  const halo = el('radialGradient', { id: 'halo', gradientUnits: 'userSpaceOnUse', cx: GOAL[0], cy: GOAL[1], r: 150 }, defs);
+  [[0, .8], [1, 0]].forEach(([o, a]) => el('stop', { offset: o, 'stop-color': grey(222), 'stop-opacity': a }, halo));
+  parts.halo = el('circle', { cx: GOAL[0], cy: GOAL[1], r: 150, fill: 'url(#halo)', opacity: 0 }, svg);
+  parts.branches = [-15, 20, 55, 90, 125, 160].map((deg, i) => {
+    const a = deg * Math.PI / 180, r0 = RING + 10, r1 = 100 + (i % 2) * 22;
+    const p = el('line', { x1: GOAL[0] + Math.cos(a) * r0, y1: GOAL[1] + Math.sin(a) * r0, x2: GOAL[0] + Math.cos(a) * r1, y2: GOAL[1] + Math.sin(a) * r1,
+      stroke: grey(190), 'stroke-width': 4, 'stroke-dasharray': '7 7', 'stroke-linecap': 'round', opacity: 0 }, svg);
+    const d = el('circle', { cx: GOAL[0] + Math.cos(a) * (r1 + 10), cy: GOAL[1] + Math.sin(a) * (r1 + 10), r: 7, fill: grey(175), opacity: 0 }, svg);
+    return { p, d };
+  });
+
+  // the rays: the same number of them, spread or focused, each fading out at the reach
+  parts.rays = Array.from({ length: RAYS }, (_, i) => {
+    const gr = el('linearGradient', { id: 'ray' + i, gradientUnits: 'userSpaceOnUse' }, defs);
+    el('stop', { offset: 0, 'stop-color': grey(150), 'stop-opacity': 1 }, gr);
+    el('stop', { offset: 1, 'stop-color': grey(150), 'stop-opacity': 0 }, gr);
+    return { gr, line: el('line', { x1: SRC[0], y1: SRC[1], stroke: `url(#ray${i})`, 'stroke-width': 5, 'stroke-linecap': 'round' }, svg) };
+  });
+
+  // six threads, one per agent, close by and in every direction; the centre ray is the one that matters
+  parts.threads = Array.from({ length: RAYS }, (_, i) => {
+    if (i === (RAYS - 1) / 2) return null;
+    const a = rayAngle(i, WIDE);
+    return el('circle', { cx: SRC[0] + Math.cos(a) * THREAD_R, cy: SRC[1] + Math.sin(a) * THREAD_R, r: 13, fill: '#fff', stroke: grey(200), 'stroke-width': 5, opacity: 0 }, svg);
+  });
+
+  el('circle', { cx: SRC[0], cy: SRC[1], r: 26, fill: grey(T.went) }, svg);
+  text(SRC[0], SRC[1] + 70, 'you', 150);
+  parts.qr = el('g', { opacity: 0 }, svg);
+  el('image', { href: QR.href, x: QR.x, y: QR.y, width: QR.size, height: QR.size }, parts.qr);
+  const ql = el('text', { x: QR.x + QR.size / 2, y: QR.y + QR.size + 34, 'text-anchor': 'middle', 'font-size': 22, fill: grey(160), ...label }, parts.qr);
+  ql.textContent = 'reading list';
+  parts.goal = el('circle', { cx: GOAL[0], cy: GOAL[1], r: RING, fill: '#fff', stroke: grey(222), 'stroke-width': 9 }, svg);
+  parts.goalLabel = text(GOAL[0], GOAL[1] - 54, 'what is needed', 175);
+}
+
+function frame(ms) {
+  const grow = at_(1, ms, 300, 1300), narrow = at_(2, ms, 0, 1700), deep = at_(3, ms, 300, 1400);
+  // the angle eases between the two cones; the reach follows from the same budget
+  const a = Math.exp(lerp(Math.log(WIDE), Math.log(NARROW), narrow)), R = K / a;
+  const maxX = GOAL[0] - RING - 8;
+  parts.rays.forEach((r, i) => {
+    const t = rayAngle(i, a), dx = Math.cos(t), dy = Math.sin(t);
+    const L = Math.min(R, (maxX - SRC[0]) / dx) * grow;
+    r.line.setAttribute('x2', SRC[0] + dx * L); r.line.setAttribute('y2', SRC[1] + dy * L);
+    r.gr.setAttribute('x1', SRC[0]); r.gr.setAttribute('y1', SRC[1]);
+    r.gr.setAttribute('x2', SRC[0] + dx * R); r.gr.setAttribute('y2', SRC[1] + dy * R);
+  });
+  // the wedge of light, out to the reach (or the goal)
+  const reach = Math.min(R, maxX - SRC[0] + 40) * grow, pts = [SRC];
+  for (let k = 0; k <= 16; k++) { const t = lerp(-a, a, k / 16); pts.push([SRC[0] + Math.cos(t) * reach, SRC[1] + Math.sin(t) * reach]); }
+  parts.wedge.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+  parts.wash.setAttribute('r', Math.max(1, R * grow));
+  // the threads get a little light each, then are let go; the goal comes out of the dark
+  parts.threads.forEach(c => { if (c) c.setAttribute('opacity', at_(1, ms, 900, 500, lin) * (1 - narrow)); });
+  const lit = narrow;
+  parts.goal.setAttribute('stroke', grey(Math.round(lerp(222, T.label, lit))));
+  parts.goalLabel.setAttribute('fill', grey(Math.round(lerp(185, 130, lit))));
+  parts.qr.setAttribute('opacity', at_(1, ms, 1200, 500, lin));
+  // step 3: the wait spent going deeper, around the one thing
+  parts.halo.setAttribute('opacity', deep);
+  parts.branches.forEach((b, i) => { const k = at_(3, ms, 700 + i * 140, 400, lin); b.p.setAttribute('opacity', k); b.d.setAttribute('opacity', k); });
+
+  document.querySelectorAll('.note').forEach(n => {
+    const k = +n.dataset.step;
+    n.style.opacity = k === step ? prog(ms, k === 1 ? 300 : 800, 500) : k === step - 1 ? 1 - prog(ms, 0, 400) : 0;
+  });
+  document.querySelectorAll('.src').forEach(n => { n.style.opacity = n.dataset.steps.split(' ').includes(String(step)) ? prog(ms, 800, 500) : 0; });
+  document.getElementById('stepname').textContent = `step ${step} of ${STEPS} · ${['spread', 'focused', 'go deeper'][step - 1]}`;
+}
+
+// ---------- playback ----------
+const DUR = { 1: 2200, 2: 2400, 3: 2400 };
+const BACK_SPEED = 1.5;
+let raf = 0, anim = null;
+function run(dir) {
+  cancelAnimationFrame(raf);
+  const dur = DUR[step], speed = dir > 0 ? 1 : BACK_SPEED, start = performance.now();
+  anim = { dir };
+  const tick = now => {
+    const e = (now - start) * speed;
+    if (e >= dur) return finish();
+    frame(dir > 0 ? e : dur - e);
+    raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+}
+function finish() {
+  cancelAnimationFrame(raf);
+  if (anim && anim.dir < 0) step -= 1;
+  anim = null;
+  frame(1e9);
+}
+function next() { if (anim) return finish(); if (step === STEPS) return; step += 1; run(1); }
+function prev() { if (anim) return finish(); if (step === 1) return; run(-1); }
+function play() { cancelAnimationFrame(raf); anim = null; run(1); }
+
+build();
+</script>
+<script src="scene.js"></script>
+</body>
+</html>

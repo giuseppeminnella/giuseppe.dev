@@ -1,0 +1,34 @@
+/* Shared look for the scene workbenches: the page around the frame, the frame, notes, sources. */
+:root {
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --hl: #F2E74B;
+  --soft: rgb(190,190,190);
+  --key: rgb(110,110,110);
+  --note: 65px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #E9E9E7; color: #222; font: 14px/1.4 var(--font); }
+header { position: sticky; top: 0; z-index: 2; padding: 10px 20px; background: #E9E9E7; border-bottom: 1px solid #D6D6D3; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; }
+header b { font-weight: 600; margin-right: auto; }
+label { display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+button { font: inherit; padding: 3px 12px; border: 1px solid #BDBDB8; border-radius: 6px; background: #fff; cursor: pointer; }
+#stepname { font-variant-numeric: tabular-nums; min-width: 14em; }
+
+#wrap { padding: 20px; display: flex; justify-content: center; }
+#stage { position: relative; background: #fff; box-shadow: 0 1px 0 #D6D6D3; overflow: hidden; cursor: pointer; }
+.frame { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-origin: 0 0; background: #fff; font-family: var(--font); overflow: hidden; isolation: isolate; }
+.frame svg { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+svg text { font-family: var(--font); paint-order: stroke; stroke: #fff; stroke-linejoin: round; }
+.mk { mix-blend-mode: multiply; }
+
+/* Notes below the fold: big, light, one or two key words darker. Sources: small, at the bottom. */
+.note { position: absolute; left: 150px; top: 610px; width: 1620px; margin: 0; font-size: var(--note); line-height: 1.22;
+  font-weight: 600; letter-spacing: -.015em; color: var(--soft); }
+.note b { color: var(--key); font-weight: 700; }
+.src { position: absolute; left: 150px; top: 1000px; width: 1620px; margin: 0; font-size: 22px; font-weight: 500; color: rgb(175,175,175); }
+
+.sight { display: none; position: absolute; left: 0; right: 0; top: 540px; border-top: 3px dashed rgba(0,0,0,.18); }
+body.sightline .sight { display: block; }
+body.solo header { display: none; }
+body.solo #wrap { padding: 0; }
+body.solo #stage { box-shadow: none; }

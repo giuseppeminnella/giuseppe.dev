@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Close workbench</title>
+<link rel="stylesheet" href="scene.css">
+</head>
+<body>
+<header>
+  <b>Close · harmonise every step, the software factory</b>
+  <button id="prev">&larr;</button>
+  <span id="stepname"></span>
+  <button id="next">&rarr;</button>
+  <button id="replay">Replay step</button>
+  <label><input type="checkbox" id="sight"> sightline</label>
+</header>
+<div id="wrap"><div id="stage"><div class="frame">
+  <svg id="art" viewBox="0 0 1920 1080"></svg>
+  <p class="note" data-step="1">There is no tool for this, and nothing developer-side only. We are already fast: <b>harmonise every step</b>.</p>
+  <p class="note" data-step="2">In every step, <b>contain the output and master the domain</b>.</p>
+  <p class="note" data-step="3">Use the extra power to break the silos. AI extends our reach into every domain. Design, ideation, QA: <b>everything</b>.</p>
+  <p class="note" data-step="4">Keep the specialisation, broaden the influence. <b>Everyone touches everything; domain leaders contain and steer.</b></p>
+  <p class="note" data-step="5">Different speeds for different outcomes. The software factory is years away: <b>one step at a time</b>.</p>
+  <p class="note" data-step="6">A window into the future. At Anthropic, <b>coding is no longer the bottleneck</b>: everything after it is.</p>
+  <p class="note" data-step="7">Their engineers still own the constraints. Often, <b>their job is to say no</b>.</p>
+  <p class="note" data-step="8">Today that costs more tokens than any business would spend. I bet on <b>cheaper tokens</b>, running in local data centres.</p>
+  <p class="note" data-step="9">You can try it today, rudimentary: <b>a software factory</b> with Claude Code. Spec, build, four reviews, and a human for what matters.</p>
+  <p class="note" data-step="10">Last year I told you to fire everyone and keep the agents. <b>Today I see it differently.</b></p>
+  <p class="src" data-steps="9">ZazenCodes, Build Your Own AI Software Factory with Claude Code, 7 October 2026 &middot; github.com/zazencodes/zazencodes-season-3</p>
+  <p class="src" data-steps="10">Department-as-a-Service: Fire Everyone, Keep the Agents. Giuseppe Minnella, 2025</p>
+  <div class="sight"></div>
+</div></div></div>
+
+<script src="lib.js"></script>
+<script src="tube.js"></script>
+<script src="../assets/sources/sources.js"></script>
+<script src="source.js"></script>
+<script>
+const STEPS = 12;
+// the factory steps sit between "one step at a time" and the call-back
+const F = { window: 6, sayNo: 7, tokens: 8, loop: 9, lastYear: 10, thesis: 11, thanks: 12 };
+const QR = { article: '../assets/qr/anthropic-source-control.svg', video: '../assets/qr/zazencodes-software-factory.svg' };
+const T = { rest: 229, went: 199, mkop: 60, guide: 212, label: 104, feat: 150, red: 35, ink: 40 };
+const COST = (() => { const t = T.red / 100, c = [216, 72, 58].map(v => Math.round(v + (255 - v) * t)); return `rgb(${c})`; })();
+const lin = t => t;
+const lerp = (a, b, t) => a + (b - a) * t;
+const round = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+const q = new URLSearchParams(location.search);
+let step = Math.min(STEPS, Math.max(1, +(q.get('step') || 1)));
+const prog = (ms, delay, dur) => clamp((ms - delay) / dur);
+const at_ = (on, ms, delay, dur, fn = ease) => step < on ? 0 : step > on ? 1 : fn(prog(ms, delay, dur));
+
+// The same tube as scene C and the silos (tube.js), so the recap reads as the same drawing.
+const Y = TUBE.y, N = TUBE.n, DEV = TUBE.CODE, mid = TUBE.mid;
+const H0 = [110, 110, 110, 330, 70, 110, 110, 110], H1 = TUBE.areas.map(() => 180);   // C's "code three times wider", then every area together
+
+const svg = document.getElementById('art');
+let parts = {}, defs, uid = 0;
+const label = { 'font-weight': 600, 'stroke-width': 10 };
+const text = (g, x, y, s, size, tone, anchor = 'start', weight = 600) => {
+  const t = el('text', { x, y, 'text-anchor': anchor, 'font-size': size, fill: grey(tone), ...label, 'font-weight': weight }, g);
+  t.textContent = s; return t;
+};
+// a hand-made marker along a path, revealed left to right; clip: optional clipPath id
+function marker(g, d, { width = 60, seed = 3, clip } = {}) {
+  const guide = el('path', { d, fill: 'none', stroke: 'none' }, g);
+  const box = guide.getBBox(), id = 'mk' + (++uid);
+  const mask = el('mask', { id, maskUnits: 'userSpaceOnUse', x: -1e4, y: -1e4, width: 2e4, height: 2e4 }, g);
+  const rect = el('rect', { x: box.x - 60, y: box.y - 80, height: box.height + 160, width: 0, fill: '#fff' }, mask);
+  const mk = el('g', { class: 'mk', mask: `url(#${id})` }, g);
+  const inner = clip ? el('g', { 'clip-path': `url(#${clip})` }, mk) : mk;
+  markerPolygons(guide, { width, jitter: width * .1, seed }).forEach(pts => el('polygon', { points: pts, fill: 'var(--hl)', 'fill-opacity': T.mkop / 100 }, inner));
+  return { reveal: k => rect.setAttribute('width', (box.width + 120) * k) };
+}
+// a marker under part of a line of text
+function markWords(g, t, words, seed) {
+  const s = t.textContent, i = s.indexOf(words), size = +t.getAttribute('font-size'), x = +t.getAttribute('x'), y = +t.getAttribute('y') - size * .32;
+  const x0 = x + (i ? t.getSubStringLength(0, i) : 0), x1 = x0 + t.getSubStringLength(i, words.length);
+  return marker(g, `M${x0 + size * .28} ${y} L${x1 - size * .12} ${y}`, { width: size * .95, seed });
+}
+const clipRect = (x, y, w, h) => { const id = 'c' + (++uid); el('rect', { x, y, width: w, height: h }, el('clipPath', { id }, defs)); return id; };
+function fadeGuide(id, x1, x2, y, tone) {   // dashed, fading out at both ends
+  const lg = el('linearGradient', { id, gradientUnits: 'userSpaceOnUse', x1, y1: 0, x2, y2: 0 }, defs);
+  [[0, 0], [.14, 1], [.86, 1], [1, 0]].forEach(([o, a]) => el('stop', { offset: o, 'stop-color': grey(tone), 'stop-opacity': a }, lg));
+  return { x1, y1: y, x2, y2: y, stroke: `url(#${id})`, 'stroke-width': 7, 'stroke-dasharray': '18 15', fill: 'none' };
+}
+
+function build() {
+  svg.innerHTML = '';
+  defs = el('defs', {}, svg);
+  parts = {};
+
+  // 1 to 4 · the tube: harmonise, contain, extend the reach, everyone touches everything ----------
+  { const g = el('g', {}, svg); parts.gP = g;
+    parts.shared = el('ellipse', { cy: Y, fill: grey(206), 'fill-opacity': .28, stroke: 'none' }, g);
+    parts.tube = buildTube(g);
+    // the work line through every area: it drifts inside each one and stays inside (step 2)
+    const wig = (a, b) => { const w = b - a; return `L${a} ${Y} C ${a + w * .25} ${Y - 62}, ${a + w * .37} ${Y + 52}, ${a + w * .5} ${Y} S ${a + w * .87} ${Y - 48}, ${b} ${Y}`; };
+    let d = `M${TUBE.x0} ${Y}`;
+    TUBE.areas.forEach((_, i) => { d += ' ' + wig(TUBE.left(i) + 12, TUBE.left(i + 1) - 12); });
+    d += ` L${TUBE.x1} ${Y}`;
+    parts.work = el('path', { d, stroke: grey(T.went), 'stroke-width': 8, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, g);
+    parts.marks = TUBE.areas.map((_, i) => { const a = TUBE.left(i) + 12, b = TUBE.left(i + 1) - 12;
+      return marker(g, `M${a} ${Y} ${wig(a, b).replace(/^L[^C]*/, '')}`, { width: 30, seed: 60 + i, clip: clipRect(TUBE.left(i) + 4, Y - 86, TUBE.w - 8, 172) }); });
+    // reach: arcs under the tube from one area into another. The developers' first (step 3), then everyone's (step 4).
+    parts.arcs = [];
+    for (let a = 0; a < N; a++) for (let b = a + 1; b < N; b++) {
+      const [from, to] = b === DEV ? [b, a] : [a, b], dist = Math.abs(to - from), dir = Math.sign(to - from), dev = a === DEV || b === DEV;
+      const bot = Y + 90, depth = 34 + dist * 20, sx = mid(from) + dir * (6 + dist * 7), ex = mid(to) - dir * (6 + dist * 7);
+      parts.arcs.push({ dev,
+        path: el('path', { d: `M${sx} ${bot} C ${sx} ${bot + depth}, ${ex} ${bot + depth}, ${ex} ${bot}`, stroke: grey(dev ? T.went : 222), 'stroke-width': dev ? 6 : 3, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, g),
+        end: el('circle', { cx: ex, cy: bot, r: dev ? 8 : 5, fill: grey(dev ? T.went : 222), opacity: 0 }, g) });
+    }
+    parts.devArcs = parts.arcs.filter(a => a.dev); parts.allArcs = parts.arcs.filter(a => !a.dev);
+    // domain leaders: one small gate in each area, on the line (step 4)
+    parts.gates = TUBE.areas.map((_, i) => el('rect', { x: mid(i) - 6, y: Y - 50, width: 12, height: 100, fill: grey(T.label), opacity: 0 }, g));
+    el('circle', { cx: TUBE.idea, cy: Y, r: 24, fill: grey(T.went) }, g);
+    el('circle', { cx: TUBE.users, cy: Y, r: 30, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 9 }, g);
+  }
+
+  // 5 · one step at a time ----------------------------------------------------------------
+  { const g = el('g', {}, svg); parts.g5 = g;
+    el('line', fadeGuide('ideal5', 120, 1820, Y, T.guide), g);
+    const S = [230, Y], near = 1150, far = 1690, ringEdge = 30 + 9 / 2;
+    el('circle', { cx: S[0], cy: Y, r: 24, fill: grey(T.went) }, g);
+    el('circle', { cx: near, cy: Y, r: 30, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 9 }, g);
+    text(g, near, Y + 72, 'the next step', 24, 150, 'middle');
+    parts.far = el('g', {}, g);
+    el('circle', { cx: far, cy: Y, r: 30, fill: '#fff', stroke: grey(200), 'stroke-width': 7, 'stroke-dasharray': '9 9' }, parts.far);
+    text(parts.far, far, Y + 72, 'the software factory', 24, 165, 'middle');
+    text(parts.far, far, Y + 102, 'years away', 22, 185, 'middle');
+    const DEV5 = [-34, 30, -26, 0], dx = (near - ringEdge - S[0]) / DEV5.length;
+    parts.steps = [];
+    let P = S;
+    DEV5.forEach((dev, k) => {
+      const last = k === DEV5.length - 1;
+      const Q = last ? [near - ringEdge, Y] : [P[0] + dx * .86, Y + dev];
+      const item = { line: el('path', { d: smooth([P, [P[0] + dx * .45, P[1] + dev * .15], Q]), stroke: grey(T.went), 'stroke-width': 14, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, g) };
+      if (!last) {
+        const next = [Q[0] + dx * .14, Y + (k % 2 ? 4 : -4)];
+        item.stop = el('circle', { cx: Q[0], cy: Q[1], r: 10, fill: grey(T.went), opacity: 0 }, g);
+        item.fix = el('path', { d: smooth([Q, [(Q[0] + next[0]) / 2 + 8, (Q[1] + next[1]) / 2 + (dev > 0 ? 6 : -6)], next]), stroke: COST, 'stroke-width': 9, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, g);
+        P = next;
+      }
+      parts.steps.push(item);
+    });
+  }
+
+  // 6 to 8 · a window into the future: the article, its words marked ----------------------------
+  parts.cards = [
+    buildSource(svg, 'anthropic-bottleneck', { x: 150, y: 16, w: 1020, qr: QR.article, qrLabel: 'the article', seed: 21 }),
+    buildSource(svg, 'anthropic-say-no', { x: 150, y: 30, w: 1150, qr: QR.article, qrLabel: 'the article', seed: 31 }),
+    buildSource(svg, 'anthropic-tokens', { x: 150, y: 70, w: 1150, qr: QR.article, qrLabel: 'the article', seed: 41 }),
+  ];
+
+  // 9 · you can try it today: the software factory loop -----------------------------------------
+  { const g = el('g', {}, svg); parts.g9 = g;
+    const Y9 = 280, LANES = [Y9 - 108, Y9 - 36, Y9 + 36, Y9 + 108], NAMES = ['security', 'UX', 'UI', 'code'], GATE = 800, APPROVER = 1012, MAIN = 1400;
+    const path = (d, tone, w, extra = {}) => el('path', { d, stroke: tone, 'stroke-width': w, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round, ...extra }, g);
+    const routes = {
+      in: `M192 ${Y9} L480 ${Y9}`,
+      a: LANES.map(ly => `M600 ${Y9} C 660 ${Y9}, 660 ${ly}, 720 ${ly} L ${GATE} ${ly}`),
+      b: LANES.map(ly => `M${GATE} ${ly} L 900 ${ly} C 960 ${ly}, 960 ${Y9}, ${APPROVER} ${Y9}`),
+      out: `M${APPROVER} ${Y9} L ${MAIN - 34} ${Y9}`,
+      rework: `M${GATE} ${LANES[0] - 24} C ${GATE} 64, 540 64, 540 ${Y9 - 40}`,
+      escalate: `M${APPROVER} ${Y9 - 64} C ${APPROVER} ${Y9 - 150}, 1100 ${Y9 - 170}, 1206 ${Y9 - 170}`,
+    };
+    // the routes at rest, then the work travelling them: first pass, the rework, a second pass, merged
+    const rest = d => el('path', { d, stroke: grey(T.rest), 'stroke-width': 8, ...round }, g);
+    [routes.in, ...routes.a, ...routes.b, routes.out].forEach(rest);
+    parts.f9 = {
+      in: path(routes.in, grey(T.went), 8),
+      a1: routes.a.map(d => path(d, grey(T.went), 8)),
+      a2: routes.a.map(d => path(d, grey(170), 8)),
+      b2: routes.b.map(d => path(d, grey(170), 8)),
+      out: path(routes.out, grey(170), 8),
+      rework: path(routes.rework, COST, 7),
+      escalate: path(routes.escalate, grey(T.label), 7),
+    };
+    el('circle', { cx: 170, cy: Y9, r: 22, fill: grey(T.went) }, g);
+    text(g, 170, Y9 + 60, 'feature', 24, 150, 'middle');
+    [[270, 'spec'], [480, 'build']].forEach(([x, n]) => {
+      el('rect', { x, y: Y9 - 38, width: 120, height: 76, fill: '#fff', stroke: grey(185), 'stroke-width': 6 }, g);
+      text(g, x + 60, Y9 + 70, n, 24, 130, 'middle');
+    });
+    parts.f9.gates = LANES.map((ly, i) => {
+      text(g, GATE + 20, ly - 12, NAMES[i], 20, 140);
+      return el('rect', { x: GATE - 6, y: ly - 22, width: 12, height: 44, fill: grey(200) }, g);
+    });
+    text(g, 670, 86, 'changes, at most twice', 20, 165, 'middle');
+    el('rect', { x: APPROVER - 8, y: Y9 - 62, width: 16, height: 124, fill: grey(T.label) }, g);
+    text(g, APPROVER, Y9 + 92, 'approver', 22, T.label, 'middle');
+    parts.f9.main = el('circle', { cx: MAIN, cy: Y9, r: 30, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 9 }, g);
+    text(g, MAIN, Y9 + 70, 'main', 24, 150, 'middle');
+    parts.f9.human = el('g', { opacity: 0 }, g);
+    el('rect', { x: 1206, y: Y9 - 200, width: 16, height: 60, fill: grey(62) }, parts.f9.human);
+    text(parts.f9.human, 1238, Y9 - 162, 'a human', 24, T.ink, 'start', 700);
+    text(parts.f9.human, 1238, Y9 - 134, 'when it touches deploy', 20, 165);
+    el('image', { href: QR.video, x: 1580, y: Y9 - 95, width: 190, height: 190 }, g);
+    text(g, 1675, Y9 + 129, 'the video', 22, 160, 'middle');
+  }
+
+  // 10 · last year ----------------------------------------------------------------------------
+  { const g = el('g', {}, svg); parts.g10 = g;
+    parts.l6 = [
+      text(g, 150, 130, '2025 · Department-as-a-Service', 32, 150),
+      text(g, 150, 250, 'Fire everyone, keep the agents.', 96, T.ink, 'start', 700),
+      text(g, 150, 380, 'You can expect a technical debt fallout of gigantic proportions.', 46, 130),
+    ];
+    parts.l6.forEach(t => t.setAttribute('letter-spacing', '-1'));
+    parts.fallout = markWords(g, parts.l6[2], 'technical debt fallout of gigantic proportions', 31);
+  }
+
+  // 11 · the thesis ----------------------------------------------------------------------------
+  { const g = el('g', {}, svg); parts.g11 = g;
+    parts.l7 = [
+      text(g, 150, 180, 'AI makes expansion cheap.', 92, 160, 'start', 700),
+      text(g, 150, 330, 'Engineering must make', 92, T.ink, 'start', 700),
+      text(g, 150, 440, 'acceptance expensive.', 92, T.ink, 'start', 700),
+    ];
+    parts.l7.forEach(t => t.setAttribute('letter-spacing', '-2'));
+    parts.thesis = markWords(g, parts.l7[2], 'acceptance expensive', 37);
+  }
+
+  // 12 · thank you -----------------------------------------------------------------------------
+  { const g = el('g', {}, svg); parts.g12 = g;
+    text(g, 150, 330, 'Thank you.', 140, T.ink, 'start', 700).setAttribute('letter-spacing', '-3');
+  }
+}
+
+// a group shown for steps [a, b]: fades in when its first step starts, out when the step after its last starts
+function show(g, a, b, ms) {
+  const o = step < a || step > b + 1 ? 0 : step === b + 1 ? 1 - prog(ms, 0, 300) : step === a && a > 1 ? prog(ms, 250, 400) : step === a ? prog(ms, 0, 400) : 1;
+  g.setAttribute('opacity', o);
+  g.setAttribute('display', o > .001 ? 'inline' : 'none');
+}
+
+function frame(ms) {
+  // 1 to 4
+  show(parts.gP, 1, 4, ms);
+  const harm = at_(1, ms, 900, 1400), reach = at_(3, ms, 300, 1500), share = at_(4, ms, 200, 1400);
+  parts.tube.set(H0.map((h, i) => lerp(h, H1[i], harm)), { hot: TUBE.REVIEW, hotOn: 1 - harm });
+  parts.work.setAttribute('stroke-dashoffset', 1 - at_(2, ms, 200, 1300, lin));
+  parts.marks.forEach((m, i) => m.reveal(at_(2, ms, 500 + i * 150, 350, swipe)));
+  // the developers' reach first, then one shared domain
+  parts.shared.setAttribute('cx', lerp(mid(DEV), 960, share));
+  parts.shared.setAttribute('rx', lerp(mid(DEV) - 150, 810, share) * (step === 3 ? reach : 1) * (step < 3 ? 0 : 1));
+  parts.shared.setAttribute('ry', 200 * reach);
+  const drawArc = (a, k) => { a.path.setAttribute('stroke-dashoffset', 1 - k); a.end.setAttribute('opacity', clamp(k * 4 - 3)); };
+  parts.devArcs.forEach((a, k) => drawArc(a, at_(3, ms, 600 + k * 160, 800)));
+  parts.allArcs.forEach((a, k) => drawArc(a, at_(4, ms, 300 + k * 50, 700)));
+  parts.gates.forEach((r, i) => r.setAttribute('opacity', at_(4, ms, 1600 + i * 60, 400, lin)));
+
+  // 5
+  show(parts.g5, 5, 5, ms);
+  parts.far.setAttribute('opacity', at_(5, ms, 400, 500, lin));
+  parts.steps.forEach((it, k) => {
+    const b = 1000 + k * 800;
+    it.line.setAttribute('stroke-dashoffset', 1 - at_(5, ms, b, 450));
+    if (it.stop) it.stop.setAttribute('opacity', at_(5, ms, b + 450, 150, lin));
+    if (it.fix) it.fix.setAttribute('stroke-dashoffset', 1 - at_(5, ms, b + 600, 250));
+  });
+
+  // 6 to 8: the article, one passage per step, its words marked in reading order
+  parts.cards.forEach((c, i) => {
+    const s = F.window + i;
+    c.show(step < s || step > s + 1 ? 0 : step === s + 1 ? 1 - prog(ms, 0, 300) : prog(ms, 250, 400));
+    c.mark(at_(s, ms, 1000, 2200, lin));
+  });
+
+  // 9: the factory loop. A first pass, security asks for changes, the rework, a second pass, merged; then the other way out
+  show(parts.g9, F.loop, F.loop, ms);
+  const f = parts.f9, L = F.loop, draw = (p, k) => p.setAttribute('stroke-dashoffset', 1 - k);
+  draw(f.in, at_(L, ms, 700, 600));
+  f.a1.forEach(p => draw(p, at_(L, ms, 1300, 600)));
+  const verdict = at_(L, ms, 1900, 300, lin), again = at_(L, ms, 2900, 600), pass = at_(L, ms, 3500, 300, lin);
+  f.gates.forEach((r, i) => r.setAttribute('fill', i === 0 && verdict && !pass ? COST : grey(Math.round(lerp(200, 150, i === 0 ? pass : Math.max(verdict * .6, pass))))));
+  draw(f.rework, at_(L, ms, 2200, 700));
+  f.a2.forEach(p => draw(p, again));
+  f.b2.forEach(p => draw(p, at_(L, ms, 3800, 500)));
+  draw(f.out, at_(L, ms, 4400, 600));
+  f.main.setAttribute('stroke', grey(Math.round(lerp(T.feat, T.label, at_(L, ms, 4900, 300, lin)))));
+  draw(f.escalate, at_(L, ms, 5400, 800));
+  f.human.setAttribute('opacity', at_(L, ms, 6000, 400, lin));
+
+  // 10
+  show(parts.g10, F.lastYear, F.lastYear, ms);
+  parts.l6.forEach((t, i) => t.setAttribute('opacity', at_(F.lastYear, ms, [300, 700, 1400][i], 400, lin)));
+  parts.fallout.reveal(at_(F.lastYear, ms, 2000, 600, swipe));
+
+  // 11
+  show(parts.g11, F.thesis, F.thesis, ms);
+  parts.l7.forEach((t, i) => t.setAttribute('opacity', at_(F.thesis, ms, [300, 1200, 1200][i], 500, lin)));
+  parts.thesis.reveal(at_(F.thesis, ms, 2000, 600, swipe));
+
+  // 12
+  show(parts.g12, F.thanks, F.thanks, ms);
+
+  document.querySelectorAll('.note').forEach(n => {
+    const k = +n.dataset.step;
+    n.style.opacity = k === step ? prog(ms, k === 1 ? 300 : 800, 500) : k === step - 1 ? 1 - prog(ms, 0, 400) : 0;
+  });
+  document.querySelectorAll('.src').forEach(n => { n.style.opacity = n.dataset.steps.split(' ').includes(String(step)) ? prog(ms, 800, 500) : 0; });
+  document.getElementById('stepname').textContent = `step ${step} of ${STEPS} · ${['harmonise every step', 'contain and master', 'extend the reach', 'everyone touches everything', 'one step at a time', 'a window into the future', 'their job is to say no', 'not yet: tokens', 'try it today', 'last year', 'the thesis', 'thank you'][step - 1]}`;
+}
+
+// ---------- playback ----------
+const DUR = { 1: 2600, 2: 2000, 3: 2400, 4: 2600, 5: 4000, 6: 3400, 7: 3400, 8: 3400, 9: 6600, 10: 2700, 11: 2700, 12: 800 };
+const BACK_SPEED = 1.5;
+let raf = 0, anim = null;
+function run(dir) {
+  cancelAnimationFrame(raf);
+  const dur = DUR[step], speed = dir > 0 ? 1 : BACK_SPEED, start = performance.now();
+  anim = { dir };
+  const tick = now => {
+    const e = (now - start) * speed;
+    if (e >= dur) return finish();
+    frame(dir > 0 ? e : dur - e);
+    raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+}
+function finish() {
+  cancelAnimationFrame(raf);
+  if (anim && anim.dir < 0) step -= 1;
+  anim = null;
+  frame(1e9);
+}
+function next() { if (anim) return finish(); if (step === STEPS) return; step += 1; run(1); }
+function prev() { if (anim) return finish(); if (step === 1) return; run(-1); }
+function play() { cancelAnimationFrame(raf); anim = null; run(1); }
+
+build();
+</script>
+<script src="scene.js"></script>
+</body>
+</html>

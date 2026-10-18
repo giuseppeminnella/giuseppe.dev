@@ -1,0 +1,309 @@
+/* inlined, so the whole talk runs from the filesystem with no server */
+@font-face { font-family: 'Press Start 2P'; src: url(data:font/woff2;base64,d09GMgABAAAAABJgAA0AAAAASFgAABILAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGhYcgzwGYACEbBEICvB00n4Lg0QAATYCJAOGdAQgBYRKB4ReG7k2IxE1HRM1iOA/JWg2xvD6obMqmE5SN4m6JErQGe1cnR7tTm21roiCRXGDph2W57zlE2hWfkyCDRZhurA4QpJZeJ7fH3Xufd9jvYGwAJrkBDcnoU4JS7aJ6zQ4wEsveVcau6YSMNkW5dRZkKLO7kl2gJ99Pu1cgBXilsXzxNXe312wJuAISuQ69LpAmygPOJGMosbv9O8fKPBxUDdsnCIs31VPLCJq8pmJK+q+O4R4UVF6lcpGGsmA+ctVGunAV3/7FmaFSTNZmPJ92eQtKF2y1Rr6/y1N6Yx01bXAVlgCUKk8KMZpgFl/5u/37Gi0sVYrvVtZ7nK74tp2Vme/ldxrAoNKh86llIYaDKq0FUKDyIWF4gAe22ycgtZjjJuJs/Vp39+v74B3YB+yQ62hxBJjrLUTa+Sy99Pd99cEAbEAQLyFMgwBkam6oK3xU+ciNfPcvhE6mZDmqLkWqDD0n1OuQAhC9KYOn4NBoU/niabLNmzGoo/+xw1ug9G9ztasWoJO56Zl61ETp6VJm7R+cvD8ZkwUIyroOEAERD5UKipJnfOhLrSmENhSWc6QqDOfQyh0tj+jiuXZ/8PnSYaaAyFm4rtroNK5XussnBuyoeJ5zoC6dKczmSccloW4oypBxUAoF5sxFQLcirAInR1MZjcgX4k1EysGSJ2M5k6neut6/27mwJd9UgEBelYHgCn+hjJAKlssT6Nb+z7hmPbscWyAorp5AYB5SJwFuA5AnyFHrMaflApHNJ7x+9UCg5cKiFNPUZr/iKRY64ru6S29YxCbarNtvi2yZbbLjsVGDlfh+VP9sQ79ByCOJUFJRyTFKnpWsDWbaXOvr/N7If+vgBkAhrjBYK4NDee34PsV+L4WIZYBuvuPvincl783AAKgATDVFSAXRr6c3JrN/3HGVa0aLTpwRps+/SqsqTWkSYca7bZt2tLsNLxYcRIkYXPIYUecwAHDhRsvUeIkSJIiTYEiJcpU9ajU66pOd6nRo8+QMQuWrFhz5MSZKzceAgQJFiJMuBix4sRL0uWybrvmNJi3bMGKK86547xUI/YMu+CeS3YUKXbTvrOq3FIozagypcq1IHN5Ir5QjHhpmDBjwe6oY45jwEMQH37CBKwTIk+GLDkqxITSok6DDk3adBkwZ8KUGQe27Ngz4s6HJy9+vG3wFS1CpCgJAiUS4W/QgElTJiDk/98A4AcAuQPyAZJ2ACkvAB6oAIABACppDAYfuDIBBwdtvWyhIRj9eiPiRtE2zhO4kUR6xplwhByIGdHEfl2lnhqraTbpW3ibCwPlFbCkAFDqFEs+ouId4rDYFIx3Rgp1JviWVtp0gLoZoOHhudAa3lXMO58l1rNuCTB3bALXXGnb/nuVbib5zIAjGHU0I+vqIX3dp0pfZIhBAJldd9NXY27Td77KTu2odNh1bNd/MmxWU60SgwDYrbYVsG5SAHPc3OnXRDqZZx5AN4/b+QP23IQU1ololz89jHe+3vpcMkt0lwM/573pXzp9PbXfizZscl0ELXO3a1UbZW84hcdS+ygg252g2kqvjynC9Zz5uT51374IQGxoIViy+r1aO2cyM1kuabuu5YAzwR0QDOVNMNfejiJ58vbRAC0ACLPuM673tXdTiQJqCKUJCSkIhFMSVoRCcGriaPVLaSFOCpqoMooEDSlcYkRUz4XwkApimZR+FhfXwZA7MYXyScHaPDaFYc9ss7gM5ZYs1QwfQMYZkEJYRVaGwLrE3ZDOqopH0WKhrKYyn5jgFnBKR8aVHwy1EDwOxPWwMKq6LAwr4eYDjbhnmEePgsSAzHtLsGN2LkSLRIgzniTDyUNzR6G8Ek9CE6wMyORehlJUVkKLRUvDhjbMGHMpCvC6v2xgNRXAwggUCRJ7PYSgTV5RpEvG1kdpwglup8CaTjp0/tZdr1688A6jRiAAYkX2jYaGI2yEUED4agQ4JpDdlCU2KgqlAuYHCKlez0mlj0QvcpGO1NK3dCvyfsXpVCbst9GllNVsQ/m0ecUNbEvtYUVwoaaijNyRgJRbfvMoDLqOhDUhD6bAXNSUZNyJX5IekmQF0UTzLC7AZFlcCQmxLmpK1rQZ1SDkaC+d0IVasLlKGNSTvKgXcxoCTsoYtZLGBXO0cUdZAhJxAg+O4C9r2GC83qogpN6xJx2xIGwwFrEk9VR+tHKBggk6U1LmwfkF1dp8yUJX3ga9eH9YtsMWX5wQqUZ21yGWFNq9ajBoEVsoSz36d5cSzFLbAJZ5HBsmU2S1hKJbU3Wc79U6Nu0xgKAelp0Z4jqLRPumclG2eKPlL+r190iKNpW7y5sA7cqgGMvWIEl+SE0N0tmH8mlGSxpVQE9Urd3YqVrA4oAp+2BKXB2A9K0eTRqj3WAoGXskoL132wA2/MvgLLOL0yqYLSBZEKCPLV8PkjVdB1SZ2IaBQd0U2Dakfm5sFl48kBeNEFPjhuqccG1xKdLMwtZahGBvKKj6sjd4NlQ2UZAigsnBtsxkmBAUrlaQNUGBWoRSctWWPDeHg9iWFt953iW8s41nKaqZgHL5RcUdtBmY0DFS28bLdxTjSGv0Ny4ptkZdtFbyxfXlBPJDC4Ka2InUcWZ417DMcPZAbTE6gjA8DIy0MWAeNVYPa4tlrhwoNDFkIcAYzAytW7JuIRhZsd7KzTSi50qCGnCvLdArficHWmmiCSHD/ERsIt1qdKQoYJHWYU6i20IBgh6JxJBmjvp7VLIwpFuZVnPEYIUCAskhO76ejxt9JGFxxlGRPKmMLhhBMW5gFMreRedqpVDNopuVpA5k2WxxghipqIfCBeIQRbeLoJs/OepnCw3rhRJpLwo3B29Qq6EQM9waX0tDbZe40xbbQ8/Qa5GCtQc+yGI3ByXFWSYyj81HTC3W1zqV4c3rHdDDtnUb32qt2mopLZvM3ZEnvGTljav/AAf3pR20pETliLUD5zAcEqZRuQ9zKv2DmWBzQez4zdVKH+VrRaAdiE1/2ETrXlpfGErt8QoFgzpPFunNUSa4VWFHgoo0idkyGesoICEQZhHswBR91la3rV3gEjWmUsVVpknJ6pmHX/KmF43M4y/mWPbQU4884NT8oSZ5LwGogx9eW6Gg7lmG/eALtL62Cp9ZUfqamgDfQ7nZ8bGexsAjpAPQHi/0A1pEaFHLboEV7d7dlF4Wbk7rt4KwRSduRJ4z0D893esysc4j7AYVAWuIKyXUddVmqQXZGi4jTAKLOSCwevool+taG4JeINVM5C9/6RKRoAwBZkHGFI/KetWPFCwGXCty3kllWldUY5t/MES0hG3Ha/tc6iFbK775b3PmP/6oxozEvPtWJK7CZJoPNvFwsXLq6RSsjK/OMOpSWGfdXTUUFhBOgAJILasEIC5mwLtlTPxoSoULOiJOa+8v6Dv5BrFchoD8fhVln2F87NH/B/mdN+WJ4DnP9UwOEZPJK3/7wNukPDMoq25+jO5DwuuANDPcW1YujJBA9wCSgw/8hen1aZwisQxxavv9nRFeeQ92LxUGPVGqmTPyNfIsbV5bpsOY5Zn7Cg7jmCvvKM055v3uQzHXQLfeJrTPa109NFJ030JNeFlVetcMGlNOVKhvhUzlCtCsKDcCRJFpo5FhHNpN3SVrrjbYoI4HLifJ0rYu4Qb3LM/gr95bjW2mvJxLSMwkrwkCVPbopYjpdwP9xOkFMwa5FkCOe25XVib8XSGvVIU5K1FfIlZ6K1l9nWjBqt8PSMTirPC+1WzipXQWgAeIBGev81ZJnSRzIe9URfVr8idW4VjoLi+ZiXaEr/9mAzAS/Epx1d5AgoU39Q0OqJTKc64NLg31Kbw++PLxlBz11UYvg93MTzlOTfCrms73QWn0HAWZlactcaDAjplYhAX1YEZdo8rBS/IHZ4oHSETVB+rHBwqhStc6AMQk5XmS6yhCfQXDgrAKDHX7EMzXxdeuOGcWDvl+QyTWUV8wt7se4jmo3csmwcjmsUUkxaa+ZH57WZEEC3kbDqgAReeRoFq6CoesJJ6pB6YvQVcBI0VeS3R9p8NLwpdzcbpV3PvfOwhKDol+mGS4O9MwFVeFDXm0AYvD7dgFnYOG3jRV9XiF4FecuOnM8CRU2vpkopbhKx7KfarCpzaTBFlfv/kfJxMN61HC6Xr3REx7WKz1hnFoxwCTW0XLpk0fPXYC1ErjyY/nY9l+Uvt5rkq6dNytY3UsitNePuss4/wnPo8xLKo75akhjLhUPAjjblOpnjfObJI5bvxrdCKY6sI/XycSypfTlSJWcI2PPdg3Xn7OwgjEJh4Y1AejzXCCNtAGaV4nk8eI9z9dXXZARXv7WVklkuvtdphJvRTe0U/xAawWvJyG+RLhGZ0ZFQvz4wgiRfMWkEFuhqeQSccJ5XPBW6YYaQv3qURhivQHhS7J91v2gf+6vPLp79wn47pD1rAckkBiNknOOtbOcYZNonH8SE14tzCdXq2skwcM4mu+UmA+hdubYq/yYFyppJZRX+l5LYV9teDdwZwji+o8AlhWkZsGcQ4YCKMIcGUs6tn8b3Vqj7pi7T67hgd/hShh7hbiYPL0FbuZrb3NaOSleDv2iNecJ0otEvBme7gEwrPYXLSXB37EQEt6DzeEeMkZzjZDR/roZl7PmFX4Hq4fu+9foRncGLo0G1y/iKBLOV/JVrvYj7o1K4r7I4mcsGHwlcXdB0BecrCv2L0r70MMFtGq82yPHwR3CGswxYG/cFaU3rrO4wfB8PP/weaL4HI+jpG83mzQTuLUxB9R14tT8IYJdK/XpC9//2S8K8KHqVj0ESnA+bUYGqY6X3E26L0SM9pa7svsLqooBnhBXsNCjeUndRMo6jx4+7VE0+hjASzwqLDJtGNnUQ4fMWQdebCuCD1XNWMCOuVaNxUhM+4zhH7IfZyPv0hisvibkEXok2mXsfeoI7UvSpznoaMuFDb06f8mAKK2w6lIRDx+F2Gcqyno9hWf5vWbX0x4JiajeI+I/7O6FU68x7ya9w7jfpykm+RvKierpLT/0+5NErUBjlaKu4vcpfux/sh5u+RCfDvt6mtKBeg497nU+xiWEy5rM8Pc99z+Oz7DlPj1MF8j3UgBCcwwsdV3p6jz34Vzb4NQN0uU0xWnpZabXKxZU0dAgauXK2RlmbNGfke9MM7qZ/jC2LKtrTNm6XcnkalivUfIprI24lDRtCxMz0vEURAh4IJlZM7rf4weA+qG0a0cn/xAGWxegACD3pvs54un8q/L9AHwuoH993c8rOp/+yvqRXiCTxEKYPDmtAJAZ43UB2QlyP7rXi+xmH7AtffY69Cf+A8Ul8e/Ac4U/SEfNxVPdx9g09ixNkUj8M3RGN/e1Y5rjgNArt1er3NCr+F9oyeSUJB4dwZSwUCXe63ZRo78IlVqTKX+RRDwgwIaJUi1qQV+rcBKOFKFwMdQQVNErndTVLzvU4zhuqY4asRNcWVzmeKpIKPibRWwWgxNiKBEfN1o3qIEqorR4WKiVUhU4aXy761rTo8Ji1T54pNEsxbDU5QYUiyIsuLLX6yQnbITHUXVV7gwGGliJJzIPom1GuuvB4tG/9Yo0+bIii5lKTbYe/4NtYWLkJiHir+AsHxToANjUzDfXhMhasNwQXx57zs0xUIH5BEi+xbgLZyPRBqSssN9lYID0FcMQSIw8QKjZUZ0dDZVnHb6wOjtgKPTjKdQaQfO1Ruu9aCDodm85ujr8QNIgTJKnLTPyyhvYyrw4uOD30sCfB045TRBQoSJOOOsc84TJUY8uIwpP3/tCy7yd1mlcROkvX0/4bnkKbjiqgDX3rrYUcVrqnQEvk+hgrwzVAfdVDfU94qBiPy9k0iGjBgzcV2MOPFi32komwf/hoZK8C8nUbIUSTqlmmTtHRu27BSy5yBNhkzp73G8PxdvLHG1YVOrNsxYsL4rIt+z+O8NQTzx6fWFr3yD1gjb8rGjdw/ebURJuHQhiORjosWNBzUaqMV6ZgpDyNwxZM26XTNmzZm3EwrHrSIl4oS6UBPvJwswnDhU89QTGoLESTzFKE7LU6xIiWzuXtAMvSQKI6XuuaGMtlvuuln9r0HXdUyWb9ruhCy7+LEb1zRIjFb0m6WapAeP0slL4P+AdTi6pEmqsbXJbM/BtTy3bt20a8fmEN5Rqw//PeH1K/5x23Oq8rId2wcRFUqN1gYA) format('woff2'); font-display: block; }
+
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+
+/* 1920x1080 stage: the 480x270 canvas scaled exactly 4x */
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 50% 50%; overflow: hidden; }
+#screen { position: absolute; inset: 0; width: 1920px; height: 1080px; image-rendering: pixelated; image-rendering: crisp-edges; }
+/* real footage sits on this one, at full resolution and smoothed */
+#hires { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+
+/* attract mode on the first slide, before the first click */
+.press-start {
+  position: absolute; left: 0; right: 0; bottom: 120px; text-align: center; visibility: hidden;
+  font-family: 'Press Start 2P', monospace; font-size: 36px; color: #fff; text-shadow: 4px 4px 0 #1B3A7A;
+}
+.press-start.show { visibility: visible; animation: blink 1.1s steps(1) infinite; }
+
+/* the scene has finished playing: ready for the next click */
+.ready {
+  position: absolute; right: 56px; bottom: 48px; width: 0; height: 0; visibility: hidden;
+  border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 22px solid #fff;
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, .55));
+}
+.ready.show { visibility: visible; animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+#debug {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 28px 20px; display: none;
+  background: rgba(0, 0, 0, .7); color: #9fe; font: 22px/1.4 monospace;
+}
+#debug.show { display: block; }
+#dbg-scrub { width: 100%; margin: 10px 0 6px; }
+.dbg-keys { color: #7a9; font-size: 18px; }
+
+/* ---------- after the crash: the actual talk, no pixels ---------- */
+#screen.hide, #hires.hide { visibility: hidden; }
+
+#deck {
+  position: absolute; inset: 0; display: none; background: #F7F6F2; color: #0B1F3B;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+#deck.show { display: block; }
+#deck section { position: absolute; inset: 0; padding: 0 150px; display: none; flex-direction: column; justify-content: center; }
+#deck section.active { display: flex; animation: sectionIn .22s ease both; }
+@keyframes sectionIn { from { opacity: 0; } }
+#deck section.invert { background: #0B1F3B; color: #F7F6F2; }
+#deck section.wide { padding: 0 90px; align-items: center; }
+#deck section.wide h2 { align-self: flex-start; }
+
+#deck h1 { font-size: 104px; line-height: 1.05; font-weight: 700; letter-spacing: -.025em; margin: 0 0 44px; }
+#deck h2 { font-size: 54px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 40px; color: #52627A; }
+#deck p { font-size: 56px; line-height: 1.3; font-weight: 400; margin: 0 0 34px; max-width: 1560px; }
+#deck ul, #deck ol { font-size: 54px; line-height: 1.35; margin: 0 0 40px; padding-left: 0; list-style: none; counter-reset: q; }
+#deck li { margin: 0 0 18px; }
+#deck ol li::before { counter-increment: q; content: counter(q) "."; color: #9AA7B8; margin-right: 22px; }
+#deck ul li::before { content: "\2014"; color: #9AA7B8; margin-right: 22px; }
+#deck .dim { color: #6B7A90; font-size: 38px; }
+#deck .invert .dim { color: #8FA5C4; }
+#deck .hl { background: #F2E74B; color: #0B1F3B; padding: 0 .1em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+#deck .loop { width: 100%; max-width: 1620px; height: auto; }
+#deck .loop text { font-family: inherit; font-weight: 500; }
+
+/* one click, one reveal */
+#deck .r { opacity: 0; transform: translateY(12px); transition: opacity .26s ease, transform .26s ease; }
+#deck .r.on { opacity: 1; transform: none; }
+
+/* ---------- the alarm: the talk interrupts itself ---------- */
+#alarm {
+  position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+  background: rgba(46, 0, 0, .42); backdrop-filter: blur(9px) saturate(.45);
+  -webkit-backdrop-filter: blur(9px) saturate(.45);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+#alarm.show { display: flex; animation: alarmFlash .5s ease-out both; }
+@keyframes alarmFlash { 0% { background: rgba(255,255,255,.85); } 18% { background: rgba(255,60,40,.5); } 100% { background: rgba(46,0,0,.42); } }
+
+/* the light bar on each side, out of phase, like a roof light */
+#alarm .beacon { position: absolute; top: 0; bottom: 0; width: 460px; pointer-events: none; mix-blend-mode: screen; }
+#alarm .beacon.left { left: 0; animation: beaconL 1.1s steps(1) infinite; }
+#alarm .beacon.right { right: 0; animation: beaconR 1.1s steps(1) infinite; }
+@keyframes beaconL {
+  0%, 49% { background: radial-gradient(ellipse at left center, rgba(255,26,26,1), rgba(255,26,26,0) 78%); }
+  50%, 100% { background: radial-gradient(ellipse at left center, rgba(40,90,255,.92), rgba(40,90,255,0) 78%); }
+}
+@keyframes beaconR {
+  0%, 49% { background: radial-gradient(ellipse at right center, rgba(40,90,255,.92), rgba(40,90,255,0) 78%); }
+  50%, 100% { background: radial-gradient(ellipse at right center, rgba(255,26,26,1), rgba(255,26,26,0) 78%); }
+}
+
+#alarm .alarm-box {
+  position: relative; display: flex; align-items: center; gap: 56px;
+  max-width: 1680px; padding: 64px 80px;
+  background: #B3120F; border: 9px solid #FFD400; border-radius: 12px;
+  box-shadow: 0 0 140px rgba(255, 40, 20, .7), 0 30px 80px rgba(0, 0, 0, .55);
+  animation: alarmIn .42s cubic-bezier(.2, 1.5, .5, 1) both, alarmShake 3.4s ease-in-out .5s infinite;
+}
+@keyframes alarmIn { from { transform: scale(.82) rotate(-1.2deg); opacity: 0; } }
+@keyframes alarmShake { 0%, 92%, 100% { transform: none; } 94% { transform: translateX(-7px) rotate(-.3deg); } 96% { transform: translateX(7px) rotate(.3deg); } 98% { transform: translateX(-3px); } }
+
+#alarm .danger { width: 176px; flex: none; animation: danger .55s steps(1) infinite; }
+#alarm .danger.lag { animation-delay: .275s; }
+@keyframes danger { 50% { opacity: .22; } }
+
+#alarm .kicker {
+  margin: 0 0 16px; color: #FFD400; font-size: 31px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+}
+#alarm h1 {
+  margin: 0 0 22px; color: #fff; font-size: 122px; line-height: 1; font-weight: 800;
+  letter-spacing: -.03em; text-shadow: 0 5px 0 rgba(0, 0, 0, .3);
+}
+#alarm .sub { margin: 0; color: rgba(255, 255, 255, .95); font-size: 42px; line-height: 1.3; font-weight: 500; }
+
+/* the version tag on the title, small enough to be a footnote */
+#deck .ver { font-size: .26em; vertical-align: super; opacity: .42; font-weight: 600; letter-spacing: 0; margin-left: .1em; }
+
+/* the five drifts, set the way they were in the June deck */
+/* the five drifts on the left, one example at a time on the right */
+#deck section.drifts .row { display: flex; gap: 70px; align-items: flex-start; }
+#deck ul.drift { margin: 0; flex: 0 0 40%; }
+#deck ul.drift li {
+  font-size: 56px; font-weight: 700; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 14px;
+  color: #B4BECB; transition: color .26s ease;
+}
+#deck ul.drift li::before { content: none; }
+#deck ul.drift li span { color: #CBD3DC; transition: color .26s ease; }
+#deck ul.drift li.now { color: #0B1F3B; }
+#deck ul.drift li.now span { color: #9AA7B8; }
+
+#deck .cases { position: relative; flex: 1; min-height: 340px; }
+#deck .case { position: absolute; inset: 0; }
+#deck .case p { font-size: 40px; line-height: 1.35; margin: 0 0 26px; display: flex; gap: 22px; align-items: flex-start; }
+#deck .case .ico { flex: 0 0 auto; width: 50px; height: 50px; fill: #0B1F3B; margin-top: -1px; }
+#deck .case .sting { font-size: 34px; font-style: italic; color: #6B7A90; padding-left: 72px; margin: 0; }
+
+/* the talk clock: starts on PRESS START, stays put over everything */
+#clock {
+  position: absolute; left: 40px; bottom: 36px; z-index: 60;
+  padding: 11px 20px 13px; border-radius: 9px;
+  background: rgba(0, 0, 0, .84); color: #F4F2EC;
+  font: 700 36px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: .06em; font-variant-numeric: tabular-nums;
+}
+#clock.warn { color: #F2C21B; }
+#clock.over { color: #FF6B5E; background: rgba(60, 0, 0, .86); }
+
+/* a slide with more words than usual */
+#deck section.tight p { font-size: 46px; line-height: 1.32; max-width: 1500px; }
+
+/* if / then, side by side */
+#deck section.two { padding: 0 120px; }
+#deck section.two .row { display: flex; flex-direction: row; align-items: flex-start; gap: 96px; }
+#deck section.two .col { flex: 1; min-width: 0; }
+#deck .lead { font-size: 34px; color: #9AA7B8; margin: 0 0 14px; }
+#deck h2.big { font-size: 68px; line-height: 1.08; font-weight: 700; letter-spacing: -.025em; color: #0B1F3B; margin: 0 0 30px; }
+#deck ul.plain { font-size: 40px; line-height: 1.45; margin: 0 0 34px; }
+#deck ul.plain li::before { content: none; }
+#deck .badcop { font-size: 40px; margin: 0; }
+#deck .upnote { display: block; width: 46px; margin: 12px 0 0 152px; }
+
+#deck h1.mid { font-size: 88px; }
+#deck .invert .lead { color: #8FA5C4; }
+
+/* the KYC flow: what the interface promised, and what step 3 turned into */
+#deck section.drifts { justify-content: flex-start; padding-top: 118px; }
+#deck .steppers { display: flex; gap: 44px; margin-top: 26px; }
+#deck .stepcol { flex: 1; min-width: 0; }
+#deck .cap { font-size: 21px; color: #9AA7B8; margin: 0 0 13px; letter-spacing: .04em; }
+#deck .steps { position: relative; list-style: none; margin: 0; padding: 0; counter-reset: none; }
+#deck ol.steps li::before { content: none; }            /* the circles are the numbers here */
+#deck .steps::before { content: ""; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 2px; background: #DCE1E7; }
+#deck .steps li { position: relative; display: flex; gap: 13px; align-items: center; margin: 0 0 11px; font-size: 22px; color: #0B1F3B; }
+#deck .steps li b {
+  flex: none; width: 28px; height: 28px; border-radius: 50%; background: #0B1F3B; color: #F7F6F2;
+  font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+#deck .steps li.open b { background: #F2E74B; color: #0B1F3B; }
+#deck .steps li.sub { font-size: 18px; color: #6B7A90; margin: 0 0 8px 41px; gap: 10px; }
+#deck .steps li.sub::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: #B4BECB; }
+/* the second column runs past the bottom and dissolves */
+#deck .stepcol.fade .steps {
+  max-height: 302px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 99%);
+  mask-image: linear-gradient(to bottom, #000 58%, transparent 99%);
+}
+
+/* orchestration: every source pointing at one product, and the one it quietly believed */
+#deck .sources, #deck .fanout, #deck .archi, #deck .alerts {
+  display: block; width: 100%; max-width: 900px; margin: 18px 0 0 -8px;
+}
+#deck .fanout text, #deck .archi text, #deck .alerts text { font-family: inherit; }
+#deck .sources text { font-family: inherit; }
+
+/* the three strategies, the third one being the point */
+#deck ol.ways { list-style: none; margin: 0 0 40px; padding: 0; counter-reset: none; }
+#deck ol.ways li { display: block; margin: 0 0 30px; }
+#deck ol.ways li::before { content: none; }
+#deck ol.ways b { display: block; font-size: 52px; font-weight: 700; letter-spacing: -.02em; color: #0B1F3B; }
+#deck ol.ways span { display: block; font-size: 30px; color: #6B7A90; margin-top: 6px; max-width: 1200px; }
+#deck ol.ways li.hot b { background: #F2E74B; box-shadow: 0 0 0 7px #F2E74B; width: fit-content; }
+#deck section.two h2:first-child { font-size: 40px; margin-bottom: 44px; }
+
+/* a slide cut down the middle */
+#deck section.split { padding: 0; justify-content: flex-start; }
+/* the divide runs the full height; the line at the top sits over the left half */
+#deck .split-head {
+  position: absolute; top: 52px; left: 74px; width: 44%; z-index: 2;
+  font-size: 34px; line-height: 1.28; color: #52627A; margin: 0;
+}
+#deck section.split .row { position: absolute; inset: 0; display: flex; align-items: stretch; gap: 0; }
+#deck section.split .col {
+  flex: 1; min-width: 0; padding: 158px 74px 64px; display: flex; flex-direction: column; justify-content: center;
+}
+#deck section.split .col + .col { background: #ECE8DF; border-left: 2px solid #D8D3C8; }
+#deck section.split .big { font-size: 60px; }
+#deck section.split ul.plain { font-size: 34px; line-height: 1.5; margin-bottom: 26px; }
+#deck section.split .dim { font-size: 32px; }
+
+/* the tool lists */
+#deck ul.tools { list-style: none; margin: 0; padding: 0; }
+#deck ul.tools li { display: block; margin: 0 0 32px; }
+#deck ul.tools li::before { content: none; }
+#deck ul.tools b { display: block; font-size: 38px; font-weight: 700; color: #0B1F3B; letter-spacing: -.01em; }
+#deck ul.tools span { display: block; font-size: 27px; line-height: 1.36; color: #6B7A90; margin-top: 3px; }
+#deck ul.tools em { display: block; font-size: 23px; color: #9AA7B8; margin-top: 2px; }
+#deck ul.tools .todo { color: #C8322B; }
+
+/* the acceptance gate */
+#deck ol.gate { list-style: none; margin: 14px 0 34px; padding: 0; counter-reset: gate; }
+#deck ol.gate li { display: flex; align-items: baseline; gap: 26px; font-size: 52px; font-weight: 600; color: #0B1F3B; margin: 0 0 20px; }
+#deck ol.gate li::before { counter-increment: gate; content: counter(gate); font-size: 30px; font-weight: 700; color: #9AA7B8; }
+
+#deck .src { display: block; font-size: 22px; color: #93A0B0; margin-top: 5px; font-style: normal; text-decoration: none; }
+#deck a.src:hover { color: #0B1F3B; }
+
+/* the principles, set like the drift list, with the drift they would have caught */
+#deck section.drifts ol.ways { flex: 0 0 42%; margin: 0; }
+#deck ol.ways li b { color: #B4BECB; transition: color .26s ease; }
+#deck ol.ways li span { color: #CBD3DC; transition: color .26s ease; }
+#deck ol.ways li.now b, #deck ol.ways li.hot b { color: #0B1F3B; }
+#deck ol.ways li.now span, #deck ol.ways li.hot span { color: #6B7A90; }
+#deck .case .back { font-size: 27px; color: #9AA7B8; margin: 0 0 6px; display: block; }
+#deck .case .back em { font-style: italic; color: #52627A; }
+#deck .case .fix { font-size: 33px; line-height: 1.34; color: #0B1F3B; margin: 0 0 26px; display: block; }
+
+/* NOPE */
+#alarm .alarm-text { text-align: center; }
+#alarm h1 { font-size: 172px; letter-spacing: -.04em; margin-bottom: 10px; }
+#alarm .sub { font-size: 54px; font-weight: 600; letter-spacing: .01em; }
+#alarm .kicker { margin-bottom: 8px; }
+
+/* a quiet mark over our own column, not a badge */
+#deck section.split .col { position: relative; }
+#deck .dbmark { position: absolute; top: 52px; right: 74px; width: 88px; opacity: .9; }
+
+/* a slide that is mostly picture */
+#deck section.visual { justify-content: flex-start; padding-top: 84px; }
+#deck section.visual h2 { margin: 0 0 6px; color: #0B1F3B; font-size: 58px; }
+#deck .sub-lead { font-size: 30px; color: #6B7A90; margin: 0 0 22px; }
+#deck .skills { display: block; width: 100%; max-width: 1620px; }
+#deck .skills text { font-family: inherit; }
+
+/* who built it */
+#deck .by { display: block; font-size: 21px; font-style: normal; color: #A8B3C0; margin-top: 2px; }
+#deck .by.todo { color: #C8322B; }
+#deck .credit { display: block; font-size: 25px; color: #9AA7B8; margin-top: 8px; }
+#deck .credit::before { content: "built by "; }
+
+/* the author, and a code to mail them */
+#deck .qr { width: 116px; height: 116px; flex: none; margin-top: 4px; }
+#deck .qr-big { position: absolute; top: 96px; right: 150px; width: 210px; height: 210px; }
+
+/* the commands, in the same box the cartoon used, sliding up from the floor */
+#deck .term {
+  position: absolute; left: 182px; right: 78px; bottom: 34px;
+  background: #1E2127; border: 5px solid #3E444C;
+  box-shadow: 10px 10px 0 rgba(11, 31, 59, .22);
+  transform: translateY(118%); transition: transform .42s cubic-bezier(.2, .9, .3, 1), opacity .2s ease;
+}
+#deck .term.on { transform: none; }
+#deck .term-bar {
+  background: #2B2F36; color: #E6E2DA; padding: 13px 22px;
+  font-family: 'Press Start 2P', monospace; font-size: 17px; letter-spacing: .04em;
+}
+#deck .term-bar .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: #D8783C; margin-right: 14px; }
+#deck .term-body {
+  margin: 0; padding: 28px 34px 32px;
+  font-family: 'Press Start 2P', monospace; font-size: 22px; line-height: 1.8; white-space: pre;
+  color: #C9D3E0; overflow: hidden;
+}
+#deck .term-body .c { color: #6E7A88; }        /* comments */
+#deck .term-body .p { color: #D8783C; }        /* prompt */
+#deck .term-body .k { color: #7EE787; }        /* what you type */
+/* the scanlines from the cartoon screen */
+#deck .term::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+}
+/* only the slide with the terminal gives up height for it */
+#deck section.visual.has-term .skills { max-height: 470px; }
+
+/* the two halves carry the words from the claim slide, verbatim */
+#deck .lead.speed { font-size: 32px; color: #52627A; font-weight: 600; margin-bottom: 18px; }
+
+/* where you are, along the bottom edge */
+#progress { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; z-index: 60; background: rgba(120, 128, 140, .22); }
+#progress i { display: block; height: 100%; width: 0; background: #F2E74B; transition: width .25s ease; }

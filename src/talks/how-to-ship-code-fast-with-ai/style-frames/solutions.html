@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solutions workbench</title>
+<link rel="stylesheet" href="scene.css">
+</head>
+<body>
+<header>
+  <b>Solutions · contain the drift: practice, tooling, people</b>
+  <button id="prev">&larr;</button>
+  <span id="stepname"></span>
+  <button id="next">&rarr;</button>
+  <button id="replay">Replay step</button>
+  <label><input type="checkbox" id="sight"> sightline</label>
+</header>
+<div id="wrap"><div id="stage"><div class="frame">
+  <svg id="art" viewBox="0 0 1920 1080"></svg>
+  <p class="note" data-step="1">So how do you ship fast without paying for it later? You don&rsquo;t stop the drift. You <b>contain</b> it.</p>
+  <p class="note" data-step="2">Practice first. A <b>bounded context</b> contains meaning; an anti-corruption layer contains imported complexity.</p>
+  <p class="note" data-step="3">Make acceptance <b>expensive</b>: everything that wants in answers these questions first.</p>
+  <p class="note" data-step="4">Tooling. <b>If a script can say no, don&rsquo;t ask a model.</b> Deterministic checks first, the LLM last.</p>
+  <p class="note" data-step="5">The model&rsquo;s best job is <b>writing new checkers</b>: every finding it keeps repeating becomes a rule a script enforces.</p>
+  <p class="note" data-step="6">Guardrails drift too. <b>Evals as quality gates</b> check, release after release, that your rules still hold.</p>
+  <p class="note" data-step="7"><b>Slop at home is fine. The square is sacred.</b> No new shared tool unless it is provably necessary.</p>
+  <p class="note" data-step="8">As long as a human is legally responsible, <b>the change has to fit in a human head</b>.</p>
+  <p class="note" data-step="9">Not a giant spec up front: a <b>curated brain close to the code</b>. The spec as memory, not as blueprint.</p>
+  <p class="src" data-steps="6">Retort, github.com/adrianco/retort &middot; promptfoo, github.com/promptfoo/promptfoo</p>
+  <div class="sight"></div>
+</div></div></div>
+
+<script src="lib.js"></script>
+<script>
+const STEPS = 9;
+const T = { rest: 229, went: 199, lw: 20, dot: 55, mark: 80, mkop: 60, guide: 212, label: 104, feat: 150, dark: 62 };
+const lin = t => t;
+const lerp = (a, b, t) => a + (b - a) * t;
+const round = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+const Y = 300;
+const q = new URLSearchParams(location.search);
+let step = Math.min(STEPS, Math.max(1, +(q.get('step') || 1)));
+const prog = (ms, delay, dur) => clamp((ms - delay) / dur);
+const at_ = (on, ms, delay, dur, fn = ease) => step < on ? 0 : step > on ? 1 : fn(prog(ms, delay, dur));
+
+const svg = document.getElementById('art');
+let parts = {}, defs, uid = 0;
+const label = { 'font-weight': 600, 'stroke-width': 10 };
+const text = (g, x, y, s, size = 28, tone = 130, anchor = 'middle', weight = 600) => {
+  const t = el('text', { x, y, 'text-anchor': anchor, 'font-size': size, fill: grey(tone), ...label, 'font-weight': weight }, g);
+  t.textContent = s; return t;
+};
+// a line that travels: light at rest, darker as it goes
+function travel(g, d, w = T.lw) {
+  el('path', { d, stroke: grey(T.rest), 'stroke-width': w, ...round }, g);
+  return el('path', { d, stroke: grey(T.went), 'stroke-width': w, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, g);
+}
+// a hand-made marker along a path, revealed left to right; clip: optional clipPath id
+function marker(g, d, { width = 60, seed = 3, clip } = {}) {
+  const guide = el('path', { d, fill: 'none', stroke: 'none' }, g);
+  const box = guide.getBBox(), id = 'mk' + (++uid);
+  const mask = el('mask', { id, maskUnits: 'userSpaceOnUse', x: -1e4, y: -1e4, width: 2e4, height: 2e4 }, g);
+  const rect = el('rect', { x: box.x - 60, y: box.y - 80, height: box.height + 160, width: 0, fill: '#fff' }, mask);
+  const mk = el('g', { class: 'mk', mask: `url(#${id})` }, g);
+  const inner = clip ? el('g', { 'clip-path': `url(#${clip})` }, mk) : mk;
+  markerPolygons(guide, { width, jitter: width * .1, seed }).forEach(pts => el('polygon', { points: pts, fill: 'var(--hl)', 'fill-opacity': T.mkop / 100 }, inner));
+  return { reveal: k => rect.setAttribute('width', (box.width + 120) * k) };
+}
+const clipRect = (x, y, w, h) => { const id = 'c' + (++uid); el('rect', { x, y, width: w, height: h }, el('clipPath', { id }, defs)); return id; };
+const wiggle = (x0, x1, amp) => { const m = (x0 + x1) / 2, q1 = x0 + (x1 - x0) * .25, q3 = x0 + (x1 - x0) * .75;
+  return `C ${q1} ${Y - amp}, ${q1 + (m - q1) * .6} ${Y + amp}, ${m} ${Y} S ${q3 + (x1 - q3) * .4} ${Y - amp}, ${x1} ${Y}`; };
+const drawRect = (g, x, y, w, h, tone, sw) => el('path', { d: `M${x} ${y} H${x + w} V${y + h} H${x} Z`, fill: 'none', stroke: grey(tone), 'stroke-width': sw, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1 }, g);
+
+function build() {
+  svg.innerHTML = '';
+  defs = el('defs', {}, svg);
+  parts = {};
+
+  // 1 · contain the drift ------------------------------------------------------
+  { const g = el('g', {}, svg); parts.g1 = g;
+    const d = `M230 ${Y} L700 ${Y} ${wiggle(700, 1220, 130)} L1666 ${Y}`;
+    parts.box1 = drawRect(g, 700, 185, 520, 230, T.feat, 10);
+    parts.line1 = travel(g, d);
+    parts.mark1 = marker(g, `M700 ${Y} ${wiggle(700, 1220, 130)}`, { width: 70, seed: 11, clip: clipRect(705, 190, 510, 220) });
+    el('circle', { cx: 230, cy: Y, r: T.dot, fill: grey(T.went) }, g);
+    el('circle', { cx: 1700, cy: Y, r: 58, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 14 }, g);
+  }
+
+  // 2 · bounded contexts and anti-corruption layers ---------------------------------
+  { const g = el('g', {}, svg); parts.g2 = g;
+    const B = [[420, 760], [840, 1180], [1260, 1560]];
+    parts.boxes2 = B.map(([a, b]) => drawRect(g, a, 210, b - a, 180, T.feat, 8));
+    let d = `M230 ${Y}`;
+    B.forEach(([a, b]) => { d += ` L${a} ${Y} ${wiggle(a, b, 60)}`; });
+    d += ` L1666 ${Y}`;
+    parts.line2 = travel(g, d, 16);
+    parts.marks2 = B.map(([a, b], i) => marker(g, `M${a} ${Y} ${wiggle(a, b, 60)}`, { width: 52, seed: 20 + i, clip: clipRect(a + 4, 214, b - a - 8, 172) }));
+    parts.acl = [828, 1248].map(x => el('rect', { x, y: Y - 40, width: 10, height: 80, fill: grey(T.label), opacity: 0 }, g));
+    parts.labels2 = [text(g, 1010, 190, 'bounded context', 26, 120), text(g, 1253, 440, 'anti-corruption layer', 26, 120)];
+    el('circle', { cx: 230, cy: Y, r: 26, fill: grey(T.went) }, g);
+    el('circle', { cx: 1700, cy: Y, r: 32, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 10 }, g);
+  }
+
+  // 3 · the acceptance checklist ---------------------------------------------------
+  { const g = el('g', {}, svg); parts.g3 = g;
+    drawRect(g, 700, 180, 440, 240, T.feat, 8).setAttribute('stroke-dashoffset', 0);
+    text(g, 712, 166, 'the system', 24, T.label, 'start');
+    const r = rng(5);
+    for (let i = 0; i < 6; i++) el('circle', { cx: 760 + r() * 320, cy: 210 + r() * 180, r: 9, fill: grey(150) }, g);
+    el('rect', { x: 694, y: Y - 46, width: 14, height: 92, fill: grey(T.label) }, g);
+    text(g, 1260, 76, 'before it gets in', 22, 165, 'start');
+    const QUESTIONS = ['Is it required?', 'The right bounded context?', 'New state?', 'New semantics?', 'A new layer?', 'A new authority?', 'A new maintenance burden?'];
+    parts.questions = QUESTIONS.map((s, i) => text(g, 1260, 118 + i * 52, s, 28, 175, 'start'));
+    // proposals, marked as drift: each fails one question and bounces off, one gets in
+    const FAILS = [0, 2, 5, -1, 6, 1];
+    parts.cands = FAILS.map((fail, k) => ({
+      fail, from: [250, 110 + k * 64], back: [430 + r() * 140, 120 + r() * 360],
+      halo: el('circle', { r: 18, fill: 'var(--hl)', 'fill-opacity': .7, class: 'mk' }, g),
+      dot: el('circle', { r: 10, fill: grey(150) }, g),
+    }));
+  }
+
+  // 4 and 5 · deterministic first, the LLM last, and the LLM writes new checkers -----------
+  { const g = el('g', {}, svg); parts.g4 = g;
+    parts.line4 = travel(g, `M230 ${Y} L1336 ${Y}`);
+    el('line', { x1: 1424, y1: Y, x2: 1620, y2: Y, stroke: grey(T.rest), 'stroke-width': 10, 'stroke-dasharray': '0 26', 'stroke-linecap': 'round' }, g);
+    el('circle', { cx: 210, cy: Y, r: 22, fill: grey(T.went) }, g);
+    parts.gates = [520, 800, 1080].map(x => el('rect', { x: x - 8, y: Y - 70, width: 16, height: 140, fill: grey(184), opacity: 0 }, g));
+    parts.schema = el('rect', { x: 1348, y: Y - 94, width: 28, height: 188, fill: grey(T.dark), opacity: 0 }, g);
+    parts.llm = el('circle', { cx: 1660, cy: Y, r: 28, fill: '#fff', stroke: grey(222), 'stroke-width': 12 }, g);
+    parts.labels4 = [text(g, 210, Y + 76, 'change', 28, 160), text(g, 520, Y - 90, 'types'), text(g, 800, Y - 90, 'lint'), text(g, 1080, Y - 90, 'tests'),
+      text(g, 1362, Y - 114, 'schema change', 28, 90), text(g, 1660, Y + 76, 'LLM, last', 28, 175)];
+    parts.human = text(g, 1362, Y + 160, 'A human decides.', 30, 30, 'middle', 700);
+    parts.humanMark = marker(g, `M1222 ${Y + 150} L1502 ${Y + 150}`, { width: 44, seed: 9 });
+    // step 5: the LLM's other job
+    parts.loop5 = el('path', { d: `M1660 ${Y - 34} C 1660 ${Y - 270}, 940 ${Y - 270}, 940 ${Y - 124}`, fill: 'none', stroke: grey(150), 'stroke-width': 5, 'stroke-dasharray': '14 11', opacity: 0 }, g);
+    parts.newGate = el('rect', { x: 932, y: Y - 70, width: 16, height: 140, fill: grey(T.feat), opacity: 0 }, g);
+    parts.newLabel = text(g, 940, Y + 106, 'new checker', 28, 70, 'middle', 700);
+  }
+
+  // 6 · evals as quality gates -------------------------------------------------------
+  { const g = el('g', {}, svg); parts.g6 = g;
+    el('line', { x1: 230, y1: Y, x2: 1660, y2: Y, stroke: grey(T.rest), 'stroke-width': 10, 'stroke-linecap': 'round' }, g);
+    el('rect', { x: 860, y: Y - 80, width: 200, height: 160, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 8 }, g);
+    text(g, 960, Y + 11, 'evals', 32, T.label, 'middle', 700);
+    text(g, 230, Y + 74, 'every release', 26, 160);
+    text(g, 230, Y + 104, 'models, skills, prompts', 22, 175);
+    text(g, 1690, Y + 74, 'main', 26, 160);
+    el('circle', { cx: 1690, cy: Y, r: 30, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 9 }, g);
+    parts.releases = Array.from({ length: 7 }, (_, k) => ({ fail: k === 4,
+      halo: k === 4 ? el('circle', { r: 26, fill: 'var(--hl)', 'fill-opacity': .7, class: 'mk', opacity: 0 }, g) : null,
+      dot: el('circle', { r: 14, fill: grey(150) }, g) }));
+  }
+
+  // 7 · slop at home is fine, the square is sacred ---------------------------------------
+  { const g = el('g', {}, svg); parts.g7 = g;
+    text(g, 230, 92, 'at home', 30, 130, 'start', 700);
+    const HOME = [[230, 130], [620, 150], [430, 250], [250, 360], [640, 340]];
+    const r = rng(9);
+    parts.home = HOME.map(([x, y], i) => {
+      const hg = el('g', {}, g);
+      el('rect', { x, y, width: 130, height: 96, fill: '#fff', stroke: grey(190), 'stroke-width': 5 }, hg);
+      const pts = []; for (let k = 0; k < 7; k++) pts.push([x + 14 + k * 17, y + 48 + (r() - .5) * 60]);
+      const sc = el('path', { d: smooth(pts), stroke: grey(170), 'stroke-width': 5, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, hg);
+      const mk = marker(hg, smooth(pts), { width: 30, seed: 40 + i, clip: clipRect(x + 3, y + 3, 124, 90) });
+      return { hg, sc, mk, x, y };
+    });
+    parts.square = drawRect(g, 1000, 140, 700, 320, T.label, 10);
+    text(g, 1012, 124, 'the square', 30, T.label, 'start', 700);
+    [[1110, 260], [1290, 260], [1470, 260]].forEach(([x, y]) => el('rect', { x, y, width: 120, height: 80, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 6 }, g));
+    parts.squareGate = el('rect', { x: 988, y: Y - 60, width: 18, height: 120, fill: grey(T.dark), opacity: 0 }, g);
+  }
+
+  // 8 · it has to fit in a human head ---------------------------------------------------
+  { const g = el('g', {}, svg); parts.g8 = g;
+    el('rect', { x: 1220, y: 180, width: 280, height: 240, fill: '#fff', stroke: grey(T.label), 'stroke-width': 8 }, g);
+    text(g, 1360, 160, 'fits in a head', 28, T.label, 'middle', 700);
+    text(g, 1360, 450, 'review', 24, 165);
+    parts.merged = text(g, 1640, 450, 'merged', 24, 165);
+    const r = rng(12), block = (w) => { const bg = el('g', {}, g); const rows = [];
+      el('rect', { x: 0, y: 0, width: w, height: 170, fill: '#fff', stroke: grey(190), 'stroke-width': 5 }, bg);
+      for (let k = 0; k < 7; k++) rows.push(el('rect', { x: 14, y: 16 + k * 21, width: (w - 28) * (.4 + r() * .6), height: 9, rx: 4, fill: grey(215) }, bg));
+      return bg; };
+    parts.big = block(960);
+    parts.small = [0, 1, 2, 3].map(() => block(200));
+    parts.bigLabel = text(g, 150, 168, 'one big change', 26, 150, 'start');
+  }
+
+  // 9 · a curated brain close to the code -------------------------------------------------
+  { const g = el('g', {}, svg); parts.g9 = g;
+    text(g, 230, 72, 'the giant spec', 28, 150, 'start', 700);
+    const clipId = clipRect(230, 90, 420, 430);
+    const sg = el('g', { 'clip-path': `url(#${clipId})` }, g);
+    el('rect', { x: 230, y: 90, width: 420, height: 2000, fill: '#fff', stroke: grey(205), 'stroke-width': 5 }, sg);
+    const r = rng(14);
+    parts.specRows = el('g', {}, sg);
+    for (let k = 0; k < 90; k++) el('rect', { x: 252, y: 110 + k * 22, width: 370 * (.35 + r() * .65), height: 9, rx: 4, fill: grey(222) }, parts.specRows);
+    // the code, with a brain on top that keeps what each small step learned
+    el('rect', { x: 1000, y: 290, width: 520, height: 170, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 8 }, g);
+    text(g, 1260, 490, 'code', 26, 150);
+    el('rect', { x: 1000, y: 110, width: 520, height: 150, fill: '#fff', stroke: grey(T.label), 'stroke-width': 8 }, g);
+    text(g, 1012, 96, 'the brain', 28, T.label, 'start', 700);
+    parts.commits = [0, 1, 2, 3, 4].map(k => ({
+      tick: el('rect', { x: 1040 + k * 96, y: 330, width: 60, height: 90, fill: grey(200), opacity: 0 }, g),
+      note: el('rect', { x: 1030 + k * 92, y: 140 + (k % 2) * 46, width: 70 + (k % 3) * 12, height: 14, rx: 7, fill: grey(T.feat), opacity: 0 }, g),
+      link: el('line', { x1: 1070 + k * 96, y1: 328, x2: 1070 + k * 96, y2: 262, stroke: grey(T.went), 'stroke-width': 4, 'stroke-dasharray': '6 6', opacity: 0 }, g),
+    }));
+  }
+}
+
+// a group shown for steps [a, b]: fades in when its first step starts, out when the step after its last starts
+function show(g, a, b, ms) {
+  const o = step < a || step > b + 1 ? 0 : step === b + 1 ? 1 - prog(ms, 0, 300) : step === a ? prog(ms, 250, 400) : 1;
+  g.setAttribute('opacity', o);
+  g.setAttribute('display', o > .001 ? 'inline' : 'none');
+}
+
+function frame(ms) {
+  // 1
+  show(parts.g1, 1, 1, ms);
+  parts.box1.setAttribute('stroke-dashoffset', 1 - at_(1, ms, 300, 900));
+  parts.line1.setAttribute('stroke-dashoffset', 1 - at_(1, ms, 900, 1700));
+  parts.mark1.reveal(at_(1, ms, 2700, 520, swipe));
+
+  // 2
+  show(parts.g2, 2, 2, ms);
+  parts.boxes2.forEach((b, i) => b.setAttribute('stroke-dashoffset', 1 - at_(2, ms, 300 + i * 200, 700)));
+  parts.acl.forEach((a, i) => a.setAttribute('opacity', at_(2, ms, 1100 + i * 150, 300, lin)));
+  parts.line2.setAttribute('stroke-dashoffset', 1 - at_(2, ms, 1200, 1800));
+  parts.marks2.forEach((m, i) => m.reveal(at_(2, ms, 3000 + i * 160, 450, swipe)));
+  parts.labels2.forEach((l, i) => l.setAttribute('opacity', at_(2, ms, 1600 + i * 300, 400, lin)));
+
+  // 3
+  show(parts.g3, 3, 3, ms);
+  parts.questions.forEach((t, i) => t.setAttribute('opacity', at_(3, ms, 300 + i * 90, 300, lin)));
+  const flash = new Array(parts.questions.length).fill(0);
+  parts.cands.forEach((c, k) => {
+    const t0 = 900 + k * 560, arrive = at_(3, ms, t0, 450), after = at_(3, ms, t0 + 450, 450);
+    const gate = [690, Y + (k - 2.5) * 6];
+    let p = [lerp(c.from[0], gate[0], arrive), lerp(c.from[1], gate[1], arrive)];
+    const passes = c.fail < 0;
+    if (after > 0) p = passes ? [lerp(gate[0], 900, after), lerp(gate[1], Y - 10, after)] : [lerp(gate[0], c.back[0], after), lerp(gate[1], c.back[1], after)];
+    const seen = at_(3, ms, t0 - 200, 200, lin), gone = passes ? 0 : after * .45;
+    c.dot.setAttribute('cx', p[0]); c.dot.setAttribute('cy', p[1]); c.dot.setAttribute('opacity', seen * (1 - gone));
+    c.halo.setAttribute('cx', p[0]); c.halo.setAttribute('cy', p[1]); c.halo.setAttribute('opacity', seen * (1 - gone) * (passes ? 1 - after : 1));
+    if (c.fail >= 0 && step === 3) flash[c.fail] = Math.max(flash[c.fail], prog(ms, t0 + 350, 150) * (1 - prog(ms, t0 + 700, 300)));
+  });
+  parts.questions.forEach((t, i) => t.setAttribute('fill', grey(Math.round(lerp(175, 40, flash[i])))));
+
+  // 4 and 5
+  show(parts.g4, 4, 5, ms);
+  parts.gates.forEach((r, i) => r.setAttribute('opacity', at_(4, ms, 300 + i * 120, 300, lin)));
+  parts.schema.setAttribute('opacity', at_(4, ms, 700, 300, lin));
+  parts.line4.setAttribute('stroke-dashoffset', 1 - at_(4, ms, 900, 1500));
+  parts.human.setAttribute('opacity', at_(4, ms, 2400, 300, lin));
+  parts.humanMark.reveal(at_(4, ms, 2600, 450, swipe));
+  parts.llm.setAttribute('stroke', grey(Math.round(lerp(222, T.feat, at_(5, ms, 200, 500)))));
+  parts.labels4[5].setAttribute('fill', grey(Math.round(lerp(175, 110, at_(5, ms, 200, 500)))));
+  parts.loop5.setAttribute('opacity', at_(5, ms, 500, 300, lin));
+  parts.loop5.setAttribute('stroke-dashoffset', 300 * (1 - at_(5, ms, 500, 1200)));
+  parts.newGate.setAttribute('opacity', at_(5, ms, 1600, 400, lin));
+  parts.newLabel.setAttribute('opacity', at_(5, ms, 1800, 400, lin));
+
+  // 6
+  show(parts.g6, 6, 6, ms);
+  parts.releases.forEach((r, k) => {
+    const t0 = 400 + k * 450, u = at_(6, ms, t0, 2000, lin);
+    let x = lerp(230, 1660, u), y = Y, o = at_(6, ms, t0, 150, lin) * (u >= 1 ? 0 : 1);
+    if (r.fail) {   // stopped at the evals, and dropped
+      const stop = (842 - 230) / (1660 - 230);
+      if (u > stop) { const fall = ease(clamp((u - stop) / .2)); x = lerp(842, 960, fall); y = Y + fall * 150; }
+      o = at_(6, ms, t0, 150, lin);
+      r.halo.setAttribute('cx', x); r.halo.setAttribute('cy', y); r.halo.setAttribute('opacity', o * clamp((u - stop) / .2));
+    }
+    r.dot.setAttribute('cx', x); r.dot.setAttribute('cy', y); r.dot.setAttribute('opacity', o);
+    r.dot.setAttribute('fill', grey(r.fail && u > .43 ? T.label : 150));
+  });
+
+  // 7
+  show(parts.g7, 7, 7, ms);
+  parts.home.forEach((h, i) => {
+    h.sc.setAttribute('stroke-dashoffset', 1 - at_(7, ms, 200 + i * 160, 500));
+    h.mk.reveal(at_(7, ms, 700 + i * 160, 400, swipe));
+  });
+  parts.square.setAttribute('stroke-dashoffset', 1 - at_(7, ms, 400, 900));
+  parts.squareGate.setAttribute('opacity', at_(7, ms, 1200, 300, lin));
+  const go = at_(7, ms, 1700, 900), back = at_(7, ms, 2700, 700);
+  const h0 = parts.home[1], dx = (976 - 130 - h0.x) * go * (1 - back), dy = (Y - 48 - h0.y) * go * (1 - back);
+  h0.hg.setAttribute('transform', `translate(${dx} ${dy})`);
+
+  // 8
+  show(parts.g8, 8, 8, ms);
+  const push = at_(8, ms, 300, 800), bounce = at_(8, ms, 1150, 500), split = at_(8, ms, 1800, 600);
+  const bigX = lerp(lerp(150, 250, push), 150, bounce);
+  parts.big.setAttribute('transform', `translate(${bigX} 215)`);
+  parts.big.setAttribute('opacity', 1 - split);
+  parts.bigLabel.setAttribute('opacity', 1 - split);
+  parts.merged.setAttribute('opacity', at_(8, ms, 3500, 400, lin));
+  parts.small.forEach((s, i) => {
+    const slot = 3 - i, t0 = 2400 + slot * 650, through = at_(8, ms, t0, 900);   // the one nearest review goes first
+    const x0 = 250 + i * 240, land = ease(clamp((through - .55) / .45));   // centres
+    const x = lerp(lerp(x0, 1360, clamp(through / .55)), 1590 + (slot % 2) * 100, land), y = lerp(215, 190 + Math.floor(slot / 2) * 110, land), k = lerp(1, .38, land);
+    s.setAttribute('transform', `translate(${x - 100 * k} ${y}) scale(${k})`);
+    s.setAttribute('opacity', split);
+  });
+
+  // 9
+  show(parts.g9, 9, 9, ms);
+  parts.specRows.setAttribute('transform', `translate(0 ${-at_(9, ms, 0, 6000, lin) * 900})`);   // it never ends
+  parts.commits.forEach((c, k) => {
+    const t0 = 600 + k * 520;
+    c.tick.setAttribute('opacity', at_(9, ms, t0, 200, lin));
+    c.link.setAttribute('opacity', at_(9, ms, t0 + 150, 200, lin));
+    c.note.setAttribute('opacity', at_(9, ms, t0 + 300, 250, lin));
+  });
+
+  document.querySelectorAll('.note').forEach(n => {
+    const k = +n.dataset.step;
+    n.style.opacity = k === step ? prog(ms, k === 1 ? 300 : 800, 500) : k === step - 1 ? 1 - prog(ms, 0, 400) : 0;
+  });
+  document.querySelectorAll('.src').forEach(n => { n.style.opacity = n.dataset.steps.split(' ').includes(String(step)) ? 1 : 0; });
+  document.getElementById('stepname').textContent = `step ${step} of ${STEPS} · ${['contain the drift', 'bounded contexts', 'the checklist', 'deterministic first', 'the LLM writes checkers', 'evals as gates', 'the square is sacred', 'fits in a human head', 'a curated brain'][step - 1]}`;
+}
+
+// ---------- playback ----------
+const DUR = { 1: 3400, 2: 3700, 3: 4500, 4: 3200, 5: 2400, 6: 5300, 7: 3600, 8: 5500, 9: 6000 };
+const BACK_SPEED = 1.5;
+let raf = 0, anim = null;
+function run(dir) {
+  cancelAnimationFrame(raf);
+  const dur = DUR[step], speed = dir > 0 ? 1 : BACK_SPEED, start = performance.now();
+  anim = { dir };
+  const tick = now => {
+    const e = (now - start) * speed;
+    if (e >= dur) return finish();
+    frame(dir > 0 ? e : dur - e);
+    raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+}
+function finish() {
+  cancelAnimationFrame(raf);
+  if (anim && anim.dir < 0) step -= 1;
+  anim = null;
+  frame(1e9);
+}
+function next() { if (anim) return finish(); if (step === STEPS) return; step += 1; run(1); }
+function prev() { if (anim) return finish(); if (step === 1) return; run(-1); }
+function play() { cancelAnimationFrame(raf); anim = null; run(1); }
+
+build();
+</script>
+<script src="scene.js"></script>
+</body>
+</html>

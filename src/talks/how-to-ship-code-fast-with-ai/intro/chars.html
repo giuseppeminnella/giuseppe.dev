@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>character sheet</title>
+  <style>
+    body { margin: 0; background: #1b2436; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    canvas { width: 1280px; height: 720px; image-rendering: pixelated; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="640" height="360"></canvas>
+  <script src="js/px.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/people.js"></script>
+  <script>
+    const g = document.getElementById('c').getContext('2d');
+    g.imageSmoothingEnabled = false;
+    const poses = [
+      { name: 'walk', phase: 0 }, { name: 'walk', phase: .25 }, { name: 'walk', phase: .5 },
+      { name: 'stand', cup: true }, { name: 'push' }, { name: 'kick', k: 1 },
+      { name: 'front' }, { name: 'sit', cig: true },
+    ];
+    function draw(t) {
+      g.fillStyle = '#26324b'; g.fillRect(0, 0, 640, 360);
+      Object.keys(PEOPLE.CHARS).forEach((key, row) => {
+        const fy = 110 + row * 118;
+        g.fillStyle = '#1b2436'; g.fillRect(0, fy + 1, 640, 2);
+        poses.forEach((p, col) => {
+          const x = 42 + col * 78;
+          const pose = { ...p, phase: p.name === 'walk' ? (p.phase + t * .8) % 1 : 0 };
+          if (p.name === 'sit') PEOPLE.draw(g, x, fy - 26, key, pose, -1);
+          else PEOPLE.draw(g, x, fy, key, pose, -1);
+          const a = { x, y: p.name === 'sit' ? fy - 26 : fy, pose: p.name };
+          if (col === 0 || col === 7) PEOPLE.aiBox(g, ...Object.values(PEOPLE.boxFor(a)), PEOPLE.CHARS[key], col === 0, t);
+        });
+      });
+    }
+    let t0 = performance.now();
+    (function loop(now) { draw((now - t0) / 1000); requestAnimationFrame(loop); })(t0);
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loop workbench</title>
+<link rel="stylesheet" href="scene.css">
+</head>
+<body>
+<header>
+  <b>Loop · how it piles up in a team</b>
+  <button id="prev">&larr;</button>
+  <span id="stepname"></span>
+  <button id="next">&rarr;</button>
+  <button id="replay">Replay step</button>
+  <label><input type="checkbox" id="sight"> sightline</label>
+</header>
+<div id="wrap"><div id="stage"><div class="frame">
+  <svg id="art" viewBox="0 0 1920 1080"></svg>
+  <p class="note" data-step="1">Inside a team it compounds. AI adds things, the load goes up, we use more AI to cope, the system inflates, and <b>overengineering becomes necessary</b>.</p>
+  <p class="note" data-step="2">Drift feeds the loop: <b>scope creep</b> where AI adds things, <b>methodological creep</b> where we cope.</p>
+  <p class="note" data-step="3">So every lap starts <b>bigger than the last</b>. And every dashboard says we are ahead of the curve.</p>
+  <div class="sight"></div>
+</div></div></div>
+
+<script src="lib.js"></script>
+<script>
+const STEPS = 3;
+const T = { rest: 229, went: 199, lw: 20, dot: 55, mark: 80, mkop: 60, guide: 212, label: 104, feat: 150 };
+const lin = t => t;
+const lerp = (a, b, t) => a + (b - a) * t;
+const round = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+
+// The track: an ellipse around the system, five stations clockwise from the top. Screen pixels.
+const C = [960, 285], RX = 560, RY = 190;
+const STATIONS = [
+  { angle: -90, label: ['AI adds things'],                      at: [0, -40],  anchor: 'middle' },
+  { angle: -18, label: ['cognitive load', 'increases'],         at: [30, -6],  anchor: 'start' },
+  { angle: 54,  label: ['we use more AI', 'to cope'],           at: [20, 54],  anchor: 'start' },
+  { angle: 126, label: ['the system', 'inflates'],              at: [-20, 54], anchor: 'end' },
+  { angle: 198, label: ['overengineering', 'becomes necessary'], at: [-30, -6], anchor: 'end' },
+];
+const G = 1.32;            // every lap is this much bigger than the last
+const INFLATE = 1.45;      // the system grows faster than the track: on screen it swells
+const ADD = [24, 40, 70, 160], MORE = [16, 30, 60, 140], INNER = [2, 3, 4, 6];   // per lap: things AI adds, things added coping, boxes inside
+const LAPS = 4;
+
+// Cumulative angle phi (degrees, 0 at the top): lap one is a closed ellipse, the others spiral out.
+const grow = phi => phi <= 360 ? 1 : Math.pow(G, (phi - 360) / 360);
+const onTrack = (phi, s) => {
+  const a = (phi - 90) * Math.PI / 180, f = grow(phi) * s;
+  return [C[0] + Math.cos(a) * RX * f, C[1] + Math.sin(a) * RY * f];
+};
+const smooth01 = x => { const t = clamp(x); return t * t * (3 - 2 * t); };
+
+const svg = document.getElementById('art');
+const frameEl = document.querySelector('.frame');
+let parts = {};
+
+function build() {
+  svg.innerHTML = '';
+  const defs = el('defs', {}, svg);
+  const label = { 'font-weight': 600, 'stroke-width': 10 };
+
+  // the loop, one path per lap, behind the system so older laps read as rings around it
+  parts.laps = Array.from({ length: LAPS }, () => el('path', { stroke: grey(T.went), 'stroke-width': 14, ...round }, svg));
+  // the system: a box in the middle, things piling up inside, boxes growing inside it
+  parts.box = el('rect', { fill: '#fff', stroke: grey(185), 'stroke-width': 6 }, svg);
+  const r = rng(77);
+  parts.inner = Array.from({ length: INNER.reduce((a, b) => a + b, 0) }, () => {
+    const w = .14 + r() * .2, h = .24 + r() * .28;
+    return { u: r() * (1 - w - .08) + .04, v: r() * (1 - h - .14) + .1, w, h, el: el('rect', { fill: 'none', stroke: grey(212), 'stroke-width': 3 }, svg) };
+  });
+  parts.pile = Array.from({ length: 560 }, () => ({ u: .05 + r() * .9, v: .14 + r() * .78, el: el('circle', { fill: grey(150), opacity: 0 }, svg) }));
+  parts.boxLabel = el('text', { 'font-size': 24, fill: grey(T.label), ...label }, svg);
+  parts.boxLabel.textContent = 'the system';
+  parts.count = el('text', { 'text-anchor': 'middle', 'font-size': 24, fill: grey(150), ...label }, svg);
+
+  parts.head = el('circle', { r: 16, fill: grey(T.went) }, svg);
+  parts.stations = STATIONS.map(st => {
+    const p = onTrack(st.angle + 90, 1);
+    const dot = el('circle', { cx: p[0], cy: p[1], r: 15, fill: '#fff', stroke: grey(T.feat), 'stroke-width': 6, opacity: 0 }, svg);
+    const t = el('text', { x: p[0] + st.at[0], y: p[1] + st.at[1], 'text-anchor': st.anchor, 'font-size': 28, fill: grey(T.label), ...label, opacity: 0 }, svg);
+    st.label.forEach((ln, j) => el('tspan', { x: p[0] + st.at[0], dy: j ? 34 : 0 }, t).textContent = ln);
+    return { dot, t };
+  });
+
+  // drift feeding it: scope creep at "AI adds things", methodological creep at "we use more AI to cope"
+  const top = onTrack(0, 1), cope = onTrack(144, 1);
+  parts.creeps = [
+    { d: smooth([[200, 60], [480, 36], [760, 66], [top[0] - 26, top[1] - 4]]), name: 'scope creep', sub: 'features nobody asked for', at: [160, 112], anchor: 'start', seed: 21 },
+    { d: smooth([[1760, 400], [1600, 410], [1440, 420], [cope[0] + 22, cope[1] - 4]]), name: 'methodological creep', sub: 'bloated specs, process for everything', at: [1770, 330], anchor: 'end', seed: 22 },
+  ].map((c, i) => {
+    const g = el('g', { opacity: 0 }, svg);
+    const path = el('path', { d: c.d, stroke: grey(T.went), 'stroke-width': 10, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, ...round }, g);
+    const guide = el('path', { d: c.d, fill: 'none', stroke: 'none' }, g);
+    const box = guide.getBBox();
+    const mask = el('mask', { id: 'creep' + i, maskUnits: 'userSpaceOnUse', x: -1e4, y: -1e4, width: 2e4, height: 2e4 }, g);
+    const mr = el('rect', { x: box.x - 60, y: box.y - 80, height: box.height + 160, width: 0, fill: '#fff' }, mask);
+    const mk = el('g', { class: 'mk', mask: `url(#creep${i})` }, g);
+    markerPolygons(guide, { width: 46, jitter: 4, seed: c.seed }).forEach(pts => el('polygon', { points: pts, fill: 'var(--hl)', 'fill-opacity': T.mkop / 100 }, mk));
+    const name = el('text', { x: c.at[0], y: c.at[1], 'text-anchor': c.anchor, 'font-size': 30, fill: grey(T.label), ...label }, g);
+    name.textContent = c.name;
+    const sub = el('text', { x: c.at[0], y: c.at[1] + 32, 'text-anchor': c.anchor, 'font-size': 24, fill: grey(160), ...label }, g);
+    sub.textContent = c.sub;
+    return { g, path, mr, w: box.width + 120 };
+  });
+
+  // cognitive load: a line that fills
+  el('text', { x: 1560, y: 69, 'text-anchor': 'end', 'font-size': 24, fill: grey(150), ...label }, svg).textContent = 'load';
+  el('line', { x1: 1580, y1: 60, x2: 1770, y2: 60, stroke: grey(T.rest), 'stroke-width': 12, 'stroke-linecap': 'round' }, svg);
+  parts.load = el('line', { x1: 1580, y1: 60, x2: 1580, y2: 60, stroke: grey(T.label), 'stroke-width': 12, 'stroke-linecap': 'round' }, svg);
+}
+
+// ---------- time ----------
+const q = new URLSearchParams(location.search);
+let step = Math.min(STEPS, Math.max(1, +(q.get('step') || 1)));
+const prog = (ms, delay, dur) => clamp((ms - delay) / dur);
+const at_ = (on, ms, delay, dur, fn = ease) => step < on ? 0 : step > on ? 1 : fn(prog(ms, delay, dur));
+
+function frame(ms) {
+  // where the line has got to: one lap in step 1, three more, faster and faster, in step 3
+  const lap1 = at_(1, ms, 300, 6500, lin), more = at_(3, ms, 300, 6500, t => Math.pow(t, 1.7));
+  const phi = 360 * lap1 + 1080 * more;
+  const s = 1 / grow(phi);   // the camera pulls back as the spiral grows, so the newest lap keeps its size
+
+  // each lap fades as the line moves on: the newest is solid, older ones step back but stay
+  parts.laps.forEach((lap, k) => {
+    const a0 = k * 360, a1 = Math.min(phi, a0 + 360);
+    if (a1 <= a0) { lap.setAttribute('d', ''); return; }
+    const pts = [];
+    for (let a = a0; a < a1; a += 3) pts.push(onTrack(a, s));
+    pts.push(onTrack(a1, s));
+    lap.setAttribute('d', 'M' + pts.map(p => p.map(v => v.toFixed(1)).join(' ')).join(' L'));
+    const age = Math.max(0, phi / 360 - (k + 1));
+    lap.setAttribute('opacity', Math.max(.18, 1 - age * .55));
+  });
+  const head = onTrack(phi, s);
+  parts.head.setAttribute('cx', head[0]); parts.head.setAttribute('cy', head[1]);
+  parts.head.setAttribute('opacity', phi > 0 && phi < 1440 ? 1 : 0);
+
+  // stations light up as the line first passes them
+  parts.stations.forEach((st, j) => {
+    const on = smooth01((phi - j * 72) / 20);
+    st.dot.setAttribute('opacity', on); st.t.setAttribute('opacity', on);
+  });
+
+  // what each station does, every lap
+  const passed = (k, j) => smooth01((phi - (k * 360 + j * 72)) / 24);
+  let things = 1, load = 0, inflate = 0, inner = 0;
+  for (let k = 0; k < LAPS; k++) {
+    things += ADD[k] * passed(k, 0) + MORE[k] * passed(k, 2);
+    load += .25 * passed(k, 1);
+    inflate += passed(k, 3);
+    inner += INNER[k] * passed(k, 4);
+  }
+  const bw = 200 * Math.pow(INFLATE, inflate) * s, bh = 80 * Math.pow(INFLATE, inflate) * s;
+  const bx = C[0] - bw / 2, by = C[1] - bh / 2;
+  parts.box.setAttribute('x', bx); parts.box.setAttribute('y', by); parts.box.setAttribute('width', bw); parts.box.setAttribute('height', bh);
+  parts.boxLabel.setAttribute('x', bx + 14); parts.boxLabel.setAttribute('y', by - 12);
+  parts.count.setAttribute('x', C[0]); parts.count.setAttribute('y', by + bh + 36);
+  parts.count.textContent = `${Math.round(things)} things we own`;
+  let shown = 0;
+  parts.inner.forEach(b => {
+    const on = clamp(inner - shown); shown++;
+    b.el.setAttribute('x', bx + b.u * bw); b.el.setAttribute('y', by + b.v * bh);
+    b.el.setAttribute('width', b.w * bw); b.el.setAttribute('height', b.h * bh);
+    b.el.setAttribute('opacity', on);
+  });
+  const dotR = Math.max(2.6, 7 - things / 90);   // more things, smaller dots: it gets dense
+  parts.pile.forEach((d, i) => {
+    const on = clamp(things - i);
+    d.el.setAttribute('cx', bx + d.u * bw); d.el.setAttribute('cy', by + d.v * bh);
+    d.el.setAttribute('r', dotR); d.el.setAttribute('opacity', on);
+  });
+  parts.load.setAttribute('x2', 1580 + 190 * Math.min(1, load));
+
+  // the creeps arrive in step 2 and stay
+  parts.creeps.forEach((c, i) => {
+    c.g.setAttribute('opacity', at_(2, ms, i * 500, 300, lin));
+    c.path.setAttribute('stroke-dashoffset', 1 - at_(2, ms, i * 500, 700));
+    c.mr.setAttribute('width', c.w * at_(2, ms, 700 + i * 500, 520, swipe));
+  });
+
+  document.querySelectorAll('.note').forEach(n => {
+    const k = +n.dataset.step;
+    n.style.opacity = k === step ? (k === 1 ? 1 : prog(ms, 800, 500)) : k === step - 1 ? 1 - prog(ms, 0, 400) : 0;
+  });
+  document.getElementById('stepname').textContent = `step ${step} of ${STEPS} · ${['the loop', 'drift feeds it', 'every lap bigger'][step - 1]}`;
+}
+
+// ---------- playback ----------
+const DUR = { 1: 7000, 2: 1800, 3: 7000 };
+const BACK_SPEED = 1.5;
+let raf = 0, anim = null;
+const settle = () => 1e9;
+function run(dir) {
+  cancelAnimationFrame(raf);
+  const dur = DUR[step], speed = dir > 0 ? 1 : BACK_SPEED, start = performance.now();
+  anim = { dir };
+  const tick = now => {
+    const e = (now - start) * speed;
+    if (e >= dur) return finish();
+    frame(dir > 0 ? e : dur - e);
+    raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+}
+function finish() {
+  cancelAnimationFrame(raf);
+  if (anim && anim.dir < 0) { step -= 1; saveUrl(); }
+  anim = null;
+  frame(1e9);
+}
+function next() { if (anim) return finish(); if (step === STEPS) return; step += 1; saveUrl(); run(1); }
+function prev() { if (anim) return finish(); if (step === 1) return; run(-1); }
+function play() { cancelAnimationFrame(raf); anim = null; run(1); }
+function saveUrl() { if (!q.has('embed')) history.replaceState(null, '', step !== 1 ? '?step=' + step : location.pathname); }
+
+build();
+</script>
+<script src="scene.js"></script>
+</body>
+</html>
