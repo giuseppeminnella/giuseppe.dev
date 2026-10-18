@@ -5,6 +5,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
   eleventyConfig.addPassthroughCopy({"src/llm.txt": "llm.txt"});
   eleventyConfig.addPassthroughCopy({"src/robots.txt": "robots.txt"});
+  // Runnable presentations, self-hosted and exported from each talk's own repo (static HTML, CSS and JS)
+  eleventyConfig.addPassthroughCopy({"src/talks": "talks"});
 
   // Markdown settings
   let md = require("markdown-it")({

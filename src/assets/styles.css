@@ -69,3 +69,26 @@ main img{display:block;width:100%;max-width:100%;height:auto;border:0.4rem solid
 
 /* Portrait images constrained */
 main img.portrait-img{max-width:27rem}
+
+/* Talk pages (layouts/talk.njk): a wider page, the runnable deck in the article, the reading list in a column on the right */
+main.wide{max-width:80rem}
+.talk{display:grid;grid-template-columns:minmax(0,1fr) 19rem;gap:3rem;align-items:start}
+.talk article{min-width:0}
+.talk article > :not(.deck){max-width:var(--max)}
+.deck{margin:1.25rem 0 2rem}
+.deck-frame{position:relative;aspect-ratio:16/9;border:1px solid #e0e0e0;background:#fff}
+.deck-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.deck figcaption{margin-top:.5rem}
+.reading{position:sticky;top:1rem;max-height:calc(100vh - 2rem);overflow-y:auto;font-size:.8rem;line-height:1.5;border-left:1px solid #e0e0e0;padding-left:1.25rem}
+.reading h2{font-size:1rem;margin:.2rem 0 .6rem}
+.reading h3{font-size:.8rem;margin:1.4rem 0 .5rem;color:var(--muted);font-weight:650}
+.reading ol{list-style:none;margin:0;padding:0}
+.reading li{margin:0 0 1rem}
+.reading li > a{font-weight:650}
+.reading .meta{display:block;color:var(--muted);font-size:.75rem;margin-top:.1rem}
+.reading p{margin:.25rem 0 0}
+.reading .note{color:var(--muted)}
+@media (max-width:62rem){
+  .talk{grid-template-columns:minmax(0,1fr);gap:1rem}
+  .reading{position:static;max-height:none;overflow:visible;border-left:0;border-top:1px solid #e0e0e0;padding:1rem 0 0}
+}

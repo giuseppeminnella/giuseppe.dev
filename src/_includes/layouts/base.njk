@@ -11,7 +11,7 @@
   {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 
   {# Open Graph / Facebook #}
-  <meta property="og:type" content="{{ 'article' if layout == 'layouts/post.njk' else 'website' }}">
+  <meta property="og:type" content="{{ 'article' if layout in ['layouts/post.njk', 'layouts/talk.njk'] else 'website' }}">
   <meta property="og:site_name" content="Giuseppe Minnella">
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://giuseppe.dev{{ page.url }}">
@@ -28,7 +28,7 @@
   <meta property="og:image:height" content="{{ image_height }}">
   {% endif %}
   {% endif %}
-  {% if layout == 'layouts/post.njk' %}
+  {% if layout in ['layouts/post.njk', 'layouts/talk.njk'] %}
   <meta property="article:published_time" content="{{ date | date('yyyy-MM-dd') }}">
   <meta property="article:author" content="Giuseppe Minnella">
   {% endif %}
@@ -44,7 +44,7 @@
   {% endif %}
 </head>
 <body>
-  <main>
+  <main{% if wide %} class="wide"{% endif %}>
     <header>
       <div class="nav">
         <a href="/">Home</a>
