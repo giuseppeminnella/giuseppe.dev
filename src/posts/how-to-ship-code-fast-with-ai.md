@@ -58,3 +58,4 @@ Every link I shared on stage, in the order it came up.
 
 - [Brian Rigoni](https://www.linkedin.com/in/brian-rigoni/) and [Abdel Fortas](https://www.linkedin.com/in/fcmam5/), for the skills.
 - [Paul Vitic](https://www.linkedin.com/in/paul-vitic/), for the curated brain close to the code.
+- [Claudio Cicali](https://www.linkedin.com/in/claudiocicali/), for reviewing the talk.
