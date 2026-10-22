@@ -13,14 +13,12 @@ Content Map (public)
 - /datenschutz/ : Privacy notice under Art. 13 GDPR. Covers GitHub Pages server logs (the only visitor data processed), absence of cookies/tracking/third-party assets, and data subject rights. Same noindex + sitemap exclusion as /impressum/, since it repeats the postal address.
 - Both legal pages are bilingual, German first and English below, each half wrapped in a div with the matching lang attribute (the page itself is lang="en"). The German version is declared authoritative; keep the two halves in sync when editing, and edit the German side first.
 - /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
-- /posts/how-to-ship-code-fast-with-ai/ : a talk post (layouts/talk.njk, `wide: true`): the runnable presentation at the top of the article in a same-origin iframe, the reading list in a right-hand column for the whole page, rendered from the post's 11tydata.json. Stacks to one column on narrow screens.
-- /talks/<slug>/ : self-hosted runnable presentations, static HTML, CSS and JS exported from each talk's own repo (for this one: tools/export-to-blog.sh in the talk repo). Copied through as is; never edited here, re-export instead.
 - /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
 - /sitemap.xml : Home, About, and all posts.
 - /robots.txt : Allow all.
 
 Conventions
-- No client-side JavaScript. Clean, fast HTML. The one exception is the self-hosted presentations under /talks/, which need JavaScript to play: same origin, no third-party requests, no cookies or storage, nothing sent anywhere.
+- No client-side JavaScript. Clean, fast HTML.
 - Markdown posts with front matter: title, date (ISO), description (for SEO/social), image (for social sharing), linkedin_url (optional), readingTime, layout.
 - Visible dates use English month names, e.g. June 3, 2026; RSS pubDate and article metadata use machine-readable formats.
 - Assets served at /assets/ via passthrough.
