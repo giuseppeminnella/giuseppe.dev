@@ -1,0 +1,31 @@
+---
+layout: layouts/base.njk
+title: Unyap privacy policy — Giuseppe Minnella
+description: What the Unyap browser extension sends, to whom, and what it stores. I collect no data.
+permalink: /unyap/privacy/
+noindex: true
+---
+<h1>Unyap privacy policy</h1>
+
+<p><em>Effective 24 October 2026</em></p>
+
+<p>Unyap is a Chrome extension I made. It shows where a YouTube video delivers what its title promises, so you can jump there or skip the filler. It runs locally in your browser with your own OpenAI API key. I don’t collect, receive or store any of your data: Unyap has no server, no account and no analytics.</p>
+
+<h2>What is sent, and to whom</h2>
+<p>When you ask Unyap to analyze a video (by clicking “Unyap this video”, or for every video you open if you turn on “Analyze every video automatically”), the extension sends the public video’s title, the first 1,000 characters of its description and its timestamped transcript to OpenAI’s API (<code>api.openai.com</code>), using your API key. Nothing is sent to me or to anyone else.</p>
+<p>OpenAI processes that text under its <a href="https://platform.openai.com/docs/guides/your-data">API data policies</a> and your agreement with OpenAI.</p>
+
+<h2>What is stored, and where</h2>
+<p>Your API key, your settings and the analyses (the video’s ID, title and length, a rating for each part of the video and the time of the answer) are kept only in your browser’s extension storage, on your device. Transcripts are not stored. Analyses are deleted after 60 days, or at once with “Clear cache” on the options page. Removing the extension deletes everything it stored.</p>
+
+<h2>What Unyap reads on YouTube</h2>
+<p>On YouTube pages, Unyap reads the video’s details from YouTube’s player and, only for a video being analyzed, its captions. It does not read your account, watch history, comments or any other website. Private and unlisted videos are never captured or sent.</p>
+
+<h2>What Unyap does not do</h2>
+<p>No analytics, no tracking, no advertising. Your data is not sold, not transferred to third parties beyond the OpenAI request above, not used for any purpose unrelated to the analysis, and not used to determine creditworthiness or for lending.</p>
+
+<h2>Who I am</h2>
+<p>Giuseppe Minnella, Berlin; contact details are in the <a href="/impressum/">Impressum</a>. As Unyap sends me nothing, I hold no personal data about you from it. Questions are welcome by email.</p>
+
+<h2>Terms and changes</h2>
+<p>Using Unyap is subject to its <a href="/unyap/terms/">terms of use</a>. If this policy changes, I update this page and its date; the revision history is public in the <a href="https://github.com/giuseppeminnella/giuseppe.dev">repository</a> for this site.</p>
