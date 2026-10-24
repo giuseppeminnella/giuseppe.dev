@@ -3,12 +3,18 @@ layout: layouts/base.njk
 title: Unyap — Giuseppe Minnella
 description: "Impatience, now a browser extension. Jump straight to the part of a YouTube video that answers its title."
 permalink: /unyap/
+image: /assets/images/unyap-on-youtube.jpg
+image_alt: "Unyap on a YouTube video: the Unyap it, Previous and Next good part buttons over the player, a strip above the progress bar coloured yellow for filler and green for the interesting parts, and the debug panel counting 20 judgments in 2 API requests."
+image_width: 1400
+image_height: 890
 ---
 <h1>Unyap</h1>
 
 <p><em>Impatience, now a browser extension.</em></p>
 
 <p>You clicked for the answer, not for ten minutes of intro. Unyap is a Chrome extension for YouTube: it finds the part of a video that answers its title, and <strong>Unyap it</strong> jumps there. A strip over the progress bar marks filler, context and substance, and <strong>Next good part</strong> skips to the next useful bit. If the title is never answered, it tells you.</p>
+
+<img src="/assets/images/unyap-on-youtube.jpg" alt="Unyap on a YouTube video: the Unyap it, Previous and Next good part buttons over the player, a strip above the progress bar coloured yellow for filler and green for the interesting parts, and the debug panel counting 20 judgments in 2 API requests." width="1400" height="890">
 
 <p>It runs in your browser with your own OpenAI API key. It uses OpenAI’s Decisions API, which answers every question about a video in a single request, so a new video costs about $0.001 and one you already analyzed costs nothing. Nothing is sent to me, and I store no data. Other AI providers are coming soon.</p>
 
