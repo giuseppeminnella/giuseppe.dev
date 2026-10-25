@@ -13,11 +13,23 @@ On 22 October I gave the keynote at [buildersklub](https://luma.com/builde-xnpy)
 
 The hardest part to prepare was the title. I wanted something a bit provocative, and I went through a lot of them. This is more or less how it went, as I showed it on stage:
 
-<video src="/assets/videos/buildersklub-titles.mp4" poster="/assets/videos/buildersklub-titles.jpg" width="1440" height="600" autoplay muted loop playsinline aria-label="The buildersklub title card. A cursor types and deletes the titles I did not pick: Eat your own slop. Human in the soup. Slop as a service. It works on my agent. Enterprise-grade brainrot. Then it types the real one, How to ship code fast with AI without paying for it later, while my portrait gets clown makeup and my role turns into AI Entertainer. Then fast and without paying for it later are struck through."></video>
+<video class="on-dark" src="/assets/videos/buildersklub-titles.mp4" poster="/assets/videos/buildersklub-titles.jpg" width="1440" height="600" autoplay muted loop playsinline aria-label="The buildersklub title card. A cursor types and deletes the titles I did not pick: Eat your own slop. Human in the soup. Slop as a service. It works on my agent. Enterprise-grade brainrot. Then it types the real one, How to ship code fast with AI without paying for it later, while my portrait gets clown makeup and my role turns into AI Entertainer. Then fast and without paying for it later are struck through."></video>
 
 I settled on the last one because it was the cheekiest of them all: unrealistic, clickbait, grotesque enough that nothing could beat it. Ship fast, with AI, and never pay for it? Sure.
 
 It was also a challenge, because you actually can do something about it: go a bit faster, and regret a bit less. So I kept it, and spent 45 minutes correcting it.
+
+The biggest problem is not the tooling. It's on the human side: our attention span, and our tendency to drift away from what we meant to do.
+
+That's the good and the bad at the same time, because drifting is also where creativity thrives. The trick is to know where you are drifting. Drifting at home is not the same as drifting in a regulated environment. You can still do it there, but on purpose: not by mistake, and surely not because a machine suggests more complexity just because it can, and because today it's cheap.
+
+<video src="/assets/videos/buildersklub-drift.mp4" poster="/assets/videos/buildersklub-drift.jpg" width="1440" height="600" autoplay muted loop playsinline aria-label="A line leaves the plan from start to goal and lands away from it, the drift marked in yellow. Zoom out: everyone in the team drifts. Zoom out again: squad, tribe, department, company, industry, everyone drifts, and every way back to the goal costs something. Then: And that was before AI."></video>
+
+From there the talk went looking for answers. We talked about tooling and governance, about attention span, and about context, with OKF and OpenSpec. I won't spoil all of it here, just a taste:
+
+<video src="/assets/videos/buildersklub-attention-and-context.mp4" poster="/assets/videos/buildersklub-attention-and-context.jpg" width="1440" height="600" autoplay muted loop playsinline aria-label="Attention as a cone of light. Spread over six agents, it fades before it reaches what is needed. Focused on one thread, it gets there, and while the agent works you go deeper into the problem. Then the brain next to the code: an OKF bundle in git, its pages written by an agent and vouched for by a person, changed through OpenSpec proposals."></video>
+
+And in the end, it turns out we can unstrike the title. Somehow, and with realistic expectations: **How to ship code fast with AI without paying for it later**. After all, it's possible to be a bit faster, and to have fewer regrets.
 
 ## Every link from the talk
 

@@ -68,7 +68,9 @@ footer{margin-top:2rem}
 main img{display:block;width:100%;max-width:100%;height:auto;border:0.4rem solid #f5f5f5;margin:1rem 0}
 
 /* Clips: short muted loops, framed like the images */
-main video{display:block;width:100%;max-width:100%;height:auto;border:0.4rem solid #f5f5f5;margin:1rem 0;background:#0b0a1b}
+/* The frame is a shadow, not a border: with a border, browsers leave a hairline of page between it and the scaled video */
+main video{display:block;width:calc(100% - .8rem);height:auto;aspect-ratio:12/5;box-shadow:0 0 0 .4rem #f5f5f5;margin:1.4rem .4rem;background:#fff}
+main video.on-dark{background:#0b0a1b}
 
 /* Struck words, as on the slides: a pen line rising to the right over the faded word, on every line it wraps to */
 s{text-decoration:none;-webkit-text-fill-color:color-mix(in srgb,currentColor 50%,transparent);
