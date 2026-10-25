@@ -4,8 +4,8 @@ date: 2026-10-22
 layout: layouts/post.njk
 title_struck: "How to ship code <s>fast</s> with AI <s>without paying for it later</s>"
 description: "My buildersklub keynote, the titles I did not pick, and every link I shared on stage."
-image: /assets/images/buildersklub-drift.png
-image_alt: "A line leaves its intended path and lands away from the target, the drift marked in yellow."
+image: /assets/images/buildersklub-title-card.jpg
+image_alt: "The buildersklub title card: How to ship code fast with AI without paying for it later, and my portrait in clown makeup, my role retyped as AI Entertainer."
 image_width: 1200
 image_height: 630
 ---

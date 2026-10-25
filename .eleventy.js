@@ -10,6 +10,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addGlobalData("cssVersion", cssVersion);
   eleventyConfig.addPassthroughCopy({"src/llm.txt": "llm.txt"});
   eleventyConfig.addPassthroughCopy({"src/robots.txt": "robots.txt"});
+  eleventyConfig.addPassthroughCopy({"src/favicon.ico": "favicon.ico"});
 
   // Markdown settings
   let md = require("markdown-it")({
