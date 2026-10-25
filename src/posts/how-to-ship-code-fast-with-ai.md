@@ -19,7 +19,7 @@ I settled on the last one because it was the cheekiest of them all: unrealistic,
 
 It was also a challenge, because you actually can do something about it: go a bit faster, and regret a bit less. So I kept it, and spent 45 minutes correcting it.
 
-The biggest problem is not the tooling. It's on the human side: our attention span, and our tendency to drift away from what we meant to do.
+<mark>The biggest problem is</mark> not the tooling. It's on the human side: <mark>our attention span</mark>, and our tendency to drift away from what we meant to do.
 
 That's the good and the bad at the same time, because drifting is also where creativity thrives. The trick is to know where you are drifting. Drifting at home is not the same as drifting in a regulated environment. You can still do it there, but on purpose: not by mistake, and surely not because a machine suggests more complexity just because it can, and because today it's cheap.
 
@@ -29,7 +29,7 @@ From there the talk went looking for answers. We talked about tooling and govern
 
 <video src="/assets/videos/buildersklub-attention-and-context.mp4" poster="/assets/videos/buildersklub-attention-and-context.jpg" width="1440" height="600" autoplay muted loop playsinline aria-label="Attention as a cone of light. Spread over six agents, it fades before it reaches what is needed. Focused on one thread, it gets there, and while the agent works you go deeper into the problem. Then the brain next to the code: an OKF bundle in git, its pages written by an agent and vouched for by a person, changed through OpenSpec proposals."></video>
 
-And in the end, it turns out we can unstrike the title. Somehow, and with realistic expectations: **How to ship code fast with AI without paying for it later**. After all, it's possible to be a bit faster, and to have fewer regrets.
+And in the end, it turns out we can unstrike the title. Somehow, and with realistic expectations: **How to ship code fast with AI without paying for it later**. After all, it's possible to be <mark>a bit faster</mark>, and to have <mark>fewer regrets</mark>.
 
 <figure>
 <img src="/assets/images/buildersklub-hypnotized.jpg" width="1400" height="933" alt="The room at buildersklub from the back, everyone watching the loop's spiral on the big screens. On it: This time I managed to hypnotize them. Now they really believe they can use AI fast, and without regrets.">
