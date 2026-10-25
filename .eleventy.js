@@ -3,6 +3,11 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
 
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
+
+  // The stylesheet's URL carries a hash of its content, so a deploy never pairs new pages with a cached old stylesheet
+  const cssVersion = require("crypto").createHash("sha256")
+    .update(require("fs").readFileSync("src/assets/styles.css")).digest("hex").slice(0, 10);
+  eleventyConfig.addGlobalData("cssVersion", cssVersion);
   eleventyConfig.addPassthroughCopy({"src/llm.txt": "llm.txt"});
   eleventyConfig.addPassthroughCopy({"src/robots.txt": "robots.txt"});
 
