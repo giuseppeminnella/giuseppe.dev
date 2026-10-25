@@ -9,7 +9,7 @@ image_alt: "The buildersklub title card: How to ship code fast with AI without p
 image_width: 1200
 image_height: 630
 ---
-On 22 October I gave the keynote at [buildersklub](https://luma.com/builde-xnpy), at the Deutsche Bank Berlin Technology Centre. It was the fourth edition of [Engineering as containment](/posts/engineering-as-containment-bologna-talk/).
+On 22 October I gave the keynote at [buildersklub](https://buildersklub.com/), at the Deutsche Bank Berlin Technology Centre. It was the fourth edition of [Engineering as containment](/posts/engineering-as-containment-bologna-talk/).
 
 The hardest part to prepare was the title. I wanted something a bit provocative, and I went through a lot of them. This is more or less how it went, as I showed it on stage:
 
