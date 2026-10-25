@@ -31,6 +31,8 @@ From there the talk went looking for answers. We talked about tooling and govern
 
 And in the end, it turns out we can unstrike the title. Somehow, and with realistic expectations: **How to ship code fast with AI without paying for it later**. After all, it's possible to be a bit faster, and to have fewer regrets.
 
+![The room at buildersklub from the back, everyone watching the loop's spiral on the big screens. On it: This time I managed to hypnotize them. Now they really believe they can use AI fast, and without regrets.](/assets/images/buildersklub-hypnotized.jpg)
+
 ## Every link from the talk
 
 In the order it came up.
