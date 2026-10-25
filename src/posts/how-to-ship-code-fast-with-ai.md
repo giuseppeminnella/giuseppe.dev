@@ -32,7 +32,7 @@ From there the talk went looking for answers. We talked about tooling and govern
 And in the end, it turns out we can unstrike the title. Somehow, and with realistic expectations: **How to ship code fast with AI without paying for it later**. After all, it's possible to be <mark>a bit faster</mark>, and to have <mark>fewer regrets</mark>.
 
 <figure>
-<img src="/assets/images/buildersklub-hypnotized.jpg" width="1400" height="933" alt="The room at buildersklub from the back, everyone watching the loop's spiral on the big screens. On it: This time I managed to hypnotize them. Now they really believe they can use AI fast, and without regrets.">
+<img src="/assets/images/buildersklub-hypnotized.jpg" width="1400" height="933" alt="The room at buildersklub from the back, everyone watching the loop's spiral on the big screens. On it: This time I managed to hypnotize them. Now they really believe they can use AI fast, and without regrets. I'll wake them up at the next talk.">
 <figcaption>Photo: buildersklub</figcaption>
 </figure>
 
