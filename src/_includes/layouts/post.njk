@@ -2,7 +2,7 @@
 layout: layouts/base.njk
 ---
 <article>
-  <h1>{{ title }}</h1>
+  <h1>{{ title_struck | safe if title_struck else title }}</h1>
   <p class="post-meta">{{ date | readableDate }}{% if readingTime %} • {{ readingTime }} min{% endif %}</p>
   {{ content | safe }}
   {% if linkedin_url %}
