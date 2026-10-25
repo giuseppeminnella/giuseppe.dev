@@ -7,6 +7,7 @@ description: "Builder. Full-stack at heart. Berlin."
 {% for post in (collections.posts | take(10)) %}
   <li>
     <a href="{{ post.url }}">{{ post.data.title_struck | safe if post.data.title_struck else post.data.title }}</a>
+    {%- if loop.first %} <picture><source srcset="/assets/images/new.png" media="(prefers-reduced-motion: reduce)"><img class="new" src="/assets/images/new.gif" width="36" height="14" alt="New"></picture>{% endif %}
     <span class="post-meta"> — {{ post.date | readableDate }}</span>
   </li>
 {% endfor %}
