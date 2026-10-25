@@ -80,5 +80,9 @@ s{text-decoration:none;-webkit-text-fill-color:color-mix(in srgb,currentColor 50
 /* The newest post's badge, as on the early web: pixel art, no taller than the text */
 main img.new{display:inline;width:36px;height:14px;border:0;margin:0 0 0 .1rem;vertical-align:-1px;image-rendering:pixelated}
 
+/* The marker, as on the slides: a hand-made yellow swipe behind the words, on every line they wrap to */
+mark{color:inherit;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='1,30 30,24 62,27 99,21 98,80 66,84 34,79 2,86' fill='%23F2E74B' fill-opacity='.7'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  padding:0 .12em;margin:0 -.04em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
 /* Portrait images constrained */
 main img.portrait-img{max-width:27rem}

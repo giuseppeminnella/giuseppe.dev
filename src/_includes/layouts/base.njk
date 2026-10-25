@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title or "Giuseppe Minnella" }}</title>
   <link rel="stylesheet" href="/assets/styles.css?v={{ cssVersion }}">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/icons/globe.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
   <meta name="description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
   <link rel="canonical" href="https://giuseppe.dev{{ page.url }}">
   {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
+
+  {% set og_image = image or "/assets/images/og-default.jpg" %}
+  {% set og_alt = (image_alt or title) if image else "A pixel-art globe beside Giuseppe Minnella, Builder. Full-stack at heart. Berlin. giuseppe.dev" %}
+  {% set og_width = image_width if image else 1200 %}
+  {% set og_height = image_height if image else 630 %}
 
   {# Open Graph / Facebook #}
   <meta property="og:type" content="{{ 'article' if layout == 'layouts/post.njk' else 'website' }}">
@@ -17,16 +25,14 @@
   <meta property="og:url" content="https://giuseppe.dev{{ page.url }}">
   <meta property="og:title" content="{{ title or 'Giuseppe Minnella' }}">
   <meta property="og:description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
-  {% if image %}
-  <meta property="og:image" content="https://giuseppe.dev{{ image }}">
-  <meta property="og:image:secure_url" content="https://giuseppe.dev{{ image }}">
-  <meta property="og:image:alt" content="{{ image_alt or title }}">
-  {% if image_width %}
-  <meta property="og:image:width" content="{{ image_width }}">
+  <meta property="og:image" content="https://giuseppe.dev{{ og_image }}">
+  <meta property="og:image:secure_url" content="https://giuseppe.dev{{ og_image }}">
+  <meta property="og:image:alt" content="{{ og_alt }}">
+  {% if og_width %}
+  <meta property="og:image:width" content="{{ og_width }}">
   {% endif %}
-  {% if image_height %}
-  <meta property="og:image:height" content="{{ image_height }}">
-  {% endif %}
+  {% if og_height %}
+  <meta property="og:image:height" content="{{ og_height }}">
   {% endif %}
   {% if layout == 'layouts/post.njk' %}
   <meta property="article:published_time" content="{{ date | date('yyyy-MM-dd') }}">
@@ -38,10 +44,8 @@
   <meta name="twitter:url" content="https://giuseppe.dev{{ page.url }}">
   <meta name="twitter:title" content="{{ title or 'Giuseppe Minnella' }}">
   <meta name="twitter:description" content="{{ description or 'Giuseppe Minnella — builder, full-stack at heart, context engineering, AI, and talks.' }}">
-  {% if image %}
-  <meta name="twitter:image" content="https://giuseppe.dev{{ image }}">
-  <meta name="twitter:image:alt" content="{{ image_alt or title }}">
-  {% endif %}
+  <meta name="twitter:image" content="https://giuseppe.dev{{ og_image }}">
+  <meta name="twitter:image:alt" content="{{ og_alt }}">
 </head>
 <body>
   <main>
