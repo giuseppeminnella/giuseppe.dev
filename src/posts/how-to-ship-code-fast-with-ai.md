@@ -2,25 +2,26 @@
 title: How to ship code fast with AI without paying for it later
 date: 2026-10-22
 layout: layouts/post.njk
-description: "My buildersklub talk on drift, where the time really goes, and why engineering has to make acceptance expensive. Two slides, and every link I shared on stage."
+title_struck: "How to ship code <s>fast</s> with AI <s>without paying for it later</s>"
+description: "My buildersklub keynote, the titles I did not pick, and every link I shared on stage."
 image: /assets/images/buildersklub-drift.png
 image_alt: "A line leaves its intended path and lands away from the target, the drift marked in yellow."
 image_width: 1200
 image_height: 630
 ---
-On 22 October I spoke at [buildersklub](https://luma.com/builde-xnpy), at the Deutsche Bank Berlin Technology Centre. It was the fourth edition of [Engineering as containment](/posts/engineering-as-containment-bologna-talk/).
+On 22 October I gave the keynote at [buildersklub](https://luma.com/builde-xnpy), at the Deutsche Bank Berlin Technology Centre. It was the fourth edition of [Engineering as containment](/posts/engineering-as-containment-bologna-talk/).
 
-The argument fits in two lines: **AI makes expansion cheap. Engineering must make acceptance expensive.**
+The hardest part to prepare was the title. I wanted something a bit provocative, and I went through a lot of them. This is more or less how it went, as I showed it on stage:
 
-![If AI makes expansion cheap, then engineering must make acceptance expensive: adoption must be selective, integration must be constrained, authority must be explicit. You are the bad cop.](/assets/images/buildersklub-thesis.png)
+<video src="/assets/videos/buildersklub-titles.mp4" poster="/assets/videos/buildersklub-titles.jpg" width="1440" height="600" autoplay muted loop playsinline aria-label="The buildersklub title card. A cursor types and deletes the titles I did not pick: Eat your own slop. Human in the soup. Slop as a service. It works on my agent. Enterprise-grade brainrot. Then it types the real one, How to ship code fast with AI without paying for it later, while my portrait gets clown makeup and my role turns into AI Entertainer. Then fast and without paying for it later are struck through."></video>
 
-One practical way to do it with agents: give them the big picture, and ask for a small change.
+I settled on the last one because it was the cheekiest of them all: unrealistic, clickbait, grotesque enough that nothing could beat it. Ship fast, with AI, and never pay for it? Sure.
 
-![Curate the context: the agent reads patches from all over the codebase, and changes a few boxes in one of them. Big context, little changes.](/assets/images/buildersklub-curate-the-context.png)
+It was also a challenge, because you actually can do something about it: go a bit faster, and regret a bit less. So I kept it, and spent 45 minutes correcting it.
 
-## Glossary
+## Every link from the talk
 
-Every link I shared on stage, in the order it came up.
+In the order it came up.
 
 ### Where the time goes
 
