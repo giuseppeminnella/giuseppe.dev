@@ -10,7 +10,7 @@ Content Map (public)
 - /about/ : Short, colloquial bio in paragraphs (no headings). Berlin-based; Senior Engineer (AVP) at Deutsche Bank; Leading the frontend team (CB/Online Channel); 20+ years building for the web.
 - /reach-out/ : Contact page linking to email and LinkedIn.
 - /stuff/ : Things I built, as a list like the home page. One entry so far: Unyap.
-- /unyap/ : Unyap, my Chrome extension for YouTube: what it does, that it runs on the user's own OpenAI key (Decisions API, about $0.001 per new video), that nothing is sent to me, store status, and links to its privacy policy and terms. A few short paragraphs, no images.
+- /unyap/ : Unyap, my Chrome extension for YouTube: what it does, that it runs on the user's own OpenAI key (Decisions API, about $0.001 per new video), that nothing is sent to me, a link to its Chrome Web Store listing, and links to its privacy policy and terms. A few short paragraphs and one annotated screenshot.
 - /impressum/ : Legal notice required by German law (§ 5 DDG, § 18 Abs. 2 MStV). Linked from the footer on every page. Deliberately excluded from sitemap.xml and marked noindex to limit indexing of the postal address.
 - /datenschutz/ : Privacy notice under Art. 13 GDPR. Covers GitHub Pages server logs (the only visitor data processed), absence of cookies/tracking/third-party assets, and data subject rights. Same noindex + sitemap exclusion as /impressum/, since it repeats the postal address.
 - Both legal pages are bilingual, German first and English below, each half wrapped in a div with the matching lang attribute (the page itself is lang="en"). The German version is declared authoritative; keep the two halves in sync when editing, and edit the German side first.
