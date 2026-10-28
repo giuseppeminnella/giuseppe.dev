@@ -60,7 +60,8 @@ figcaption{font-size:.9rem;color:var(--muted);margin-top:-.5rem}
 hr{border:none;border-top:1px solid #e0e0e0;margin:1.5rem 0}
 header,footer{font-size:.9rem;color:var(--muted)}
 footer{margin-top:2rem}
-.nav a{margin-right:.75rem}
+.nav a,.nav span{margin-right:.75rem}
+.nav [aria-current]{color:var(--fg);font-weight:600}
 .post-meta{font-size:.9rem;color:var(--muted)}
 .btn{display:inline-block;border:1px solid #e0e0e0;padding:.4rem .6rem;text-decoration:none}
 
