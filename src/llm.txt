@@ -3,12 +3,13 @@ Type: Eleventy static blog (no client JS). Typography-first with locally served 
 
 Purpose
 - Share posts on engineering: full‑stack practice, frontend leadership, context engineering, pragmatic AI demos.
-- Minimal navigation: Home (post list), About, Stuff, Reach out, RSS.
+- Minimal navigation: Home (post list), About, Talks, Stuff, Reach out, RSS.
 
 Content Map (public)
 - / : Home. Lists latest posts only (no intro text).
 - /about/ : Short, colloquial bio in paragraphs (no headings). Berlin-based; Senior Engineer (AVP) at Deutsche Bank; Leading the frontend team (CB/Online Channel); 20+ years building for the web.
 - /reach-out/ : Contact page linking to email and LinkedIn.
+- /talks/ : Talks I gave, newest first, as a list like the home page: title linked to the blog post when there is one, otherwise to the LinkedIn post; then event, venue, and month and year only (no day).
 - /stuff/ : Things I built, as a list like the home page. One entry so far: Unyap.
 - /unyap/ : Unyap, my Chrome extension for YouTube: what it does, that it runs on the user's own OpenAI key (Decisions API, about $0.001 per new video), that nothing is sent to me, a link to its Chrome Web Store listing, and links to its privacy policy and terms. A few short paragraphs and its 26-second promo video (/assets/videos/unyap.mp4, 16:9, class widescreen); the annotated screenshot is only its social card.
 - /impressum/ : Legal notice required by German law (§ 5 DDG, § 18 Abs. 2 MStV). Linked from the footer on every page. Deliberately excluded from sitemap.xml and marked noindex to limit indexing of the postal address.
@@ -17,7 +18,7 @@ Content Map (public)
 - /unyap/privacy/ and /unyap/terms/ : Privacy policy and terms of use of the Unyap Chrome extension, in English only and in the first person. Linked only from /unyap/, the extension and its Chrome Web Store listing; noindex, not in sitemap.xml. Keep them true to what the extension sends and stores (source: github.com/giuseppeminnella/unyap).
 - /posts/<slug>/ : Individual posts with optional “Discuss on LinkedIn” button.
 - /feed.xml : RSS 2.0, absolute URLs, post HTML made absolute.
-- /sitemap.xml : Home, About, Stuff, Unyap, Reach out and all posts.
+- /sitemap.xml : Home, About, Talks, Stuff, Unyap, Reach out and all posts.
 - /robots.txt : Allow all.
 
 Conventions
